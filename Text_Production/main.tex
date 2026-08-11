@@ -1,0 +1,143 @@
+% --------- TEMPLATE FOR A THESIS IN THE IEF, Leipzig University -------------- %
+%   Adapted by Linus Benetz from template made by Hugo Norinder
+%   First created: 2024-05-22
+%   Updated: 2026-08-05
+% This template was made to guide students in making a thesis that looks like a publishable article
+% Replace text in [ ] with the respective content
+% ---------- ********************************* -------------- %
+
+\documentclass[a4paper, oneside, 11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{helvet} % for setting font -> here a non serifc font (helvet is pretty close to arial)
+\renewcommand{\familydefault}{\sfdefault}
+\input{setup}
+\newglossary[glg]{biochem}{gls-biochem}{glo-biochem}{BIOCHEMICAL TERMS}
+\newglossary[glg]{geo}{gls-geo}{glo-geo}{GEOGRAPHICAL TERMS}
+\makeglossaries
+
+\begin{document}
+
+% TITLE PAGE 
+\input{title}
+%\maketitle additional title page
+
+\pagenumbering{Roman}
+\begin{spacing}{1.5}
+
+% Abstract
+\begin{abstract}
+\input{sections/0_Abstract}
+\end{abstract}
+\newpage\null\thispagestyle{empty}\newpage
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+\newpage
+\listoffigures
+\addcontentsline{toc}{section}{LIST OF FIGURES}
+% \setcounter{page}{1}
+
+\newpage\null\thispagestyle{empty}\newpage
+
+\listoftables
+\addcontentsline{toc}{section}{LIST OF TABLES}
+\newpage
+% \newpage\null\thispagestyle{empty}\newpage
+
+%\section*{LIST OF ABBREVIATIONS}
+%\addcontentsline{toc}{section}{LIST OF ABBREVIATIONS}
+\input{abbreviations}
+
+
+%\setcounter{page}{1}
+\newpage\null\thispagestyle{empty}\newpage
+
+\pagenumbering{arabic}
+
+%INTRODUCTION
+\input{sections/1_intro}
+\newpage
+%DATA
+\input{sections/2_data}
+\newpage\null\thispagestyle{empty}\newpage
+%EMPIRICAL
+\input{sections/3_methods}
+\newpage
+
+%RESULTS
+\input{sections/4_results}
+\newpage\null\thispagestyle{empty}\newpage
+
+%DISCUSSION
+\input{sections/5_discussion}
+\newpage\null\thispagestyle{empty}\newpage
+
+%CONCLUSION
+\input{sections/6_conclusion}
+\newpage\null\thispagestyle{empty}\newpage
+
+%Glossarie
+\input{Glossarie}
+
+%REFRENCES
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{0.5em}{}
+\renewcommand{\refname}{REFERENCES}
+
+\addcontentsline{toc}{section}{REFERENCES} %Adds the reference to the Table of Contents
+\bibliography{References}
+
+\newpage
+
+%DECLARATION
+% \input{sections/9 Declaration}
+
+% \newpage
+
+%APPENDICES
+
+% \appendix
+% \setcounter{page}{1} %Restarts page counting to 1
+% \pagenumbering{roman} %Differentiates the appendix page numbers from the main article
+
+
+% \titleformat{\section}{\normalfont\normalsize\bfseries}{APPENDIX \thesection: }{0em}{}
+% \input{appendix/appendix_tables}
+% \input{appendix/appendix_figures}
+
+\newpage\null\thispagestyle{empty}\newpage
+\appendix
+\renewcommand{\thesection}{\Alph{section}} 
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{0.5em}{}  % Same size as other sections
+\titleformat{\subsection}{\normalfont\large\itshape}{\thesubsection}{0.5em}{} % Same size as other subsections
+
+\section*{APPENDIX} % Section title without numbering
+\addcontentsline{toc}{section}{APPENDIX} % Adds APPENDIX to ToC
+
+\setcounter{page}{1} % Restart page numbering
+\pagenumbering{Roman} % Use Roman numerals for Appendix
+% \setcounter{page}{4} % in case of continuing the counting
+
+\section{Figures} % Creates a numbered section (B. Figures)
+\input{appendix/appendix_figures}
+\newpage
+\section{Tables} % Creates a numbered section (A. Tables)
+\input{appendix/appendix_tables}
+%\newpage
+
+
+
+% End of appendix: Reset numbering and formatting
+%\clearpage
+\newpage\null\thispagestyle{empty}\newpage
+\pagenumbering{arabic}  % Back to normal numbering
+\setcounter{page}{65} % Reset section numbering
+
+% Declaration as a separate unnumbered section
+\section*{DECLARATION} 
+\addcontentsline{toc}{section}{DECLARATION} % Adds it to the ToC
+\input{sections/9_Declaration}
+
+\end{spacing}
+\end{document}

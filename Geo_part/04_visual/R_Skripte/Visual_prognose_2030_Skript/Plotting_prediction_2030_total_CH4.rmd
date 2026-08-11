@@ -1,0 +1,76 @@
+---
+title: "Plotting of the predicted methane emission 2030"
+author: "Linus Benetz"
+date: "2026-08-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+
+```{r general}
+
+rm(list = ls())
+
+#install.packages("ggnewscale")
+
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+library("tidyverse")
+library("ggpmisc")
+library("patchwork")
+library("ggtext")
+library("ggnewscale")
+library("scales")
+
+source(file = here("04_visual/R_Skripte/Visual_prognose_2030_Skript", "Funktion_plotting.r"))
+
+here()
+
+```
+
+
+
+**Fange jetzt erstmal an zu schreiben, die abbildungen hierfür habe ich in der source file gemacht. Entweder mache ich alle totals untereinander von den verschiedenen Ländern oder mache total, Cattle Enterfe und Total ohne, wie diese drei sachen predicted wurden -> für letzteres müsste ich code vmtl noch anpassen. Wenn ich länder untereinander mache, müsste ich Länderkürzel noch mit einbringen.**
+
+**Des Weiteren muss die Legende von der Größe noch angepasst werden, und generell die Schriftgrößen. Am besten vglb zu den Biochemie plots.**
+
+
+
+# USA
+
+```{r 1}
+
+Pred_2030_final_CH4_USA <- import(
+  file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030/Visual_final_Emission_table", 
+                                                     "Final_total_CH4_Calc_data_23_30_USA.csv"))
+
+names(Pred_2030_final_CH4_USA)
+
+Hist_CH4_emis_data_USA <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_USA.csv"))
+
+
+Plot_total_CH4_2030_sze_10_30_50_USA <- map(seq(10,50,20),
+                                            ~ Visual_total_CH4_YB_30_function(df = Pred_2030_final_CH4_USA, 
+                                                                              hs = Hist_CH4_emis_data_USA,
+                                                                              Red = .x,
+                                                                              lm = 35,
+                                                                              br_lm = 40,
+                                                                              br_by = 10))
+
+wrap_plots(Plot_total_CH4_2030_sze_10_30_50_USA, ncol = 2) + 
+  plot_layout(guides = "collect") & theme(legend.direction = "horizontal",
+                                          legend.position = "bottom")
+
+```
+

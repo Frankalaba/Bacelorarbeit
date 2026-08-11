@@ -1,0 +1,534 @@
+---
+title: "Anylses_for_ExtraPol"
+author: "Linus Benetz"
+date: "2026-07-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r general, message=FALSE, results='hide'}
+
+rm(list = ls())
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+library("tidyverse")
+library("ggpmisc")
+library("patchwork")
+library("ggtext")
+library("scales") # maskiert col_factor readr; discard von purrr; viridis_pal von viridis 
+#-> muss wenn ich die aus den anderen Pakten haben will direkt ansprechen mit viridis::vidis_pal
+
+source(here::here("03_Analyses/ExtraPol_Skripte", "R_Skript_ExtraPol.r"))
+
+here()
+
+
+```
+
+
+# Introduction
+
+To evaluate a possible inpact of immunization of cattle, I use the *Global Methane Pledge* as a bench mark. Their Germany and the US declared to reduce their $CH_4$ emission - over all sectors - by 30% from 2020 to 2030, as well by 40% from 2010 to 2030. 
+
+The plan is to project the methane emission of Germany, the US and New Zeeland 2030 with the assumption every emission sector will follow the trend that is detected in the published *CRT*. A Problem is, the data is not showing a linear trend from 1990 to 2024/22. To fit the data best I have to use a cubic or quadratic function, but they are not fitting functions for predictions. For predictions linear functions work better than these two. 
+
+So I will take different data samples to create three linear models: the last 5, 10 and 15 years. These I will use for prediction till 2030. The advantage of this method is, it will not show a single predicted value but a likely prediction range. 
+
+This predicted $CH_4$ emission I will set in context with the pledge. Are the countries on a good way to achieve the *Global Methane Pledge*?
+
+Then I will take the reduction scenarios and calculate the emission for 2030 with the immunization of cattle. What is a possible contribution of immunization to achieve the country specific declared emission targets? What is also the limitation of the method? Is there a methane conversion reduction scenario where enough $CH_4$ is saved?
+
+# First step: Creating a *factor table* for prediction
+
+To calculate this and finally visualize it, I have to determine the important factors and collect them in one table.
+
+The factors are: 
+- Total $CH_4$ emission over all sectors without (wo) emissions from enteric fermentation processes in cattle
+- Population of Dairy and Non-Dairy cattle
+- DE (Digestibility of food) of Dairy and Non-Dairy cattle
+- NEs sum of Dairy and Non-Dairy cattle
+- Ym of Dairy and Non-Dairy cattle
+
+The last four factors are relevant for the manipulation of emission resulting from enteric fermentation processes. It is also not possible to calculate this directly in cattle, because the population between Dairy and Non-Dairy cattle differ. 
+
+In addition, I will calculate regular methane emissions based on the last four indicators. I will not create a linear model for emissions from enteric fermentation in cattle, since the updated and original emission values for cattle should be comparable—they should be calculated in the same way.
+When I make a prediction, these two emissions are not in the correct proportion to each other, so the relative impact of the mitigation strategy cannot be assessed, as the linear prediction of emissions deviates from the calculated values.
+
+Using the calculated emissions for enteric fermentation processes in cattle I will calculate with the predicted values for total wo Cat EnterFe the total amount of $CH_4$ over all sectors.
+
+I calculate the total amount and will not predict it for the plotting, because I want to see the relative impact of the mitigation strategie, so. **X Hier fehlt noch ein bisschen Begründung, grad keine Lust weiter zu schreiben. Also für die vergleichbarkeit besser wenn ich enteric fermentation gleich berechne/ vergleichbar, und nicht einmal predicte und einmal aus den predicteten Faktoren berechne**
+
+### DEU factor table
+
+I will use the functions written down in the source R-Script
+
+```{r 1, message=FALSE, warning=FALSE}
+
+DEU_factor_table_pred <- Table_All_Categories_For_extrapol_function(CC = "DEU", YE = 24)
+
+export(
+  DEU_factor_table_pred,
+  file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_DEU.csv")
+)
+
+names(DEU_factor_table_pred)
+
+```
+
+### NZL factor table
+
+I will use the functions written down in the source R-Script
+
+```{r 2, message=FALSE, warning=FALSE}
+
+NZL_factor_table_pred <- Table_All_Categories_For_extrapol_function(CC = "NZL", YE = 24)
+
+export(
+  NZL_factor_table_pred,
+  file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_NZL.csv")
+)
+
+names(NZL_factor_table_pred)
+
+```
+
+### US factor table
+
+I will use the functions written down in the source R-Script.
+The published CRT-table of the US ends with the year 2022.
+
+```{r 3, message=FALSE, warning=FALSE}
+
+USA_factor_table_pred <- Table_All_Categories_For_extrapol_function(CC = "USA", YE = 22)
+
+export(
+  USA_factor_table_pred,
+  file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_USA.csv")
+)
+
+names(USA_factor_table_pred)
+
+```
+
+
+# Second Step: Fit linear model for each factor
+
+Creating a linear model for each factor and each data sample(5, 10, 15 years back), finally save them for each country in a list. Than I need also the R² and equation of these models, so these data will be extracted in an additional table.
+
+Again the functions for this procedure is written down in the script, named in the source command in the beginning.
+
+The created lists will be saved as a R-object **.rds** and not as e.g. a csv, because **.rds** can save a full R-object as it is with its full attributes.
+
+In addition to the tables listing the models and their corresponding equations, as well as the R² values, another function is used to identify which models have a low R² (R² ≤ 0.6).
+It remains to be seen whether this is truly relevant for prediction — since the models are not intended to describe the existing data points particularly well, but rather to provide a good prediction.
+
+### DEU creating a list with linear model for each factor
+
+```{r 4, message=FALSE, warning=FALSE}
+
+DEU_list_linMod_all_fact <- List_models_for_factors_function(CC = "DEU", YE = 2024)
+
+export(DEU_list_linMod_all_fact, 
+       file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_DEU.rds"))
+
+names(DEU_list_linMod_all_fact)
+```
+
+```{r 5, message=FALSE, warning=FALSE}
+
+DEU_list_ModLin_all_fact <- import(file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_DEU.rds"))
+
+DEU_table_equat_r2_LinMod <- Tabelle_Equation_R2(ls = DEU_list_ModLin_all_fact)
+
+export(DEU_table_equat_r2_LinMod, 
+       file = here("03_Analyses/tables/ExtraPol_data", "Equation_R2_table_DEU.csv"))
+
+DEU_table_equat_r2_LinMod |> select(, 1:3)
+
+DEU_table_equat_r2_LinMod <- import(file = here("03_Analyses/tables/ExtraPol_data", "Equation_R2_table_DEU.csv"))
+
+DEU_weak_model <- Filter_weak_model_lin_function(df = DEU_table_equat_r2_LinMod, th = 0.6)
+
+DEU_weak_model
+```
+
+### NZL creating a list with linear model for each factor
+
+```{r 6, message=FALSE, warning=FALSE}
+
+NZL_list_linMod_all_fact <- List_models_for_factors_function(CC = "NZL", YE = 2024)
+
+export(NZL_list_linMod_all_fact, 
+       file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_NZL.rds"))
+
+names(NZL_list_linMod_all_fact)
+```
+
+
+
+```{r 7, message=FALSE, warning=FALSE}
+
+NZL_list_ModLin_all_fact <- import(file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_NZL.rds"))
+
+NZL_table_equat_r2_LinMod <- Tabelle_Equation_R2(ls = NZL_list_ModLin_all_fact)
+
+export(NZL_table_equat_r2_LinMod, 
+       file = here("03_Analyses/tables/ExtraPol_data", "Equation_R2_table_NZL.csv"))
+
+NZL_table_equat_r2_LinMod |> select(, 1:3)
+
+NZL_table_equat_r2_LinMod <- import(file = here("03_Analyses/tables/ExtraPol_data", "Equation_R2_table_NZL.csv"))
+
+NZL_weak_model <- Filter_weak_model_lin_function(df = NZL_table_equat_r2_LinMod, th = 0.6)
+
+NZL_weak_model 
+
+```
+For NZL the threshold for R² can not be 0.6, because then there would be no model left for *Dairy_DE_in_perc*.
+
+
+### USA creating a list with linear model for each factor
+
+```{r 8, message=FALSE, warning=FALSE}
+
+USA_list_linMod_all_fact <- List_models_for_factors_function(CC = "USA", YE = 2022)
+
+export(USA_list_linMod_all_fact, 
+       file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_USA.rds"))
+
+names(USA_list_linMod_all_fact)
+
+USA_table_equat_r2_LinMod <- import(file = here("03_Analyses/tables/ExtraPol_data", "Equation_R2_table_USA.csv"))
+
+USA_weak_model <- Filter_weak_model_lin_function(df = USA_table_equat_r2_LinMod, th = 0.6)
+
+USA_weak_model
+
+```
+
+```{r 9, message=FALSE, warning=FALSE}
+
+USA_list_ModLin_all_fact <- import(file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_USA.rds"))
+
+USA_table_equat_r2_LinMod <- Tabelle_Equation_R2(ls = USA_list_ModLin_all_fact)
+
+export(USA_table_equat_r2_LinMod, 
+       file = here("03_Analyses/tables/ExtraPol_data", "Equation_R2_table_USA.csv"))
+
+USA_table_equat_r2_LinMod |> select(, 1:3)
+
+```
+# 3rd step: Based on the linear models, create a prediction table to 2030
+
+For each linear model (different time data sets and factors) I calculate the predictions from the last known emission to 2030. The prediction table then will be saved for future plotting.
+
+The used Function needs a list and the beginning prediction Year, e.g.: ls = ls_x, YB = 2024
+
+### DEU - Prediction table
+
+```{r 10, warning=FALSE, message=FALSE}
+
+list_DEU_all_factors <- import(file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_DEU.rds"))
+
+Pred_table_24_30_DEU <- Prediction_2030_model_Lin(ls = list_DEU_all_factors, YB = 2025)
+
+export(Pred_table_24_30_DEU,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "Pred_table_all_fact_24_30_DEU.csv"))
+
+glimpse(Pred_table_24_30_DEU[,1:6])
+
+```
+### NZL - Prediction table
+
+```{r 11, warning=FALSE, message=FALSE}
+
+list_NZL_all_factors <- import(file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_NZL.rds"))
+
+Pred_table_24_30_NZL <- Prediction_2030_model_Lin(ls = list_NZL_all_factors, YB = 2025)
+
+export(Pred_table_24_30_NZL,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "Pred_table_all_fact_24_30_NZL.csv"))
+
+glimpse(Pred_table_24_30_NZL[,1:6])
+
+```
+
+### USA - Prediction table
+
+```{r 12, warning=FALSE, message=FALSE}
+
+list_USA_all_factors <- import(file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_USA.rds"))
+
+Pred_table_22_30_USA <- Prediction_2030_model_Lin(ls = list_USA_all_factors, YB = 2023)
+
+export(Pred_table_22_30_USA,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "Pred_table_all_fact_22_30_USA.csv"))
+
+glimpse(Pred_table_22_30_USA[,1:6])
+
+```
+
+# Step 4: Final table for plotting
+
+Here I calculate in one function the methane emission for *dairy cattle* and *non dairy cattle*, the updated emission as well as the *total CH₄ emissions across all sectors excluding (where) enteric fermentation* till 2030. The function needs the *Pred_table* created in the section before. 
+
+I calculate also the difference between the updated and calculated original methane emission from cattle enteric fermentation processes in percent.
+
+### DEU - final table for plotting prediction
+
+```{r 13, message=FALSE, warning=FALSE}
+
+Pred_table_2024_30_DEU <- import(file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "Pred_table_all_fact_24_30_DEU.csv"))
+
+Faktoren_table_DEU  <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_DEU.csv"))
+
+
+red_sce <- seq(0.1, 0.5, 0.1)
+
+final_pred_table_24_30_DEU <- map_dfr(
+  .x = red_sce,
+  .f = CH4_emission_upd_for_pred,
+  df = Pred_table_2024_30_DEU,
+  ref_2020 = Faktoren_table_DEU |> filter(Year == 2020) |> pull(total_CH4_pred_in_kt), 
+  ref_2010 = Faktoren_table_DEU |> filter(Year == 2010) |> pull(total_CH4_pred_in_kt) # Use “pull” instead of “select”! This is because “pull” returns the total amount of methane emissions from all sectors as vector/ useable number, while “select” returns a Tibble; this makes it impossible to calculate the share for 2020 or 2010 afterward
+)
+        
+export(final_pred_table_24_30_DEU,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "Final_Pred_table_24_30_DEU_10_50_perc.csv"))
+
+```
+
+### NZL - final table for plotting prediction
+
+```{r 14, message=FALSE, warning=FALSE}
+
+Pred_table_2024_30_NZL <- import(file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "Pred_table_all_fact_24_30_NZL.csv"))
+
+Faktoren_table_NZL  <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_NZL.csv"))
+
+red_sce <- seq(0.1, 0.5, 0.1)
+
+final_pred_table_24_30_NZL <- map_dfr(
+  .x = red_sce,
+  .f = CH4_emission_upd_for_pred,
+  df = Pred_table_2024_30_NZL,
+  ref_2020 = Faktoren_table_NZL |> filter(Year == 2020) |> pull(total_CH4_pred_in_kt), 
+  ref_2010 = Faktoren_table_NZL |> filter(Year == 2010) |> pull(total_CH4_pred_in_kt) # Use “pull” instead of “select”! This is because “pull” returns the total amount of methane emissions from all sectors as vector/ useable number, while “select” returns a Tibble; this makes it impossible to calculate the share for 2020 or 2010 afterward
+)
+
+export(final_pred_table_24_30_NZL,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "Final_Pred_table_24_30_NZL_10_50_perc.csv"))
+
+```
+
+
+### USA - final table for plotting prediction
+
+```{r 15, message=FALSE, warning=FALSE}
+
+Pred_table_2022_30_USA <- import(file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "Pred_table_all_fact_22_30_USA.csv"))
+
+Faktoren_table_USA  <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_USA.csv"))
+
+
+final_pred_table_22_30_USA <- map_dfr(
+  .x = red_sce,
+  .f = CH4_emission_upd_for_pred,
+  df = Pred_table_2022_30_USA,
+  ref_2020 = Faktoren_table_USA |> filter(Year == 2020) |> pull(total_CH4_pred_in_kt),
+  ref_2010 = Faktoren_table_USA |> filter(Year == 2010) |> pull(total_CH4_pred_in_kt)
+)
+        
+export(final_pred_table_22_30_USA,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "Final_Pred_table_22_30_USA_10_50_perc.csv"))
+```
+
+# Confidence interval (CI)
+
+To validate linear models for prediction you can use a cross validation or/ and show the confidence interval. The R² value is, as discussed above, not so relevant for the prediction. The confidence interval is set at 95% in this bachelor thesis. First I calculate the prediction till 2030. The table will have the fitted value, upper and lower limit.
+
+Afterwards the calculation of the EnterFe will follow, as before. This time just with the CI
+
+## Prediction table with CI
+
+For the three countries I generate a table with 100 columns. 
+
+### DEU
+
+```{r 16, warning=FALSE, message=FALSE}
+
+DEU_list_ModLin_all_fact <- import(file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_DEU.rds"))
+
+Pred_ConfInt_table_25_30_DEU <- Prediction_conf_2030_model_Lin(ls = DEU_list_ModLin_all_fact, YB = 2025)
+
+export(Pred_ConfInt_table_25_30_DEU,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "ConfInt_Pred_table_all_fact_25_30_DEU.csv"))
+
+#ncol(Pred_ConfInt_table_24_30_DEU)
+
+glimpse(Pred_ConfInt_table_25_30_DEU[,1:7])
+
+```
+### NZL
+
+```{r 17, warning=FALSE, message=FALSE}
+
+NZL_list_ModLin_all_fact <- import(file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_NZL.rds"))
+
+Pred_ConfInt_table_25_30_NZL <- Prediction_conf_2030_model_Lin(ls = NZL_list_ModLin_all_fact, YB = 2025)
+
+export(Pred_ConfInt_table_25_30_NZL, 
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "ConfInt_Pred_table_all_fact_25_30_NZL.csv"))
+
+glimpse(Pred_ConfInt_table_25_30_NZL[,1:7])
+
+```
+
+### USA
+
+```{r 18, warning=FALSE, message=FALSE}
+
+USA_list_ModLin_all_fact <- import(file = here("03_Analyses/tables/ExtraPol_data", "List_linMod_all_fact_USA.rds"))
+
+Pred_ConfInt_table_23_30_USA <- Prediction_conf_2030_model_Lin(ls = USA_list_ModLin_all_fact, YB = 2023)
+
+export(Pred_ConfInt_table_23_30_USA,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "ConfInt_Pred_table_all_fact_23_30_USA.csv"))
+
+glimpse(Pred_ConfInt_table_23_30_USA[,1:7])
+
+```
+
+## Calculating the emission data
+
+The 100 column long tables are the starting point for the calculation of the methane emission values for cattle EnterFe and also the total $CH_4$. Because I need the calculated total $CH_4$ for comparative reason. Here I calculate the possible influence of our targeted mitigation strategy.
+
+Thereby I will create one table with just the relevant columns for visualizing - so just the $CH_4$-Emission data basicly - and in the other table the data for calculating the emission for dairy and non-dairy cattle, as well as the result. In the last table there will also be already a sum for cattle.
+
+### DEU
+
+#### Calculation base table
+
+```{r 19, message=FALSE, warning=FALSE}
+
+Pred_ConfInt_table_DEU <- import(file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "ConfInt_Pred_table_all_fact_25_30_DEU.csv")) 
+
+Calc_base_all_Ind_DEU <- map_dfr(.x = seq(0.1, 0.5, 0.1),
+                                 .f = ConfInt_CH4_emission_upd_for_pred_calculation_base_function,
+                                 df = Pred_ConfInt_table_DEU)
+
+export(Calc_base_all_Ind_DEU,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030/Calculation_base", "Calc_base_all_indicators_dairy_NonDair_25_30_DEU.csv"))
+
+names(Calc_base_all_Ind_DEU)
+
+```
+
+#### Prediction table 
+
+
+```{r 20, warning=FALSE, message=FALSE}
+
+Faktoren_table_DEU  <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_DEU.csv"))
+
+
+Calc_Emis_final_DEU <- map_dfr(.x = seq(0.1, 0.5, 0.1),
+                               .f = ConfInt_CH4_emission_upd_for_pred_function,
+                               df = Pred_ConfInt_table_DEU,
+                               ref_2020 = Faktoren_table_DEU |> filter(Year == 2020) |> pull(total_CH4_pred_in_kt),
+                               ref_2010 = Faktoren_table_DEU |> filter(Year == 2010) |> pull(total_CH4_pred_in_kt))
+
+export(Calc_Emis_final_DEU,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030/Visual_final_Emission_table", "Final_total_CH4_Calc_data_25_30_DEU.csv"))
+
+names(Calc_Emis_final_DEU)
+```
+### NZL
+
+#### Calculation base table
+
+```{r 21, message=FALSE, warning=FALSE}
+
+Pred_ConfInt_table_NZL <- import(file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "ConfInt_Pred_table_all_fact_25_30_NZL.csv")) 
+
+Calc_base_all_Ind_NZL <- map_dfr(.x = seq(0.1, 0.5, 0.1),
+                                 .f = ConfInt_CH4_emission_upd_for_pred_calculation_base_function,
+                                 df = Pred_ConfInt_table_NZL)
+
+export(Calc_base_all_Ind_NZL,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030/Calculation_base", "Calc_base_all_indicators_dairy_NonDair_25_30_NZL.csv"))
+
+names(Calc_base_all_Ind_NZL)
+
+```
+
+#### Prediction table 
+
+
+```{r 22, warning=FALSE, message=FALSE}
+
+Faktoren_table_NZL  <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_NZL.csv"))
+
+
+Calc_Emis_final_NZL <- map_dfr(.x = seq(0.1, 0.5, 0.1),
+                               .f = ConfInt_CH4_emission_upd_for_pred_function,
+                               df = Pred_ConfInt_table_NZL,
+                               ref_2020 = Faktoren_table_NZL |> filter(Year == 2020) |> pull(total_CH4_pred_in_kt),
+                               ref_2010 = Faktoren_table_NZL |> filter(Year == 2010) |> pull(total_CH4_pred_in_kt))
+
+export(Calc_Emis_final_NZL,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030/Visual_final_Emission_table", "Final_total_CH4_Calc_data_25_30_NZL.csv"))
+
+names(Calc_Emis_final_NZL)
+```
+
+### USA
+
+#### Calculation base table
+
+```{r 23, message=FALSE, warning=FALSE}
+
+Pred_ConfInt_table_USA <- import(file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030", "ConfInt_Pred_table_all_fact_23_30_USA.csv")) 
+
+Calc_base_all_Ind_USA <- map_dfr(.x = seq(0.1, 0.5, 0.1),
+                                 .f = ConfInt_CH4_emission_upd_for_pred_calculation_base_function,
+                                 df = Pred_ConfInt_table_USA)
+
+export(Calc_base_all_Ind_USA,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030/Calculation_base", "Calc_base_all_indicators_dairy_NonDair_23_30_USA.csv"))
+
+names(Calc_base_all_Ind_USA)
+
+```
+
+#### Prediction table 
+
+
+```{r 24, warning=FALSE, message=FALSE}
+
+Faktoren_table_USA  <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_USA.csv"))
+
+
+Calc_Emis_final_USA <- map_dfr(.x = seq(0.1, 0.5, 0.1),
+                               .f = ConfInt_CH4_emission_upd_for_pred_function,
+                               df = Pred_ConfInt_table_USA,
+                               ref_2020 = Faktoren_table_USA |> filter(Year == 2020) |> pull(total_CH4_pred_in_kt),
+                               ref_2010 = Faktoren_table_USA |> filter(Year == 2010) |> pull(total_CH4_pred_in_kt))
+
+export(Calc_Emis_final_USA,
+       file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030/Visual_final_Emission_table", "Final_total_CH4_Calc_data_23_30_USA.csv"))
+
+names(Calc_Emis_final_USA)
+```

@@ -1,0 +1,20 @@
+\begin{table}[H]
+\setlength\tabcolsep{0pt} % let LaTeX figure out amount of inter-column whitespace
+\centering
+\caption{Example table}
+    \label{tab:example}
+    \begin{threeparttable}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcr} \toprule
+LEFT TEXT & CENTER TEXT & RIGHT TEXT \\ \midrule
+A variable name & 0.525$^{***}$ & Right text \\
+ & (0.004) & \\
+\multicolumn{3}{l}{A multicolumn is good for presenting panels.} \\
+Another variable & 0.323 (0.419) & Right text again \\
+\bottomrule
+\end{tabular*}
+\setstretch{1}
+\begin{tablenotes}
+    \item \footnotesize{\emph{Notes:} Table notes should guide a reader to understand the table. \\ Standard errors in parenthesis, *** p$<$0.01, ** p$<$0.05, * p$<$0.1.}
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

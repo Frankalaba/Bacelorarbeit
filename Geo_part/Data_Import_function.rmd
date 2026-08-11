@@ -1,0 +1,140 @@
+---
+title: "Datenimport und -aufbereitung via Funktion"
+author: "Linus Benetz"
+date: "2026-07-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Funktionsaufbau
+
+Grundsätzlich habe ich einen Ordner mit allen CRT_DEU Tabellen von 1990:2024. Im vorherigen Skript durch exerziert, was alles umgeändert werden muss, nach dem einladen der Tabellen, um mit diesen weiter arbeiten zu können. 
+
+
+## Allgemein
+
+Die Funktion wurde mit dem deutschen Datensatz getestet
+
+### Allgemeine Packages needed
+
+```{r, message=FALSE, results='hide'}
+
+
+rm(list = ls()) #Environment säubern
+
+#install.packages("rio")
+#install.packages("janitor")
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+
+here()
+
+```
+
+## Funktion für DEU (Deutschland)
+
+Das einzige was sich ändert ist also das Jahr. Dies ist also unsere Variable.
+
+```{r, message=FALSE}
+
+CRT_Country_Year_function <- function(Y, C){
+  
+  # 1. Schritt: Namensstruktur der Tabellendaten klären und Variable Y (Year) einführen
+  
+  table_strc <- paste0("CRT_", C, "_", Y, ".xlsx") #Pasteo fügt alles als ein String zusammen ohne Leerzeichen -> ergibt dann Datein Name
+  
+  # 2. Schritt: Import 1.Teil der Tabelle
+  CRT_C_Y <- import(
+    file = here("01_Data/Tabellen/", table_strc),
+    setclass = "tibble",
+    sheet = "Table3.A",
+    range = "B8:G13"
+  ) |> # Jetzt erfolgt der umbau der 1. Teil-Tabelle
+    rename( Animal = ...1, 
+         Population_size_1000s = `Population size (1)`, 
+         ø_GE_MJ_per_head_per_day = `Average gross energy intake (GE)`, 
+         Ym_in_percent = `Average CH4 conversion rate (Ym) (2)`,
+         CH4_emission_in_kg_CH4_per_head_per_year = CH4...5, 
+         Ch4_emission_in_kt = CH4...6) |> 
+    mutate(Animal = recode(Animal,
+    "3.A.1. Cattle" = "Cattle",
+    "3.A.1.a. Dairy cattle" = "Dairy cattle",
+    "3.A.1.b. Non-dairy cattle" = "Non-dairy cattle"
+  )) |> 
+    drop_na(c(Animal, Population_size_1000s)) |> 
+    mutate(across(-c(Animal), as.numeric)) |> 
+    mutate(Year = rep(Y, n()), .after = Animal )  
+  
+  # 3. Schritt: 2. Teil-Tabelle importieren und verarbeiten
+  CRT_C_AI_Y <- import(
+    file = here("01_Data/Tabellen/", table_strc),
+    setclass = "tibble",
+    sheet = "Table3.A",
+    range = "I7:L15") |> 
+      rename(
+        Indikator = `Disaggregated list of animals (b)`, # (neuer Name = alter Name)
+        Unit = ...2 ) |> 
+  mutate(Indikator = recode(Indikator,
+                            "Weight" = "Weight_kg",
+                             "Milk yield" = "Milk_yield_kg_per_day",
+                             "Pregnant" = "Pregnant_in_percent",
+                             "Digestibility of feed" = "Digestibility_of_feed_in_percent",
+                            "Work" = "Work_h_per_day"
+                            )
+    ) |> 
+    select(-Unit) |> 
+      mutate(across( # across(Spalten, funktion)
+    c(`Dairy cattle`, `Non-dairy cattle`), ~ na_if(.x, "NA"))
+    ) |>  
+    mutate(across(c(`Dairy cattle`, `Non-dairy cattle`),
+                  ~ na_if(.x, "NE") # ~ -> minifunktion
+                  )
+           ) |> 
+    mutate(across(
+      -c(Indikator), as.numeric
+    )) |> 
+    pivot_longer(-Indikator, names_to = "Animal", values_to = "Wert") |> 
+    pivot_wider(names_from = Indikator, values_from = Wert) |> 
+    select(-c(`NA`, `Indicators:`, `Feeding situation(c)`))
+    
+    # 4. Schritt: Tabellen zusammenfügen
+  
+  CRT_DEU_Y_all <- left_join(CRT_C_Y, CRT_C_AI_Y, by = "Animal")
+    
+}
+
+CRT_DEU_1990_2024_all <- map_dfr(1990:2024, CRT_Country_Year_function, C = "DEU") # map_dfr(LISTE_ODER_VEKTOR, FUNKTION)
+
+#glimpse(CRT_DEU_1990_2024_all)
+
+#View(CRT_DEU_1990_2024_all)
+
+summary(CRT_DEU_1990_2024_all)
+```
+
+
+Hat funktioniert mit dem map Befehl. Erzeugtschleufe mit FUnktion und einer Liste.
+dfr sorgt für das automatische zusammenfügen der erezugten Tabelen, nach r rows -> also rbind
+
+dfc würde cbind darstellen.
+
+Nun Tabelle nur noch abspeichern, für weitere Analyse.
+
+```{r, results='hide', message=FALSE}
+write.csv(CRT_DEU_1990_2024_all,
+          file = here("02_processed/CRT/", "CRT_DEU_1990_2024_all.csv"))
+```
+
+*Ende* 
+

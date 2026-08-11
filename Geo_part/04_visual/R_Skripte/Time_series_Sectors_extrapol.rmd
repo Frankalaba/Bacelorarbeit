@@ -1,0 +1,326 @@
+---
+title: "Extrapolating $CH_4$ Emission for USA, Germany and New Zeeland"
+author: "Linus Benetz"
+date: "2026-07-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r general, message=FALSE, results='hide'}
+
+rm(list = ls())
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+library("tidyverse")
+library("ggpmisc")
+library("patchwork")
+library("ggtext")
+library("scales") # maskiert col_factor readr; discard von purrr; viridis_pal von viridis 
+#-> muss wenn ich die aus den anderen Pakten haben will direkt ansprechen mit viridis::vidis_pal
+
+source(here::here("04_visual/R_Skripte", "Time_series_Sectors_extrapol_function.r"))
+
+here()
+
+
+```
+# General
+
+Here, the CH4 data Emission data for all sectors will be analysed as a time sereies lot, for all three project countrys. The data is collected from the published CRT tables, where USA are available through 2022 and NZL & DEU through 2024. 
+
+In addition to show the time series, I will fit a modell to predict future  $CH_4$ emission and showe the possible effects of the "Immunization of cattle/ ruminants" mitigation startegie on a country level resolution.
+
+
+# Germany - DEU
+
+First the import of the processed tables. Afterwads creating the time series tables and check for possible fitting models. Then develope fitiing modell and predict future Values.
+
+### Table import
+
+ The emission sector **Other** is not relevant and without any $CH_4$ emission for Germany. Also the sector **Agriculture** has only three subcatagories with emission values for Germany: **Enteric fermentation**, **Manure management** & **Other**.
+ 
+```{r DEU_Import, message=FALSE, results='hide', warning=FALSE}
+
+DEU_CH4_all_sectors <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_all_Emis_Sectors_DEU_90_24.csv")
+)
+
+DEU_wo_Cat_enterfe <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_DEU.csv"))
+names(DEU_wo_Cat_enterfe)
+
+DEU_CH4_all_sectors_wo_Cat_enterfe <- DEU_CH4_all_sectors |> 
+  mutate(total_CH4_wo_Cat_EnterFe_in_kt = DEU_wo_Cat_enterfe$total_CH4_wo_Cat_EnterFe_in_kt)
+
+summary(DEU_CH4_all_sectors)
+
+DEU_CH4_Agric_Sect <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_Emis_Sector_AGRICULTURE_DEU_90_24.csv")
+)
+
+summary(DEU_CH4_Agric_Sect)
+
+```
+
+### Creating Time-series Plot
+
+Using function from implented source. The time sereis for **Other** will not be shown, because only *NA*.
+
+```{r DEU-TS-Plot, message=FALSE, warning=FALSE}
+
+DEU_CH4_all_Sectors_plot <- All_sectors_CC_specific_function(df = DEU_CH4_all_sectors, lm = 5.5, br_lm = 6, bei = 0.5, CC = "DEU")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/All_Sectors", "All_sectors_DEU.pdf"),
+       plot = DEU_CH4_all_Sectors_plot)
+
+DEU_CH4_all_Sectors_plot
+
+```
+
+###### NA-Filter
+
+```{r NA-DEU-AS, message=FALSE, warning=FALSE}
+
+DEU_CH4_all_Sectors_NA_filt <- All_sectors_CC_specific_NA_Filter_function(df = DEU_CH4_all_sectors, lm = 5.5, br_lm = 6, bei = 0.5, CC = "DEU")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/All_Sectors", "All_sectors_DEU_NA_filtered.pdf"),
+       plot = DEU_CH4_all_Sectors_NA_filt)
+
+DEU_CH4_all_Sectors_NA_filt
+
+```
+
+
+### Agriculture Sector
+
+```{r DEU-AGR-Plot, message=FALSE,  warning=FALSE}
+
+DEU_CH4_AGR_Sec_plot <- Agriculture_sect_CC_specific_function(df = DEU_CH4_Agric_Sect, lm = 1.8, br_lm = 2, bei = 0.2, CC = "DEU")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/AGR_SEC", "AGR_sec_DEU.pdf"),
+       plot = DEU_CH4_AGR_Sec_plot)
+
+DEU_CH4_AGR_Sec_plot
+
+```
+##### NA-Filter
+
+```{r DEU-NA_FILTER_AGR, message=FALSE, warning=FALSE}
+DEU_CH4_AGR_Sec_NA_filt_plot <- Agriculture_sect_CC_specific_NA_filter_function(df = DEU_CH4_Agric_Sect, lm = 1.8, br_lm = 2, bei = 0.2, CC = "DEU")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/AGR_SEC", "AGR_sec_DEU_NA_filtered.pdf"),
+       plot = DEU_CH4_AGR_Sec_NA_filt_plot)
+
+DEU_CH4_AGR_Sec_NA_filt_plot
+
+```
+
+
+
+# United States - USA
+
+
+### Table import
+
+```{r USA-import, message=FALSE, results='hide', warning=FALSE}
+
+USA_CH4_all_sectors <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_all_Emis_Sectors_USA_90_22.csv")
+)
+
+summary(USA_CH4_all_sectors)
+
+USA_CH4_AGRICULTURE_Sector <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_Emis_Sector_AGRICULTURE_USA_90_22.csv")
+)
+
+summary(USA_CH4_AGRICULTURE_Sector)
+```
+
+### Creating Time-series Plot
+
+Using function from implented source. The time sereis for **Other** will not be shown, because only *NA*.
+
+```{r USA-TS-Plot, message=FALSE,  warning=FALSE}
+
+USA_CH4_all_Sectors <- All_sectors_CC_specific_function(df = USA_CH4_all_sectors, lm = 35.3, br_lm = 35, bei = 2.5, CC = "USA")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/All_Sectors", "All_sectors_USA.pdf"),
+       plot = USA_CH4_all_Sectors)
+
+USA_CH4_all_Sectors
+
+```
+
+##### NA-Filter
+
+```{r, warning=FALSE, message=FALSE}
+USA_CH4_all_Sectors_NA_flit <- All_sectors_CC_specific_NA_Filter_function(df = USA_CH4_all_sectors, lm = 35.3, br_lm = 35, bei = 2.5, CC = "USA")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/All_Sectors", "All_sectors_USA_NA_filtered.pdf"),
+       plot = USA_CH4_all_Sectors_NA_flit)
+
+USA_CH4_all_Sectors_NA_flit
+```
+
+### Agriculture-Sector
+
+```{r USA-Agr_Sec, message=FALSE, warning=FALSE}
+
+USA_CH4_AGR_Sec_plot <- Agriculture_sect_CC_specific_function(df = USA_CH4_AGRICULTURE_Sector, lm = 11.2, br_lm = 12, bei = 2, CC = "USA")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/AGR_SEC", "AGR_sec_USA.pdf"),
+       plot = USA_CH4_AGR_Sec_plot)
+
+USA_CH4_AGR_Sec_plot
+
+
+```
+
+##### NA-Filter
+
+```{r USA_AGR_SEC_FILter, message=FALSE, warning=FALSE}
+
+USA_CH4_AGR_Sec_NA_filt_plot <- Agriculture_sect_CC_specific_NA_filter_function(df = USA_CH4_AGRICULTURE_Sector, lm = 11.2, br_lm = 12, bei = 2, CC = "USA")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/AGR_SEC", "AGR_sec_USA_NA_filtered.pdf"),
+       plot = USA_CH4_AGR_Sec_NA_filt_plot)
+
+USA_CH4_AGR_Sec_NA_filt_plot
+
+```
+
+
+# New Zeeland - NZL
+
+
+### Table import
+
+```{r NZL-import, message=FALSE, results='hide', warning=FALSE}
+
+NZL_CH4_all_sectors <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_all_Emis_Sectors_NZL_90_24.csv")
+)
+
+summary(NZL_CH4_all_sectors)
+
+NZL_CH4_AGRICULTURE_Sector <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_Emis_Sector_AGRICULTURE_NZL_90_24.csv")
+)
+
+summary(NZL_CH4_AGRICULTURE_Sector)
+```
+
+### Creating Time-series Plot
+
+Using function from implented source. NZL has values for **Other**, but its really little. Also **Industrial processes & product use** and **LULUCF** have verry little emission, because of that these sectors lay over each other and **Other** hides them.
+
+Becuase of the little values of **LULUCF** the **Total with LULUCF** hides the **Total without LULUCF**.
+
+```{r NZL-TS-Plot, message=FALSE, warning=FALSE}
+
+NZL_CH4_all_Sectors <- All_sectors_CC_specific_function(df = NZL_CH4_all_sectors, lm = 1.6, br_lm = 2, bei = 0.25, CC = "NZL")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/All_Sectors", "All_sectors_NZL.pdf"),
+       plot = NZL_CH4_all_Sectors)
+
+NZL_CH4_all_Sectors
+
+```
+
+##### NA-Filter
+
+
+```{r NZL-NA-filtered, message=FALSE, warning=FALSE}
+
+NZL_CH4_all_Sectors_NA_filt <- All_sectors_CC_specific_NA_Filter_function(df = NZL_CH4_all_sectors, lm = 1.6, br_lm = 2, bei = 0.25, CC = "NZL")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/All_Sectors", "All_sectors_NZL_NA_filtered.pdf"),
+       plot = NZL_CH4_all_Sectors)
+
+NZL_CH4_all_Sectors_NA_filt
+
+```
+### Agriculture - Sector
+
+```{r NZL-Agr_Sec, message=FALSE, warning=FALSE}
+
+NZL_CH4_AGR_Sec_plot <- Agriculture_sect_CC_specific_function(df = NZL_CH4_AGRICULTURE_Sector, lm = 1.6, br_lm = 2, bei = 0.25, CC = "NZL")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/AGR_SEC", "AGR_sec_NZL.pdf"),
+       plot = NZL_CH4_AGR_Sec_plot)
+
+NZL_CH4_AGR_Sec_plot
+
+
+```
+
+###### NA-Filter
+
+```{r NZL-AGR-Sec_NA-filtered, message=FALSE,  warning=FALSE}
+
+NZL_CH4_AGR_Sec_NA_filt_plot <- Agriculture_sect_CC_specific_NA_filter_function(df = NZL_CH4_AGRICULTURE_Sector, lm = 1.6, br_lm = 2, bei = 0.25, CC = "NZL")
+
+ggsave(file = here("04_visual/first_try/time_series/Emission_sectors/AGR_SEC", "AGR_sec_NZL_NA_filtered.pdf"),
+       plot = NZL_CH4_AGR_Sec_NA_filt_plot)
+
+NZL_CH4_AGR_Sec_NA_filt_plot
+
+```
+
+
+# All countries
+
+Same structure of plots, but they are put together in one plot. For a better comparism I take one y-axis-scalar, from the US, because it hast the greatest values.
+
+
+### All Emission Sectors
+
+```{r ALL_CC_EMIS_SECTOR, message=FALSE, warning=FALSE}
+
+All_CC_Emis_Sectors <- All_sectors_CC_specific_function(df = DEU_CH4_all_sectors, lm = 5.5, br_lm = 35, bei = 1, CC = "DEU") + All_sectors_CC_specific_function(df = NZL_CH4_all_sectors, lm = 5.5, br_lm = 35, bei = 1, CC = "NZL")  + All_sectors_CC_specific_function(df = USA_CH4_all_sectors, lm = 35.3, br_lm = 35, bei = 5, CC = "USA") + 
+  guide_area() +
+  plot_layout(ncol = 2, guides = "collect")
+
+ggsave(
+  file = here("04_visual/first_try/time_series/Emission_sectors/All_Sectors", "All_sectors_ALL_CC.pdf"),
+  plot = All_CC_Emis_Sectors
+)
+
+All_CC_Emis_Sectors
+
+```
+
+
+### Agriculture-Sector
+
+```{r AGRICULTURE_CC, message=FALSE, warning=FALSE}
+
+AGR_CC_Emis_Sectors <- Agriculture_sect_CC_specific_function(df = DEU_CH4_Agric_Sect, lm = 1.8, br_lm = 2, bei = 0.25, CC = "DEU") + Agriculture_sect_CC_specific_function(df = NZL_CH4_AGRICULTURE_Sector,lm = 1.8, br_lm = 2, bei = 0.25, CC = "NZL")  + Agriculture_sect_CC_specific_function(df = USA_CH4_AGRICULTURE_Sector, lm = 11.2, br_lm = 12, bei = 2, CC = "USA") + 
+  guide_area() +
+  plot_layout(ncol = 2, guides = "collect") &
+  theme(
+    legend.key.size = unit(0.4, "cm"),
+    legend.text = element_text(size = 9),
+    legend.title = element_text(size = 10)
+  )
+
+ggsave(
+  file = here("04_visual/first_try/time_series/Emission_sectors/AGR_SEC", "AGR_sectors_ALL_CC.pdf"),
+  plot = AGR_CC_Emis_Sectors
+)
+
+AGR_CC_Emis_Sectors
+
+```
+

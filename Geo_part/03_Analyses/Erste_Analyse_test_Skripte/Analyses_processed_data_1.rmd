@@ -1,0 +1,157 @@
+---
+title: "Analyse of processed Data start"
+author: "Linus Benetz"
+date: "2026-07-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library("here")
+```
+
+
+```{r, message=FALSE, results='hide'}
+rm(list = ls()) # enviroment säubern
+
+#install.packages("rio")
+#install.packages("janitor")
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+
+source(here::here("03_Analyses/Erste_Analyse_test", "Funktionen_Gleichungen_erste_Analyse.r"))
+
+here()
+
+```
+
+# Allgemein
+
+berechne jetzt erstmal für alle die Emissionswerte neu, nach den Gleichungen in Analyses_IPCC_code.rmd/html. Eigentlich ist das ja auch schon berechnet worden, aber so teste ich auch, ob die Gleichung von mir funktioniert.
+
+## Berechnung
+
+Aufgefallen, dass Ym linear im Zusammenhang mit den Emissionen steht, d.h. 10 % Reduktion Ym = 10% Reduktion Methan. Ebenso entspricht 10 % Ym einer Reduktion von 10 % der Tieranzahl
+
+# Für DEU
+
+```{r}
+Emission_CH4_DEU_90_24 <- Emission_CH4_calculation_function(CC = "DEU", YE = "2024")
+
+glimpse(Emission_CH4_DEU_90_24)
+```
+
+# Für NZL
+
+```{r, message=FALSE}
+Emission_CH4_NZL_90_24 <- Emission_CH4_calculation_function(CC = "NZL", YE = "2024")
+
+glimpse(Emission_CH4_NZL_90_24)
+```
+
+# Für USA
+
+## Problem
+
+Haben hier nicht die selben Bezeichungen für die Tiere, da die USA die Option B für die Kategorisierung der Cattle Tiere verwendet hat. So kann aber aus dem [Inventory for U.S. Greenhouse Gas Emissions nad sinks](https://www.epa.gov/ghgemissions/inventory-us-greenhouse-gas-emissions-and-sinks-1990-2022) entnommen werden, welche unter **Dairy cattle** und welche unter **Beef/ Non-dairy cattle** substituiert werden.
+
+Dabei zählen zu den **Dairy cattle** die **Dairy cows**, **Dairy calves** und **Dairy replacements**. Der Rest gehört zu den **Beef cattle**.
+
+wichtiger Befehl hierfür case_when, funktioniert wie folgt:
+case_when(
+  Bedingung1 ~ Ergebnis1,
+  Bedingung2 ~ Ergebnis2,
+  TRUE ~ Default_Ergebnis
+)
+
+```{r, message=FALSE, results='hide'}
+CRT_USA_1990_2022_all_subcat <- read.csv(here("02_processed/CRT", "CRT_USA_1990_2022_all_subcat.csv"))
+
+glimpse(CRT_USA_1990_2022_all_subcat)
+
+unique(CRT_USA_1990_2022_all_subcat$Animal)
+
+## Vektoren für die Subkategorien von Dairy und Non-dairy (beef) cattle erstellen
+
+Dairy_Cattle_vec <- c("Dairy cows", "Dairy replacements", "Dairy calves")
+
+Non_dairy_cattle_vec <- setdiff(unique(CRT_USA_1990_2022_all_subcat$Animal), c(Dairy_Cattle_vec, "Cattle" )) #setdiff(x,y)
+
+pop_lookup <- CRT_USA_1990_2022_all_subcat |> 
+  filter(Animal %in% c("Dairy cows", "Beef cows")) |> 
+  select(Year, Animal, Population_size_1000s) |> 
+  pivot_wider(names_from = Animal, values_from = Population_size_1000s, names_prefix = "Pop_") #damit bekomme ich spalten mit den Namen der Tiere, vorher nur Zeilennamen mit Tiername
+
+#View(pop_lookup)
+
+rate_cols <- c("ø_GE_MJ_per_head_per_day", "Ym_in_percent", "CH4_emission_in_kg_CH4_per_head_per_year", "Weight_kg", "Digestibility_of_feed_in_percent") # da nicht alle spalten gleich aufsummiert werden sollen -> bei rate_cols sollte gewichtetes Mittelwert berechnet werden -> pregnant kann hierüber aber nicht berechnet werden, da bei gewichtetem mittelwert die Zeilen mit Na komplett rausgenommen werden -> d.h. hier würde % Pregnant auf komplett dairy cow übernommen werden pbwohl nur kleinerer Teil eigtl in dem angegebenem Prozentsatz schwange ist
+
+na_cols <- c("Pregnant_in_percent", "Work_h_per_day") # hier kann man nicht einfach aufsummieren oder weighted mean nehmen, da NAs enthalten und muss eigtl um den Anteil korrigiert werden und nicht einfach aufs ganze bezogen werden
+
+CRT_USA_1990_2022_data_all <- CRT_USA_1990_2022_all_subcat |> 
+  mutate(Animal = case_when( 
+    # hier werden einfach alle umgeschrieben in Dairy cattle die zu dairy cattle zusammengefasst weren sollen
+    Animal %in% Dairy_Cattle_vec ~ "Dairy cattle",
+    Animal %in% Non_dairy_cattle_vec ~ "Non-dairy cattle",
+    Animal %in% "Cattle" ~ "Cattle",
+    TRUE ~ "Sonstige"
+    )
+  ) |> 
+  group_by(Year, Animal) |> 
+  summarise(across(all_of(rate_cols), ~ weighted.mean(.x, w = Population_size_1000s, na.rm = TRUE)),
+            across(where(is.numeric) & !all_of(rate_cols), ~ sum(.x, na.rm = TRUE)), # lasse Pregnant doch aufsummieren, um im nächsten schritt die Spalte zu korrigieren
+            .groups = "drop"
+            )  |> 
+  left_join(pop_lookup, by = "Year") |>          # verbindet über Jahr, nicht über Position!
+  mutate(
+    Pregnant_in_percent = case_when(
+      Animal == "Dairy cattle" ~ Pregnant_in_percent * `Pop_Dairy cows` / Population_size_1000s,
+      Animal == "Non-dairy cattle" ~ Pregnant_in_percent * `Pop_Beef cows` / Population_size_1000s,
+      TRUE ~ Pregnant_in_percent
+    )
+  ) |> 
+  select(-starts_with("Pop_"))  # Hilfsspalten wieder entfernen
+
+
+#View(CRT_USA_1990_2022_data_all)
+
+#write.csv(CRT_USA_1990_2022_data_all, 
+         # file = here("02_processed", "CRT", "CRT_USA_1990_2022_all.csv"),
+        #  row.names = FALSE)
+
+#glimpse(CRT_USA_1990_2022_data_all)
+
+```
+
+Das als Funktion in Functions_CRT_data_import_all.R nachgebaut + cattle werte berechnet die noch berechnet werden konnten
+
+Jetzt ist Tabelle entsanden, die genauso aussieht wie die von NZL und DEU -> nur andere Anordnung der Spalten
+
+Sollte jetzt genau so funktionieren wie DEU und NZL
+
+```{r, message=FALSE, results='hide'}
+
+Emission_CH4_USA_90_22 <- Emission_CH4_calculation_function(CC = "USA", YE = "2022")
+
+glimpse(Emission_CH4_USA_90_22)
+
+View(Emission_CH4_USA_90_22) # funbktioniert noch nicht -> muss nochmal schauen woran es liegt -> evtl andere bennenung der Spalten? -> bekomme aber auch keine Fehlermeldung -> lag daran, dass ich die umbenannte Tabelle zu dairy und non-dairy noch nicht abgespeichert hatte
+
+```
+
+# Grundsätzlich
+
+Der Umbau der Daten von den USA war sinnvoll, jetzt genauso verarbeitbar wie die anderen Daten. 
+
+Die Funktion für die weitere Analyse ist jedoch weniger sinnvoll, kaum neue Informationen. Habe nur gezeigt, dass ich die Formel aus dem IPCC anwenden kann.
+
+Mache neue Analyse, wo ich einmal die Werte für eingespaarte CH4 angebe.

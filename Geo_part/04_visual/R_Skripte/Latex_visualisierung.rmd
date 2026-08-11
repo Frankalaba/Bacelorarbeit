@@ -1,0 +1,285 @@
+---
+title: "Graphik_für_Latex"
+author: "Linus Benetz"
+date: "2026-08-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r general, message=FALSE, results='hide'}
+
+rm(list = ls())
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+library("tidyverse")
+library("ggpmisc")
+library("patchwork")
+library("ggtext")
+library("scales") # maskiert col_factor readr; discard von purrr; viridis_pal von viridis 
+#-> muss wenn ich die aus den anderen Pakten haben will direkt ansprechen mit viridis::vidis_pal
+
+source(here::here("04_visual/R_Skripte", "Latex_Visualisierung_Funktionen.r"))
+
+here()
+
+
+```
+
+# Developement of $CH_4$ over all Sectors
+
+### DEU
+
+Data preparing.
+
+```{r DEU_Import,  results='hide'}
+
+DEU_CH4_all_sectors <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_all_Emis_Sectors_DEU_90_24.csv")
+)
+
+DEU_wo_Cat_enterfe <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_DEU.csv"))
+summary(DEU_wo_Cat_enterfe)
+
+DEU_CH4_all_sectors_wo_Cat_enterfe <- DEU_CH4_all_sectors |> 
+  mutate(total_CH4_wo_Cat_EnterFe_in_kt = DEU_wo_Cat_enterfe$total_CH4_wo_Cat_EnterFe_in_kt) |> 
+  mutate(
+    share_total_of_Cat_enterfe_in_procent = 100 - (total_CH4_wo_Cat_EnterFe_in_kt/Total_CH4_in_kt * 100),
+    share_agric_of_Cat_enterfe_in_procent = (DEU_wo_Cat_enterfe$Cat_EnterFer_pred_in_kt/ Agriculture_in_kt *100)
+  )
+
+summary(DEU_CH4_all_sectors_wo_Cat_enterfe)
+
+export(DEU_CH4_all_sectors_wo_Cat_enterfe,
+       file = here("03_Analyses/tables/ExtraPol_data", "Emission_all_Sector_plus_wo_Cat_Enterfe_DEU.csv"))
+
+DEU_CH4_Agric_Sect <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_Emis_Sector_AGRICULTURE_DEU_90_24.csv")
+)
+
+summary(DEU_CH4_Agric_Sect)
+
+```
+### NZL
+
+```{r NZL-import, results='hide'}
+
+NZL_CH4_all_sectors <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_all_Emis_Sectors_NZL_90_24.csv")
+)
+
+summary(NZL_CH4_all_sectors)
+
+
+NZL_wo_Cat_enterfe <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_NZL.csv"))
+summary(NZL_wo_Cat_enterfe)
+
+NZL_CH4_all_sectors_wo_Cat_enterfe <- NZL_CH4_all_sectors |> 
+  mutate(total_CH4_wo_Cat_EnterFe_in_kt = NZL_wo_Cat_enterfe$total_CH4_wo_Cat_EnterFe_in_kt) |> 
+  mutate(
+    share_total_of_Cat_enterfe_in_procent = 100 - (total_CH4_wo_Cat_EnterFe_in_kt/Total_CH4_in_kt * 100),
+    share_agric_of_Cat_enterfe_in_procent = (NZL_wo_Cat_enterfe$Cat_EnterFer_pred_in_kt/Agriculture_in_kt * 100)
+  )
+
+summary(NZL_CH4_all_sectors_wo_Cat_enterfe)
+
+export(NZL_CH4_all_sectors_wo_Cat_enterfe,
+       file = here("03_Analyses/tables/ExtraPol_data", "Emission_all_Sector_plus_wo_Cat_Enterfe_NZL.csv"))
+
+
+
+NZL_CH4_AGRICULTURE_Sector <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_Emis_Sector_AGRICULTURE_NZL_90_24.csv")
+)
+
+summary(NZL_CH4_AGRICULTURE_Sector)
+```
+
+### USA
+
+```{r USA-import, results='hide'}
+
+USA_CH4_all_sectors <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_all_Emis_Sectors_USA_90_22.csv")
+)
+
+summary(USA_CH4_all_sectors)
+
+USA_wo_Cat_enterfe <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_USA.csv"))
+summary(USA_wo_Cat_enterfe)
+
+USA_CH4_all_sectors_wo_Cat_enterfe <- USA_CH4_all_sectors |> 
+  mutate(total_CH4_wo_Cat_EnterFe_in_kt = USA_wo_Cat_enterfe$total_CH4_wo_Cat_EnterFe_in_kt) |> 
+  mutate(
+    share_total_of_Cat_enterfe_in_procent = 100 - (total_CH4_wo_Cat_EnterFe_in_kt/Total_CH4_in_kt * 100),
+    share_agric_of_Cat_enterfe_in_procent = (USA_wo_Cat_enterfe$Cat_EnterFer_pred_in_kt/Agriculture_in_kt * 100)
+  )
+
+summary(USA_CH4_all_sectors_wo_Cat_enterfe)
+
+export(USA_CH4_all_sectors_wo_Cat_enterfe,
+       file = here("03_Analyses/tables/ExtraPol_data", "Emission_all_Sector_plus_wo_Cat_Enterfe_USA.csv"))
+
+USA_CH4_AGRICULTURE_Sector <- import(
+  file = here("02_processed/Sector_Emis_data", "CH4_Emis_Sector_AGRICULTURE_USA_90_22.csv")
+)
+
+summary(USA_CH4_AGRICULTURE_Sector)
+```
+
+## Plotting time series total CH4
+
+```{r}
+Deu_all_sec <- All_sectors_CC_specific_function(df = DEU_CH4_all_sectors_wo_Cat_enterfe, lm = 5.5, br_lm = 6, 
+                                                bei = 1, CC = "DEU", pt_size = 1)
+
+Deu_all_sec
+
+Nzl_all_sec <- All_sectors_CC_specific_function(df = NZL_CH4_all_sectors_wo_Cat_enterfe, lm = 5.5, br_lm = 6, 
+                                                bei = 1, CC = "NZL", pt_size = 1)
+
+Nzl_all_sec
+
+USA_all_sec <- All_sectors_CC_specific_function(df = USA_CH4_all_sectors_wo_Cat_enterfe, lm = 35, br_lm = 40, 
+                                                bei = 5, CC = "USA", pt_size = 1)
+
+USA_all_sec
+
+all_CC_all_sectors <- (Deu_all_sec + Nzl_all_sec + USA_all_sec) + guide_area() +
+  plot_layout(ncol = 2, guides = "collect")
+all_CC_all_sectors
+
+ggsave(plot = all_CC_all_sectors,
+       filename = here("../Text_Production/figures/Results/GEO", "All_CC_all_sectors.pdf"))
+
+```
+
+## Sharechange of cattle EnterFe on total CH4 and Agriculture
+
+```{r}
+DEU_share <- Share_change_plot_function(df = DEU_CH4_all_sectors_wo_Cat_enterfe, lm = 80, br_lm = 100, bei = 20, CC = "DEU")
+
+DEU_share
+
+NZL_share <- Share_change_plot_function(df = NZL_CH4_all_sectors_wo_Cat_enterfe, lm = 80, br_lm = 100, bei = 20, CC = "NZL")
+
+NZL_share
+
+USA_share <- Share_change_plot_function(df = USA_CH4_all_sectors_wo_Cat_enterfe, lm = 80, br_lm = 100, bei = 20, CC = "USA")
+
+USA_share
+
+
+Share_all_CC <- (DEU_share + NZL_share + USA_share) + guide_area() +
+  plot_layout(ncol = 2, guides = "collect")
+
+Share_all_CC
+
+ggsave(plot = Share_all_CC,
+       filename = here("../Text_Production/figures/Results/GEO", "Share_of_cat_EnterFe_all_CC.pdf"))
+
+```
+# Per country: important Indicators for calculation of methane
+
+First, data import.
+
+```{r Data_Import, message=FALSE, results='hide'}
+
+CH4_emis_Ym_DE_DEU_1990_2024 <- read.csv(
+  file = here("03_Analyses/tables/Ym_and_DE_change_simple", "CH4_emis_DE_Ym_DEU_1990_2024.csv"))
+
+CH4_emis_Ym_DE_NZL_1990_2024 <- read.csv(
+  file = here("03_Analyses/tables/Ym_and_DE_change_simple", "CH4_emis_DE_Ym_NZL_1990_2024.csv"))
+
+CH4_emis_Ym_DE_USA_1990_2022 <- read.csv(
+  file = here("03_Analyses/tables/Ym_and_DE_change_simple", "CH4_emis_DE_Ym_USA_1990_2022.csv"))
+
+summary(CH4_emis_Ym_DE_DEU_1990_2024)
+
+```
+
+### DEU
+
+```{r}
+
+Deu_indicator_plot <- Indicator_plot_function(df = CH4_emis_Ym_DE_DEU_1990_2024, lm = 20, br_lm = 100, bei = 5)
+
+Deu_indicator_plot
+
+ggsave(plot = Deu_indicator_plot,
+       filename = here("../Text_Production/figures/Results/GEO", "Indicitaor_plot_DEU.pdf"))
+
+```
+### NZL
+
+```{r}
+
+Nzl_indicator_plot <- Indicator_plot_function(df = CH4_emis_Ym_DE_NZL_1990_2024, lm = 20, br_lm = 100, bei = 5)
+
+Nzl_indicator_plot
+
+ggsave(plot = Nzl_indicator_plot,
+       filename = here("../Text_Production/figures/Results/GEO", "Indicitaor_plot_NZL.pdf"))
+```
+### USA
+
+```{r}
+
+USA_indicator_plot <- Indicator_plot_function(df = CH4_emis_Ym_DE_USA_1990_2022, lm = 120, br_lm = 140, bei = 40)
+
+USA_indicator_plot
+
+CH4_emis_Ym_DE_USA_1990_2022$Ch4_emission_org_in_kt
+
+ggsave(plot = USA_indicator_plot,
+       filename = here("../Text_Production/figures/Results/GEO", "Indicitaor_plot_USA.pdf"))
+```
+# Cattle EnterFe emission time series
+
+### All Country
+
+```{r}
+
+EnterFE_methane_emis_time_series_DEU <- 
+  EnterFe_emission_plot_function(df = CH4_emis_Ym_DE_DEU_1990_2024, lm = 2, br_lm = 20, bei = 0.5, CC = "DEU")
+
+EnterFE_methane_emis_time_series_DEU
+
+EnterFE_methane_emis_time_series_NZL <- 
+  EnterFe_emission_plot_function(df = CH4_emis_Ym_DE_NZL_1990_2024, lm = 2, br_lm = 20, bei = 0.5, CC = "NZL")
+
+EnterFE_methane_emis_time_series_NZL
+
+EnterFE_methane_emis_time_series_USA <- 
+  EnterFe_emission_plot_function(df = CH4_emis_Ym_DE_USA_1990_2022, lm = 8, br_lm = 20, bei = 2, CC = "USA")
+
+EnterFE_methane_emis_time_series_USA
+
+EnterFe_all_CC <- EnterFE_methane_emis_time_series_DEU + EnterFE_methane_emis_time_series_NZL + EnterFE_methane_emis_time_series_USA + guide_area() + plot_layout(ncol = 2, guides = "collect")
+
+EnterFe_all_CC
+
+ggsave(plot = EnterFe_all_CC,
+       filename = here("../Text_Production/figures/Results/GEO", "Cat_EnterFe_time_series_all_CC.pdf")
+       )
+
+```
+
+# Boxplots for saved $CH_4$ 
+
+Take as reference time sample 2009 to 2019, because reference figure did it to, where they calculated atmospheric growth rate for $CH_4$.
+
+```{r}
+
+```
+

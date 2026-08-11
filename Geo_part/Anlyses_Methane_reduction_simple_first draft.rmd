@@ -1,0 +1,51 @@
+---
+title: "Analyse_Methane_reduction_enteric_fermentation"
+author: "Linus Benetz"
+date: "2026-07-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, message=FALSE, results='hide', include=FALSE}
+
+
+rm(list = ls()) #Environment säubern
+
+#install.packages("rio")
+#install.packages("janitor")
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+
+here()
+
+```
+
+# General plan
+
+In this script, I attempt to calculate the potential reduction in methane production during enteric fermentation resulting from a shift in the microbiome. Given the current state of biochemistry, this requires me to make many assumptions. Furthermore, I will focus my calculations on enteric fermentation and set aside manure management for now, as the field still seeks clear data on which part of manure management might be shaped by the shift in the microbiome — likely B0, yet this remains open to study. Besides, B0 has to be measured and can not be calculated with another equation, so the link between microbiom and max methane production remains unclear.
+
+I will use the the equations from [IPCC 2019](https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html).
+
+In the followingen sections I do it first for Germany, USA and Newzeeland and also start with an impact only in Ym.
+Later on I also include possible changes in DE. This is could be also an important point for further investigations - if DE changes through microbiom shift, what is the impact on methane reduction? 
+
+What DE changes equals changes in Ym?
+
+# Ym changes
+
+Because of the linear relation between Ym and methane emission, we can simply calculate different percentile reduction scenarios directly with the general CH4 emission.
+
+If we check the litrature there are not many studies with reliable results for immunization of ruminants ([Baca-Gonzales et al. (2020)](https://www.mdpi.com/2076-393X/8/3/460))
+
+#### für DE

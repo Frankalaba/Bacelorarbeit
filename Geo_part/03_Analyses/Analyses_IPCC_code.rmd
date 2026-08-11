@@ -1,0 +1,216 @@
+---
+title: "Function for Analyses & relevant IPCC equations"
+author: "Linus Benetz"
+date: "2026-07-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Allgemein
+
+Die Daten sind nun verarbeitet und zurecht gemacht worden, um sie jetzt nach den Guidlines des [IPCC (2006)](https://www.ipcc-nggip.iges.or.jp/public/2006gl/) weiter analysieren zu können
+
+```{r, message=FALSE, results='hide'}
+
+
+rm(list = ls()) #Environment säubern
+
+#install.packages("rio")
+#install.packages("janitor")
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+
+here()
+
+```
+
+# Wichtige Gleichungen
+
+Relevante Gleichungen aus den IPCC-Guidlines für **enteric fermentation** in R definieren um damit die Tabellen zu analysieren. Zunächst werden die verwendeten Gleichungen dargestellt und anschließend der code mit den definierten Funktionen
+
+
+
+#### Emission $CH_4$ pro Tierkategorie (T)
+
+
+$$
+Emission\ CH_{4,T} =  \frac{EF_T \cdot N_T}{10^6}
+$$
+Einheiten:
+$$
+Emission\ CH_{4,T} = \frac{Gg\ CH_4}{yr}\\
+EF = kg\ CH_4\ head^{-1}\ year^{-1}
+$$
+
+
+#### Total emission $CH_4$
+
+$$
+Total\ CH_4 = \sum{Emission\ CH_{4,T}}\\
+Total\ CH_4\ in \frac{Gg\ CH_4}{yr}
+$$
+
+#### Emissionfactor (EF) berechnen aus methane conversion factor ($Y_M$)
+
+$$
+EF = \frac{GE \cdot \frac{Y_M}{100} \cdot 365}{55.65}
+$$
+Einheiten:
+$$
+EF = kg\ CH_4\ head^{-1}\ year^{-1}\\
+GE = gross\ energy\ intake, \frac{MJ}{head \cdot day}\\
+Y_M = \%\  of\ GE\ converted\ to\ methane\\
+The\ factor\ 55.65\ (\frac{MJ}{kg\ CH_4})\ is\ the\ energy\ content\ of\ methane
+$$
+
+
+# Allgemeine Funktionen
+
+## Funktion für die Gleichungen der Emissionen
+
+```{r, message=FALSE, results='hide'}
+
+emission_total_per_animal <- function(GE, Ym_t, N_t){
+  EF_t <- ((GE*(Ym_t/100)*365)/55.65)
+  emission_CH4 <- (EF_t * (N_t / 10^6)) 
+  return(emission_CH4)}
+
+Ef_t_function <- function(GE, Ym_t){
+  EF_t <- ((GE*(Ym_t/100)*365)/55.65)
+  return(EF_t)}
+
+```
+
+### Funktion für die Berechnung
+
+#### 1 mal für eine Tabelle einzelnd durchgehend am Beispiel DEU
+
+```{r, message=FALSE, results='hide'}
+
+animal_filter_function <- function(Anml, df){ 
+  Anml_gefiltert <- df |> 
+    filter(Animal == Anml)
+  return(Anml_gefiltert)
+}
+# braucht man als Funktion, da die Tabelle getrennt werden muss temporär, um zu verhinden soviele leere, unnötige Reihen zu erzeugen -> könnte dies evtl beheben durch schlauere Grundstruktur der Tabelle
+
+CRT_DEU_1990_2024_all_test <- read.csv(here("02_processed/CRT/", "CRT_DEU_1990_2024_all.csv"))
+
+Dairy <- animal_filter_function(Anml = "Dairy cattle", df = CRT_DEU_1990_2024_all_test)
+Non_dairy <- animal_filter_function(Anml = "Non-dairy cattle", df = CRT_DEU_1990_2024_all_test)
+
+Emission_CH4_DEU_test <- tibble(
+    Year = Dairy$Year,
+    N_dairy_1000s = Dairy$Population_size_1000s,
+    EF_DC = Ef_t_function(
+      GE = Dairy$ø_GE_MJ_per_head_per_day, 
+      Ym_t = Dairy$Ym_in_percent
+    ),
+    Dairy_cattle_CH4_in_Gg = emission_total_per_animal(
+      GE = Dairy$ø_GE_MJ_per_head_per_day, 
+      Ym_t = Dairy$Ym_in_percent, 
+      N_t = (Dairy$Population_size_1000s * 1000)),
+    N_Non_DC_1000s = Non_dairy$Population_size_1000s,
+    EF_NDC = Ef_t_function(GE = Non_dairy$ø_GE_MJ_per_head_per_day,
+      Ym_t = Non_dairy$Ym_in_percent
+    ),
+    Non_dairy_CH4_in_Gg = emission_total_per_animal(
+      GE = Non_dairy$ø_GE_MJ_per_head_per_day,
+      Ym_t = Non_dairy$Ym_in_percent,
+      N_t = (Non_dairy$Population_size_1000s * 1000)
+    )) |>
+  mutate(Cattle_CH4_in_Gg = Dairy_cattle_CH4_in_Gg + Non_dairy_CH4_in_Gg) 
+
+View(CRT_DEU_1990_2024_all_test)
+
+View(Emission_CH4_DEU_test)
+
+n_distinct(CRT_DEU_1990_2024_all_test$Animal)
+
+```
+
+#### Nun eine Funktion bauen, um dies direkt zu erzeugen 
+
+Getestet mit dem DEU-Datensatz.
+
+```{r, message=FALSE}
+
+animal_filter_function <- function(Anml, df){ 
+  Anml_gefiltert <- df |> 
+    filter(Animal == Anml)
+  return(Anml_gefiltert)
+}
+# braucht man als Funktion, da die Tabelle getrennt werden muss temporär, um zu verhinden soviele leere, unnötige Reihen zu erzeugen -> könnte dies evtl beheben durch schlauere Grundstruktur der Tabelle
+
+
+
+ Emission_CH4_calculation_function <- function(CC){
+   
+   # 1. Schritt: Tabellenstruktur operationalisieren, um verschiedene Tabellen einlesen zu können
+   tabl_strc <- paste0("CRT_", CC, "_1990_2024_all.csv")
+   
+   # 2. Schritt: einlesen der Tabelle
+   CRT_CC_1990_2024_all <- read.csv(here("02_processed/CRT/", tabl_strc))
+   
+   # 3. Schritt: Trennung der Tabelle in dairy & non-dairy
+   Dairy <- animal_filter_function(Anml = "Dairy cattle", df = CRT_CC_1990_2024_all)
+   Non_dairy <- animal_filter_function(Anml = "Non-dairy cattle", df = CRT_CC_1990_2024_all)
+   
+   # 4. Schritt: Neue Tabelle bauen mit berechneten Werten
+   
+Emission_CH4_CC <- tibble(
+    Year = Dairy$Year,
+    
+    N_dairy_1000s = Dairy$Population_size_1000s,
+    
+    EF_DC = Ef_t_function(
+      GE = Dairy$ø_GE_MJ_per_head_per_day, 
+      Ym_t = Dairy$Ym_in_percent
+    ),
+    
+    Dairy_cattle_CH4_in_Gg = emission_total_per_animal(
+      GE = Dairy$ø_GE_MJ_per_head_per_day, 
+      Ym_t = Dairy$Ym_in_percent, 
+      N_t = (Dairy$Population_size_1000s * 1000)),
+    
+    N_Non_DC_1000s = Non_dairy$Population_size_1000s,
+    
+    EF_NDC = Ef_t_function(GE = Non_dairy$ø_GE_MJ_per_head_per_day,
+      Ym_t = Non_dairy$Ym_in_percent
+    ),
+    
+    Non_dairy_CH4_in_Gg = emission_total_per_animal(
+      GE = Non_dairy$ø_GE_MJ_per_head_per_day,
+      Ym_t = Non_dairy$Ym_in_percent,
+      N_t = (Non_dairy$Population_size_1000s * 1000)
+    )) |>
+  
+  mutate(Cattle_CH4_in_Gg = Dairy_cattle_CH4_in_Gg + Non_dairy_CH4_in_Gg) |> 
+  
+  mutate( Country = rep(CC, n()),
+          .after = Year)
+
+return(Emission_CH4_CC)
+ }
+ 
+ CH4_EF_DEU_1990_2024 <- Emission_CH4_calculation_function(CC = "DEU")
+
+View(CH4_EF_DEU_1990_2024)
+
+glimpse(CH4_EF_DEU_1990_2024)
+
+```
+
+

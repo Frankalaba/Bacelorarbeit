@@ -1,0 +1,41 @@
+# Nur das Duplikat der CRT-Rohdaten ausschließen, Tabellen/ bleibt
+Geo_part/01_Data/CRT-Data/
+
+# Nur die großen fremden PDF-Reports, nicht die Ordner komplett
+Literatur/geographie/*national-inventory-report*.pdf
+Geo_part/01_Data/Report_CRT/*national-inventory-report*.pdf
+Geo_part/01_Data/Report_CRT/US-GHG-Inventory-2024-Main-Text (2)/
+Geo_part/01_Data/Report_CRT/New Zealand*
+Geo_part/01_Data/Report_CRT/Thünen/Report_21.pdf
+
+# Archive
+*.zip
+
+# RStudio Projekt-/IDE-Dateien
+.Rproj.user/
+.Rhistory
+.RData
+
+# LaTeX Build-Artefakte
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.glo
+*.gls
+*.glo-*
+*.gls-*
+*.glsdefs
+*.acn
+*.acr
+*.alg
+*.ist
+*.synctex.gz
+texput.log
+
+# Office Lock-Dateien
+.~lock.*#

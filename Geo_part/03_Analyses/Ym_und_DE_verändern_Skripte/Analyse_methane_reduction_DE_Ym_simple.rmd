@@ -1,0 +1,116 @@
+---
+title: "Analyse_methane_reduction_DE_Ym_simple"
+author: "Linus Benetz"
+date: "2026-07-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+rm(list = ls())
+
+library("here")
+
+source(file = here("03_Analyses/Ym_und_DE_verändern_Skripte", "Function_Analyses_methane_reduction_simple.r"))
+```
+
+
+```{r, message=FALSE, results='hide'}
+#rm(list = ls()) # enviroment säubern
+
+#install.packages("rio")
+#install.packages("janitor")
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+
+here()
+
+```
+
+# General
+
+In this part I calculate the reduced CH4 Emission for a working microbiom shift. The equations used are from [IPCC](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf).
+
+First, I calculate only a reduction in Ym without any interaction with energy intake. This is quite simple due to the linear relationship between emissions and Ym.
+
+Second, we assume that the missing energy usage for methane production converts fully into for carbohydrates tha the cattle can digest. Here is a non-linear relation. In the IPCC Equations, you have to adjust DE with $DE_{org}\ *\ Ym\ *\ reduction $.
+
+Another calculation later on, could check, how large a change in DE would match a change in Ym. . In doing so, I assume that the share of reared animals in the **dairy cows** and **non-dairy cows** groups is small, so we can ignore it. This lets us find the general NE from the original GE, which lets me calculate a new GE using an adjusted DE to further adjust the methane emissions, if we assume the NE is a constant.
+
+# Calculation for emission
+
+In the script Function_Analyses_methane_reduction_simple.r the used function is written down. For cattle the values are summed from the subcategories, because of the non-linear link. I calculate it for the following reduction scenarios:
+
+```{r Vec, message=FALSE, results='hide'}
+
+red_sce <- seq(0.1, 0.5, 0.1)
+
+```
+
+The CRT emission data is the original value from the reported table. I calculated it new, because of rounding mistakes that would lead to Ym emission values that are not linear linked to the "original" Data without microbiome change.
+
+## DEU
+
+```{r DEU, message=FALSE}
+CH4_emis_DE_YM_DEU_1990_2024 <- map_dfr(.x = red_sce, 
+                                        CH4_emission_Ym_DE_function,
+                                        CC = "DEU",
+                                        YE = "2024")
+
+write.csv(CH4_emis_DE_YM_DEU_1990_2024, 
+          file = here("03_Analyses/tables/Ym_and_DE_change_simple", "CH4_emis_DE_Ym_DEU_1990_2024.csv"),
+          row.names = FALSE)
+
+#CH4_emis_DE_YM_DEU_1990_2024_1 <- read.csv(
+ # file = here("03_Analyses/tables/Ym_and_DE_change_simple", "CH4_emis_DE_Ym_DEU_1990_2024.csv")
+  #) -> überprüft ob gleich sind
+
+
+#summary(CH4_emis_DE_YM_DEU_1990_2024)
+
+glimpse(CH4_emis_DE_YM_DEU_1990_2024)
+
+```
+# NZL
+
+```{r NZL, message=FALSE}
+CH4_emis_DE_YM_NZL_1990_2024 <- map_dfr(.x = red_sce, 
+                                        CH4_emission_Ym_DE_function,
+                                        CC = "NZL",
+                                        YE = "2024")
+
+write.csv(CH4_emis_DE_YM_NZL_1990_2024, 
+          file = here("03_Analyses/tables/Ym_and_DE_change_simple", "CH4_emis_DE_Ym_NZL_1990_2024.csv"),
+          row.names = FALSE)
+
+#summary(CH4_emis_DE_YM_NZL_1990_2024)
+
+glimpse(CH4_emis_DE_YM_NZL_1990_2024)
+```
+# USA
+
+```{r USA, message=FALSE}
+CH4_emis_DE_YM_USA_1990_2022 <- map_dfr(.x = red_sce, 
+                                        CH4_emission_Ym_DE_function,
+                                        CC = "USA",
+                                        YE = "2022")
+
+write.csv(CH4_emis_DE_YM_USA_1990_2022, 
+          file = here("03_Analyses/tables/Ym_and_DE_change_simple", "CH4_emis_DE_Ym_USA_1990_2022.csv"),
+          row.names = FALSE)
+
+#summary(CH4_emis_DE_YM_USA_1990_2022)
+
+glimpse(CH4_emis_DE_YM_USA_1990_2022)
+
+```
+

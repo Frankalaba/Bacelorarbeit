@@ -1,0 +1,111 @@
+\documentclass[12pt,a4paper,draft]{report}
+\usepackage[left=1cm, right=1cm, top=2cm, bottom=2cm]{geometry}
+\usepackage{lscape} % Paket für Querformat
+\usepackage{booktabs} % Für bessere Tabellenlinien
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{colortbl} % Für Hintergrundfarben in Tabellen
+\usepackage{array} %für bessere Tabellenformatierung
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{babel}
+\usepackage{chemformula} % Hauptpaket für chemische Formeln
+\title{Tabellen für Zwischenpräsi}
+\author{Linus Benetz}
+
+\begin{document}
+	\section{Charecteristics M. thau und M. bovis}
+\begin{table}[h]
+	\centering
+	\begin{tabularx}{\linewidth}{l c >{\centering\arraybackslash}X}
+		\toprule
+		\rowcolor[gray]{0.9} & \textit{Methanobrevibacter thaueri} CW\textsuperscript{T}& \textit{Methanobrevibacter boviskoreani} AbM4\\
+		\midrule
+		form & coccobacillus & rods \\
+		
+		G + C content (mol\%) &38&29\\
+		
+		T-Optimum & 37 °C & 38 °C \\
+		
+		pH-Optimum &7 & 6.5-7\\
+		nutritional requirements & acetat and/or yeastextract/trypticase & yeastextraxt\\
+		
+		growth on \ch{EtOH} & $-$& $+$\\
+		
+		growth on formate & $-$& $+$\\
+		
+		antibiotic sensitiv & ND & chloramphenicol, puromycin *\\
+		
+		antibiotic tolerance & ND & bacitracin, vancomycin *\\
+		\bottomrule
+		*in \textit{M. boviskoreani JH1}\textsuperscript{T}&&
+		
+		
+		
+		
+		
+		
+	\end{tabularx}
+\end{table}
+
+
+\section{AB with organism}
+
+\begin{table}[h]
+	\begin{tabularx}{\linewidth}{l c *{2}{>{\centering\arraybackslash}X}}
+		\toprule
+		\rowcolor[gray]{0.9} antibiotic & MIC [µg/ml] & organism  & paper\\
+		\midrule
+		\rowcolor{blue!5} Puromycin & 2 & \textit{Methanococcus voltae} & Possot et al 1988  \\
+		
+		\rowcolor{blue!5} & 5 & \textit{Methanosarcina mazei} & Mondorf et al 2012 \\ 
+		
+		Acetylpuromycin & 100 & \textit{Methanococcus voltae} &  Possot et al 1988 \\ 
+		
+		\rowcolor{blue!5}Neomycin & 20 & \textit{Methanosarcina mazei} & Mondorf et al 2012\\
+		
+		\rowcolor{blue!5}	& 125&\textit{Methanobrevibacter arboriphilus}& Pecher \& Böck 1988 \\ 
+		
+		\rowcolor{blue!5}	& 100 &\textit{Methanothermobacter thermautotrophicus}& Fink et al. 2023 \\ 
+		
+		Clarithromycin & 0.25 - 16& \textit{Mycobacterium abscessus}&  Liao et al 2024  \\
+		
+		\rowcolor{blue!5} Chloramphenicol & 25 & \textit{Methanobrevibacter smithii}& Dridi et al. 2011 \\
+		
+		\rowcolor{blue!5} &4& \textit{Methanosphaera stadtmanae}& Dridi et al. 2011\\ 
+		
+		\rowcolor{blue!5} Thiamphenicol  & ND & & \\ 
+		
+		Bacitracin &4&\textit{Methanobrevibacter. smithii}& Dridi et al. 2011 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}	
+	\section{AB with resistance gen}
+	
+	\begin{table}[h]
+		\begin{tabularx}{\linewidth}{l c *{2}{>{\centering\arraybackslash}X}}
+			\toprule
+			\rowcolor[gray]{0.9} antibiotic & MIC [µg/ml]* & effects  & resistance gene\\
+			\midrule
+			\rowcolor{blue!5} Puromycin & 2;5 & AA-tRNA-analoga -> attacks protein-biosynthesis &  \textit{pac} \\ 
+			
+			Acetylpuromycin & 100 &  & product of \textit{pac}  \\ 
+			
+			\rowcolor{blue!5}Neomycin & 20;100;125 & binds to 16s-Subunit -> misreading of mRNA & \textit{neoR}\\
+			
+			Clarithromycin & 0.25;16& binds to 50s Subunit -> prevents transfer of amino acid chain &  \textit{ermB}  \\
+			
+			\rowcolor{blue!5} Chloramphenicol & 4;25 & binds to peptidyltransferase of 50s-Subunit -> prevents protein biosynthesis& \textit{catP} \\
+			
+			\rowcolor{blue!5} Thiamphenicol  & ND & analoga of Chloramphenicol & \textit{catP}\\ 
+			
+			Bacitracin &4&inhibits transport of cellwall building-blocks& \textit{BcrABC}; \textit{BacRS}; \textit{BacA}  \\
+			\bottomrule
+			*tested in close relatives&&&
+		\end{tabularx}
+	\end{table}
+% Mondorf et al 2012 and Possot et al 1988 and Pecher \& Böck 1988 Liao et al 2024 
+% & Dridi et al. 2011&
+
+\end{document}

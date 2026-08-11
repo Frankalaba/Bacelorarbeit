@@ -1,0 +1,167 @@
+---
+title: "Test Datenimport für 1990 CRT_DEU"
+author: "Linus Benetz"
+date: "2026-07-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Allgemein
+
+## Daten-Aquise
+
+Möchte die IPCC Guidline nutzen. Brauche dafür daten über den Viehbestand. In der EU gibt es [Common Reporting Table](https://climate-transparency-platform.org/sites/default/files/2024-04/Day%202-%20Introduction%20to%20Common%20Reporting%20Tables.pdf), wo die u.a. Daten vorliegen zu den Tierkategorien. 
+
+über folgenden Befehl, konnte ich die Namen der CRT-Tabellen in der Shell einheiltich umwandeln.
+
+for datei in *.xlsx; do                                                              
+  jahr=$(echo "$datei" | grep -oP '\d{4}(?=-\d{8}-\d{6}_started\.xlsx$)')
+  echo "mv \"$datei\" \"CRT_USA_${jahr}.xlsx\""
+done
+
+Um es dann wirklich umzuwandeln ohne *echo* dann
+
+for datei in *.xlsx; do                                                                     
+  jahr=$(echo "$datei" | grep -oP '\d{4}(?=-\d{8}-\d{6}_started\.xlsx$)')
+  mv "$datei" "CRT_USA_${jahr}.xlsx"
+done
+
+
+```{r general,message=FALSE, results='hide'}
+
+rm(list = ls()) #Environment säubern
+
+#install.packages("rio")
+#install.packages("janitor")
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+
+here()
+```
+
+## 1. Versuch - Import Deutsche CRT-Daten
+
+```{r, message=FALSE}
+CRT_DEU_1990 <- import(
+  file = here("01_Data/Tabellen/", "CRT_DEU_1990.xlsx"),
+  setclass = "tibble",
+  sheet = "Table3.A",
+  range = "B8:G13")
+
+#View(CRT_DEU_1990)
+
+#head(CRT_DEU_1990)
+glimpse(CRT_DEU_1990)
+```
+
+Haben zwar jetzt den ersten Teil von der für uns wichtigen Tabelle (ohne die **additional information**), *ABER* noch falsche Benennungen, unwichtige Zeilen, numeric als charakter.
+
+
+```{r, message=FALSE}
+CRT_DEU_1990_cor <- CRT_DEU_1990 |> 
+  rename(Animal = ...1, 
+         Population_size_1000s = `Population size (1)`, 
+         ø_GE_MJ_per_head_per_day = `Average gross energy intake (GE)`, 
+         Ym_in_percent = `Average CH4 conversion rate (Ym) (2)`,
+         CH4_emission_in_kg_CH4_per_head_per_year = CH4...5, 
+         Ch4_emission_in_kt = CH4...6) |> 
+  mutate(Animal = recode(Animal,
+    "3.A.1. Cattle" = "Cattle",
+    "3.A.1.a. Dairy cattle" = "Dairy cattle",
+    "3.A.1.b. Non-dairy cattle" = "Non-dairy cattle"
+  )) |> 
+  drop_na(Animal ,Population_size_1000s) |> 
+  mutate(across(-c(Animal), as.numeric)) |> 
+  mutate(Year = rep(1990, n()), .after = Animal)
+
+#View(CRT_DEU_1990_cor)
+
+#class(CRT_DEU_1990_cor)
+
+glimpse(CRT_DEU_1990_cor)
+
+
+
+```
+
+Jetzt ist die erste Tabelle aufgereinigt. Es fehlt aber noch die additional information, mit Masse, usf der Rinder.
+
+## Additional information (AI) importieren aus Tabelle
+
+**Problem** die *additional information* fehlen noch. Erstmal wie die ersten neu reinladen.
+
+```{r, message=FALSE}
+CRT_DEU_1990_AI <- import(
+  file = here("01_Data/Tabellen/", "CRT_DEU_1990.xlsx"),
+  setclass = "tibble",
+  sheet = "Table3.A",
+  range = "I7:L15")
+
+#View(CRT_DEU_1990_AI)
+
+#head(CRT_DEU_1990_AI)
+glimpse(CRT_DEU_1990_AI)
+```
+
+Problem, Spalten und Zeilen vertauscht im Vergleich zur anderen Tabelle. Umformatieren/ transponieren.
+Dafür erst Mal Zeilen und Reihen ordentlich benennen.
+
+
+```{r, message=FALSE}
+CRT_DEU_1990_AI_ncor <- CRT_DEU_1990_AI |> 
+  rename(Indikator = `Disaggregated list of animals (b)`, # (neuer Name = alter Name)
+         Unit = ...2 ) |> 
+  mutate(Indikator = recode(Indikator,
+                             "Weight" = "Weight_kg",
+                             "Milk yield" = "Milk_yield_kg_per_day",
+                             "Pregnant" = "Pregnant_in_percent",
+                             "Digestibility of feed" = "Digestibility_of_feed_in_percent")
+         ) |> 
+  select(-Unit) |> 
+  mutate(across(
+    c(`Dairy cattle`, `Non-dairy cattle`), ~ na_if(.x, "NA"))
+    ) |>  # across(Spalten, funktion)
+  drop_na() |> 
+  mutate(across(`Non-dairy cattle`, ~na_if(.x, "NE"))) |> 
+  mutate(across(-c(Indikator), as.numeric)) |> 
+  pivot_longer(-Indikator, names_to = "Animal", values_to = "Wert") |> 
+  pivot_wider(names_from = Indikator, values_from = Wert)
+
+#View(CRT_DEU_1990_AI_ncor)
+
+
+glimpse(CRT_DEU_1990_AI_ncor)
+
+#class(CRCRT_DEU_1990_AI_ncorclass(CRT_DEU_1990_AI_ncor)
+
+```
+
+So habe jetzt *additional information* (AI) und den normalen CRT bereinigt sowie animal/Tiere gleich benannt. 
+
+## Zusammenführen der Tabellen
+
+Kann jetzt **zusammenführen**
+
+```{r, message=FALSE}
+CRT_DEU_1990_all <- left_join(CRT_DEU_1990_cor, CRT_DEU_1990_AI_ncor, by = "Animal")
+
+#View(CRT_DEU_1990_all)
+
+#class(CRT_DEU_1990_all)
+
+glimpse(CRT_DEU_1990_all)
+
+
+
+```
+

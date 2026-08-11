@@ -1,0 +1,52 @@
+%\renewcommand{\arraystretch}{1.2}
+%\begin{table}[h!]
+%    \begin{tabular}{ll}
+%        \textbf{Acronym} & \textbf{Definition} \\
+%        ACRONYM1 & definition 1 \\
+%    \end{tabular}
+%\end{table}
+
+%\acrlong{ }
+%Displays the phrase which the acronyms stands for. Put the label of the acronym inside the braces. In the example, \acrlong{gcd} prints Greatest Common Divisor.
+
+%\acrshort{ }
+%Prints the acronym whose label is passed as parameter. For instance, \acrshort{gcd} renders as GCD.
+
+%\acrfull{ }
+%Prints both, the acronym and its definition. In the example the output of \acrfull{lcm} is Least Common Multiple (LCM).
+
+%Der Ablauf falls wieder die Abkürzungen nicht auftauchen in Abkürzungsliste
+
+%pdflatex (erfasst \gls{deu} in der .aux)
+%makeglossaries (verarbeitet es in die .acr-Datei)
+%pdflatex × 2 (druckt es jetzt korrekt ins PDF)
+
+\newacronym[sort=Mthaueri]{thau}{\textit{M.~thaueri}}{\textit{Methanobrevibacter thaueri CW\textsuperscript{T}}}
+\newacronym[sort=Mboviskoreani]{bovi}{\textit{M.~boviskoreani}}{\textit{Methanobrevibacter boviskoreani AbM4}}
+\newacronym[sort=Mmillerae]{milli}{\textit{M.~millerae}}{\textit{Methanobrevibacter millerae ZA-10\textsuperscript{T}}}
+\newacronym[sort=Mwolinii]{woli}{\textit{M.~wolinii}}{\textit{Methanobrevibacter wolinii SH\textsuperscript{T}}}
+\newacronym[sort=EtOH]{etoh}{\ch{EtOH}}{ethanol}
+\newacronym[sort=Methanobrevibacter]{mbrevi}{\textit{M.}}{\textit{Methanobrevibacter}}
+\newacronym[sort=Escherichia coli DH]{ecolDH}{\textit{\textit{E. coli $\alpha$}}}{\textit{Escherichia coli DH5$\alpha$}}
+
+\newacronym{squ}{Sqr.}{square}
+\newacronym{cfu}{CFU}{\gls{col} forming unit}
+\newacronym{OD}{OD600}{optical density at 600 nm}
+\newacronym{rrna}{rRNA}{ribosomal RNA}
+
+\newacronym{ab}{AB}{antibiotic}
+\newacronym{puro}{Puro}{puromycin}
+\newacronym{cycse}{Cyc-Se.}{cycloserin}
+
+\newacronym{aa}{AA}{aminoacids}
+
+\newacronym{deu}{DEU}{Germany}
+\newacronym{nzl}{NZL}{New Zealand}
+\newacronym{eu}{EU}{European Union}
+
+\newacronym[sort=8Aza]{azaeight}{8-Aza}{8-Azahypoxanthin}
+\newacronym[sort=6Aza]{azasix}{6-Aza}{6-Azauracil}
+\newacronym{dmso}{DMSO}{dimethylsulfoxid}
+\newacronym{cltr}{Cltr.}{culture}
+
+\printglossary[type=\acronymtype, title={LIST OF ABBREVIATIONS}, nonumberlist]

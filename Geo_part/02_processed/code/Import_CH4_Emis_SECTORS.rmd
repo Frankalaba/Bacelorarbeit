@@ -1,0 +1,157 @@
+---
+title: "Emission_Sectors_CH4_import"
+author: "Linus Benetz"
+date: "2026-07-25"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r General, message=FALSE, results='hide'}
+rm(list = ls())
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+library("tidyverse")
+library("ggpmisc")
+library("patchwork")
+library("scales")
+
+source(here::here("02_processed/code", "Function_Emis_Sectors_CH4.r"))
+
+here()
+```
+
+# Import of main Sectors
+
+Import from CRT-Sheet table s3. First only import for CH4 Emission from general sector. The data is for creating a time series and extrapolation for further investigation.
+
+I use the function from **Function_Emis_Sectors_CH4.r**.
+
+For the US there is no dtaa available for the years 2023 and 2024.
+
+### Germany - DEU
+
+```{r DEU1, message=FALSE, results='hide', warning=FALSE}
+
+CH4_all_Emis_SECTORS_DEU_90_24 <- Import_total_CH4_Emis_SECTORS_function( CC = "DEU", YE = "2024")
+
+export(CH4_all_Emis_SECTORS_DEU_90_24, 
+       file = here("02_processed/Sector_Emis_data", "CH4_all_Emis_Sectors_DEU_90_24.csv"))
+
+```
+### New Zeeland - NZL
+
+```{r NZL1, message=FALSE, results='hide', warning=FALSE}
+
+CH4_all_Emis_SECTORS_NZL_90_24 <- Import_total_CH4_Emis_SECTORS_function( CC = "NZL", YE = "2024")
+
+export(CH4_all_Emis_SECTORS_NZL_90_24, 
+       file = here("02_processed/Sector_Emis_data", "CH4_all_Emis_Sectors_NZL_90_24.csv"))
+
+```
+
+### USA - USA
+
+```{r USA1, message=FALSE, results='hide', warning=FALSE}
+
+CH4_all_Emis_SECTORS_USA_90_22 <- Import_total_CH4_Emis_SECTORS_function( CC = "USA", YE = "2022")
+
+export(CH4_all_Emis_SECTORS_USA_90_22, 
+       file = here("02_processed/Sector_Emis_data", "CH4_all_Emis_Sectors_USA_90_22.csv"))
+
+```
+# Import of Change from 1990 to 2022
+
+Here I will just extract the column for the change. I will take the Year 2022 because its the last year with data for the US and I want to compare the countrys. 
+
+```{r One-CC, message=FALSE, warning=FALSE, results='hide'}
+CH4_CHANGE_Emis_Sectors_all_CC_90_22 <- map_dfr(.x = c("DEU", "NZL", "USA"),
+                                                .f = Import_CHANGE_CH4_Emis_SECTORS_one_CC_function,
+                                                YE = 2022)
+
+glimpse(CH4_CHANGE_Emis_Sectors_all_CC_90_22)
+
+export(CH4_CHANGE_Emis_Sectors_all_CC_90_22,
+       file = here("02_processed/Sector_Emis_data", "CH4_CHANGE_Emis_Sectors_all_CC_90_22.csv"))
+
+```
+
+
+# Import of Subcategories for Agriculture Sector
+
+For further investigation and extrapolation I want to change the value for Agricultre with adjustment of *enteric fermentation*. So I download the data for Agriculture with the subcategories separately.
+
+### Germany - DEU
+
+```{r DEU2, message=FALSE, results='hide', warning=FALSE}
+
+CH4__Emis_SECTOR_Agriculture_DEU_90_24 <- Import_CH4_Emis_SECTOR_AGRICULTURE_function( CC = "DEU", YE = "2024")
+
+export(CH4__Emis_SECTOR_Agriculture_DEU_90_24, 
+       file = here("02_processed/Sector_Emis_data", "CH4_Emis_Sector_AGRICULTURE_DEU_90_24.csv"))
+
+```
+### New Zeeland - NZL
+
+```{r NZL2, message=FALSE, results='hide', warning=FALSE}
+
+CH4_Emis_SECTOR_Agriculture_NZL_90_24 <- Import_CH4_Emis_SECTOR_AGRICULTURE_function( CC = "NZL", YE = "2024")
+
+export(CH4_Emis_SECTOR_Agriculture_NZL_90_24, 
+       file = here("02_processed/Sector_Emis_data", "CH4_Emis_Sector_AGRICULTURE_NZL_90_24.csv"))
+
+```
+
+### USA - USA
+
+```{r USA2, message=FALSE, results='hide', warning=FALSE}
+
+CH4_Emis_SECTOR_AGRICULTURE_USA_90_22 <- Import_CH4_Emis_SECTOR_AGRICULTURE_function( CC = "USA", YE = "2022")
+
+export(CH4_Emis_SECTOR_AGRICULTURE_USA_90_22, 
+       file = here("02_processed/Sector_Emis_data", "CH4_Emis_Sector_AGRICULTURE_USA_90_22.csv"))
+
+```
+
+
+# Import of Share
+
+In addition to the absolute CHnage from 90-22 I will calculate the changing Share of Agriculture and enteric fermentation for the total $CH_4$ emission, plus the shhare of enteric fermenation of the agriculture sector.
+
+### Germany - DEU
+```{r DEU_SHARE, message=FALSE, warning=FALSE}
+CH4__Share_Agriculture_EntFer_DEU_90_24 <- Share_Emis_Agric_EntFer_function( CC = "DEU", YE = "2024")
+
+export(CH4__Share_Agriculture_EntFer_DEU_90_24, 
+       file = here("02_processed/Sector_Emis_data/Share_Agric_EnterFer", "CH4_SHARE_Agr_EntFer_DEU_90_24.csv"))
+
+```
+
+### New Zeeland - NZL
+```{r NZL_SHARE, message=FALSE, warning=FALSE}
+CH4__Share_Agriculture_EntFer_NZL_90_24 <- Share_Emis_Agric_EntFer_function( CC = "NZL", YE = "2024")
+
+export(CH4__Share_Agriculture_EntFer_NZL_90_24, 
+       file = here("02_processed/Sector_Emis_data/Share_Agric_EnterFer", "CH4_SHARE_Agr_EntFer_NZL_90_24.csv"))
+
+```
+
+### USA - USA
+```{r USA_SHARE, message=FALSE, warning=FALSE}
+CH4__Share_Agriculture_EntFer_USA_90_22 <- Share_Emis_Agric_EntFer_function( CC = "USA", YE = "2022")
+
+export(CH4__Share_Agriculture_EntFer_USA_90_22, 
+       file = here("02_processed/Sector_Emis_data/Share_Agric_EnterFer", "CH4_SHARE_Agr_EntFer_USA_90_22.csv"))
+
+```
+

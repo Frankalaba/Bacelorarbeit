@@ -1,0 +1,139 @@
+---
+title: "Data-import NZL, DEU, USA & EUR"
+author: "Linus Benetz"
+date: "2026-07-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+rm(list = ls())
+```
+
+```{r, message=FALSE, results='hide'}
+
+#install.packages("rio")
+#install.packages("janitor")
+
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+
+source(here::here("02_processed/code", "Functions_CRT_data_import_all.r"))
+
+here()
+
+```
+
+# Allgemein
+
+Es werden die CRT eingeladen von Deutschland (DEU), Neuseeland (NLZ), USA (USA) & der EU (EUR). Dabei werden neben den Emissionswerten, Ym und Anzahl auch die **additional-information** (AI) mit eingelesen.
+
+Es wird hierbei die Funktion *CRT_DEU_Year_function* verwendet, die im Skript **Data_Import_function.rmd** definiert wurde. Die Funktion besitzt zwei Variablen:
+Y = Year und C = Country-code.
+
+Um die Funktion in einer Schleife zu verwenden wird der **map**-Befehl verwendet. Dieser besitzt folgende Struktur:
+.x = die sich veränderende/initierende Variable,
+.f = verwendete Funktion,
+... = weiter Variablen der Funktion, die aber gleich bleiben.
+
+Da einige Kategorien wie Ym, GE, DE, Pregnant für cattle nicht gegeben sind, werden diese aus den Subcategorien über ein gewichtetes Mittel (Populationsgröße als Gewichtung) berechnet
+
+# Import für Deutschland (DEU) von 1990-2024
+
+```{r, message=FALSE}
+
+CRT_DEU_1990_2024_data_all <- map_dfr(.x = 1990:2024, .f = CRT_Country_Year_function, C = "DEU")
+
+#View(CRT_DEU_1990_2024_data_all)
+
+#glimpse(CRT_DEU_1990_2024_data_all)
+
+#write.csv(CRT_DEU_1990_2024_data_all,
+ #         file = here("02_processed/CRT/", "CRT_DEU_1990_2024_all.csv"),
+  #        row.names = FALSE )
+
+summary(CRT_DEU_1990_2024_data_all)
+
+```
+
+# Import für Neusseland (NZL) von 1990-2024
+
+```{r, message=FALSE, warning=FALSE}
+
+CRT_NZL_1990_2024_data_all <- map_dfr(1990:2024,
+                                      CRT_Country_Year_function,
+                                      C = "NZL")
+
+#View(CRT_NZL_1990_2024_data_all)
+
+#write.csv(CRT_NZL_1990_2024_data_all,
+ #         file = here("02_processed/CRT/", "CRT_NZL_1990_2024_all.csv"),
+  #        row.names = FALSE)
+
+summary(CRT_NZL_1990_2024_data_all)
+
+```
+Hier schonmal auffällig, dass NZL den Ym nicht anpassen, sondern einfach den default Wert ausm [IPCC (2006)](https://www.ipcc-nggip.iges.or.jp/public/2006gl/)  verwenden. Zudem geben sie hier keine Informationen über den Anteil an schwangeren Rindern/ Kühen.
+
+# Import für die USA (USA) von 1990-2022
+
+*Problem* die USA verwendet die Option B um ihre Rinder zu kategorisieren, d.h. das Muster passt nun nicht mehr zur Funktion. Muss eine neue Funktion bauen, die zu USA passt. Ist auch im .R abgespeichert mittlerweile
+
+## USA Tabellen-Data importieren
+
+```{r, message=FALSE, warning=FALSE}
+CRT_USA_1990_2022_data_all_subcat <- map_dfr(1990:2022,
+                                      CRT_Country_Year_function_OP_B,
+                                      C = "USA")
+
+write.csv(CRT_USA_1990_2022_data_all_subcat,
+          file = here("02_processed/CRT/", "CRT_USA_1990_2022_all_subcat.csv"),
+          row.names = FALSE)
+
+glimpse(CRT_USA_1990_2022_data_all_subcat)
+
+#View(CRT_USA_1990_2022_data_all_subcat)
+```
+
+## USA Opt. B-Tabelle umbauen in Opt.A
+
+```{r Opt B zu A, message=FALSE, results='hide'}
+
+CRT_USA_1990_2022_data_all <- Opt_B_to_Opt_A_function(CC = "USA", YE = "2022")
+
+write.csv(CRT_USA_1990_2022_data_all, file = here("02_processed", "CRT", "CRT_USA_1990_2022_all.csv"),
+          row.names = FALSE)
+
+glimpse(CRT_USA_1990_2022_data_all)
+```
+
+
+
+# Import für die EU
+
+Wenn man hier in die Daten schaut, sieht man schnell, dass diese nur die Daten für Cattle angeben, bzw. hier auch nur die Anzahl für N und Emissionen.
+
+Auch hier anpassen der Funktion notwendig. Wurde auch im .R skript abgespeichert.
+
+## Importieren der Daten für die EU
+
+```{r, message=FALSE, warning=FALSE}
+
+CRT_EUR_1990_2024_data_all <- map_dfr(1990:2024, CRT_EUR_data_all_function)
+
+write.csv(CRT_EUR_1990_2024_data_all,
+          file = here("02_processed/CRT/", "CRT_EUR_1990_2024_all.csv"),
+          row.names = FALSE)
+
+glimpse(CRT_EUR_1990_2024_data_all)
+
+```
+

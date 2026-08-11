@@ -1,0 +1,67 @@
+%------ SETUP OF THE DOCUMENT ------%
+%This part of the document sets up the document and makes it easier to read the main.tex file
+%Changes in the setup file are recommended if you wish to customize things like colors in links and such.
+%------ ********************* ------%
+% \usepackage[margin = 25mm]{geometry} %
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,outer=2.25cm,inner=3cm]{geometry} %,parskip=1.5
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[toc,page]{appendix}
+\usepackage[english=usenglishmax]{hyphsubst} %sets hyphenation to American English. Google is your friend on hyphenation. Babel could also be used
+\usepackage[hyphens]{url}
+\usepackage{amsmath, amssymb, array, setspace, float, subcaption, caption, booktabs, pdflscape, dcolumn, titlesec, tocloft, comment, xcolor, longtable, blindtext, rotating, lipsum, wrapfig, tabularx, multirow, makecell, subcaption}
+\usepackage[flushleft]{threeparttable}
+\usepackage[round, authoryear]{natbib}
+\usepackage{chemformula} % Hauptpaket für chemische Formeln
+
+%%%%%%%%%%%%%%%%%%%% für Tabellen/Figurebeschriftung 
+\captionsetup{
+	labelfont = bf,        % "Figure 1:" fett
+	labelsep = colon,       % Doppelpunkt nach der Nummer (Standard, aber explizit)
+	font = small,           % gesamte Caption etwas kleiner (optional, oft für Abschlussarbeiten üblich)
+	justification = justified   % Blocksatz für die Caption (optional)
+}
+
+
+
+\newenvironment{mytable}[1]
+{\begin{table}[h!]
+		\centering
+		\begin{tabularx}{\textwidth}{#1}}
+		{\end{tabularx}
+\end{table}}
+
+\setlength{\parindent}{0pt}
+
+\usepackage[acronym, style = long, toc]{glossaries}
+
+\usepackage[hidelinks]{hyperref}
+
+\hypersetup{
+     colorlinks   = true, %If links to papers should be colored
+     citecolor    = blue, %color of citation text
+     urlcolor = black, %if you use an URL, this is how it is colored
+     linkcolor = blue
+}
+\usepackage{cleveref}
+\graphicspath{{figures/}}
+
+%CHANGE SECTION STYLE
+
+\renewcommand{\abstractname}{\Large ABSTRACT}
+% \renewcommand{\abstractnamefont}{\normalfont\Large\bfseries}
+\renewcommand{\listfigurename}{LIST OF FIGURES} % Uppercase List of Figures
+\renewcommand{\listtablename}{LIST OF TABLES} % Uppercase List of Figures
+
+% larger titles
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{0.5em}{} % Larger font for section titles
+\titleformat{\subsection}{\normalfont\large\itshape}{\thesubsection}{0.5em}{} % Larger font for subsection titles
+\titleformat{\subsubsection}{\normalfont\normalsize\itshape}{\thesubsubsection}{0.5em}{} % Larger font for subsubsection titles
+
+
+%TABLE OF CONTENTS FIXING
+\renewcommand*\contentsname{CONTENTS} %Change name
+\setcounter{tocdepth}{3} %How many subsections are visible, 1 is only section headings, 3 include subsubsections
+
+\bibliographystyle{apalike} %closest to LUSEM Harvard referencing guide

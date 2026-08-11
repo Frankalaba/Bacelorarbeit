@@ -1,0 +1,53 @@
+\documentclass[12pt,a4paper,draft]{report}
+\usepackage[left=1cm, right=1cm, top=2cm, bottom=2cm]{geometry}
+\usepackage{lscape} % Paket für Querformat
+\usepackage{booktabs} % Für bessere Tabellenlinien
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{multirow}
+\usepackage{colortbl} % Für Hintergrundfarben in Tabellen
+\usepackage{array} %für bessere Tabellenformatierung
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{babel}
+\usepackage{chemformula} % Hauptpaket für chemische Formeln
+\title{AB-/ Basenanaloga-Versuchsreihe}
+\author{Linus Benetz}
+
+\begin{document}
+	\maketitle
+	\section{Rechercheergebnisse zu den AB und Basenanaloga}
+	
+\begin{table}[h]
+	\begin{tabularx}{\linewidth}{l *{4}{>{\centering\arraybackslash}X}}
+		\toprule
+		\rowcolor[gray]{0.9} Wirkstoff & MIC [µg/ml] & Organismus & Paper & Resistenz\\
+		\midrule
+		\rowcolor{blue!5} Puromycin & 2 & \textit{Methanococcus} voltae & Possot et al 1988 & \textit{pac})\\
+		
+		\rowcolor{blue!5} & 5 & \textit{Methanosarcina} mazei & Mondorf et al 2012&\\ 
+		
+		Acetylpuromycin & 100 & \textit{Methanococcus} voltae & Possot et al 1988 & \\ 
+		
+		\rowcolor{blue!5}Neomycin & 20 & \textit{Methanosarcina} mazei & Mondorf et al 2012 & \textit{aph-IIb}\\
+		
+		\rowcolor{blue!5}	& 125&\textit{Mb.} arboriphilus& Pecher \& Böck 1988 & \\ 
+		
+		Clarithromycin & 0.25 (WT) - 16& \textit{Mycobacterium} abscessus& Liao et al 2024 & / \\
+		
+		\rowcolor{blue!5} Thiamphenicol  & / & /&/&/\\ 
+		
+		\rowcolor{blue!5} Chloramphenicol & 25 & \textit{Mb.} smithii& Dridi et al. 2011& \textit{catP}\\
+		
+		\rowcolor{blue!5} &4& \textit{Methanosphaera} stadtmanae&&\\ 
+		
+		Bacitracin &4&\textit{Mb.} smithii& Dridi et al. 2011&  \\
+		
+		\rowcolor{blue!5} 6-azauracil & >600 & \textit{Methanothermobacter thermautotrophicus} &Worrell \& Nagle 1990 & \textit{upt}\\
+		\rowcolor{blue!5} 8-azahypoxanthin & 300 & \textit{Methanothermobacter thermautotrophicus}& Worrell \& Nagle 1990 & \textit{hpt}\\
+		\bottomrule
+	\end{tabularx}
+	\caption{Rechercheergebnisse für mögliche Antibiotikasensitivitätstest für \textit{Methanobrevibacter} thaueri CW/ wolinii SH/ boviskoreani AbM4/ millerae. Dabei MIC aus Publikationen rausgesucht für möglichst nahe Organismen.}
+\end{table}
+\end{document} 

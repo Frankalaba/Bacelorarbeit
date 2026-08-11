@@ -1,0 +1,553 @@
+---
+title: "Time_series_one_CC"
+author: "Linus Benetz"
+date: "2026-07-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+rm(list = ls())
+```
+
+```{r General, message=FALSE, results='hide'}
+library("rio")
+library("here")
+library("readxl")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("viridis")
+library("janitor")
+library("purrr") # für map Befehl
+library("tidyverse")
+library("ggpmisc")
+library("patchwork")
+library("scales")
+
+here()
+```
+
+# General Idea
+
+Here I will show diffrent important values for each Country as a time series. Relevant values are the development of Ym, GE, Pop, DE as variables for the calculation.
+
+
+# Data Import
+
+First, data import.
+
+```{r Data_Import, message=FALSE, results='hide'}
+
+CH4_emis_Ym_DE_DEU_1990_2024 <- read.csv(
+  file = here("03_Analyses/tables/Ym_and_DE_change_simple", "CH4_emis_DE_Ym_DEU_1990_2024.csv"))
+
+CH4_emis_Ym_DE_NZL_1990_2024 <- read.csv(
+  file = here("03_Analyses/tables/Ym_and_DE_change_simple", "CH4_emis_DE_Ym_NZL_1990_2024.csv"))
+
+CH4_emis_Ym_DE_USA_1990_2022 <- read.csv(
+  file = here("03_Analyses/tables/Ym_and_DE_change_simple", "CH4_emis_DE_Ym_USA_1990_2022.csv"))
+
+names(CH4_emis_Ym_DE_DEU_1990_2024)
+
+```
+
+# Plotten
+
+## Germany - DEU
+
+```{r Plotten_DEU, message=FALSE, results='hide'}
+
+summary(CH4_emis_Ym_DE_DEU_1990_2024$Ym_org_in_perc)
+
+Ym <- ggplot(CH4_emis_Ym_DE_DEU_1990_2024, aes(x = Year,
+                                                y = Ym_org_in_perc,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(5.9, 7.2),        #  limits = c(0, 1300),  -> für CH4_org
+    breaks = seq(0, 7.5, by = 0.5) # breaks = seq(0, 1250, by = 250) -> für CH4_org
+  ) +
+  ylab(label = "Ym (%)") +
+  labs(title = "DEU - Ym") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "inside",
+    legend.position.inside = c(0.75,0.75),
+    legend.title = element_text(size = 8),
+  legend.text = element_text(size = 7),
+    legend.key.size = unit(0.1, "cm")
+  )
+
+
+Ym
+
+
+#summary(CH4_emis_Ym_DE_DEU_1990_2024$GE_org_in_MJ_per_head_per_day)
+
+GE <- ggplot(CH4_emis_Ym_DE_DEU_1990_2024, aes(x = Year,
+                                                y = GE_org_in_MJ_per_head_per_day,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(0, 400),        #  limits = c(0, 1300),  -> für CH4_org
+    breaks = seq(0, 500, by = 100) # breaks = seq(0, 1250, by = 250) -> für CH4_org
+  ) +
+  ylab(label = "GE (MJ head⁻¹ day⁻¹)") +
+  labs(title = "DEU - GE") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "none"
+  )
+
+GE
+
+
+#summary(CH4_emis_Ym_DE_DEU_1990_2024$DE_org_in_perc)
+
+DE <- ggplot(CH4_emis_Ym_DE_DEU_1990_2024, aes(x = Year,
+                                                y = DE_org_in_perc,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(69, 80),        #  limits = c(0, 1300),  -> für CH4_org
+    breaks = seq(0, 100, by = 2) # breaks = seq(0, 1250, by = 250) -> für CH4_org
+  ) +
+  ylab(label = "DE (%)") +
+  labs(title = "DEU - DE") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "none"
+  )
+
+DE
+
+
+
+#summary(CH4_emis_Ym_DE_DEU_1990_2024$Population_size_1000s)
+
+Pop <- ggplot(CH4_emis_Ym_DE_DEU_1990_2024, aes(x = Year,
+                                                y = Population_size_1000s,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(0, 21000),        #  limits = c(0, 1300),  -> für CH4_org
+    breaks = seq(0, 25000, by = 5000) # breaks = seq(0, 1250, by = 250) -> für CH4_org
+  ) +
+  ylab(label = "Population (1000s)") +
+  labs(title = "DEU - Population") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "none"
+  )
+
+Pop
+
+
+DEU_Indic_plot <- Ym + DE + GE + Pop + 
+  plot_layout(ncol = 2) 
+
+ggsave(file = here("04_visual/first_try/time_series/One_Country", "Indicators_DEU_90_24.pdf"),
+       plot = DEU_Indic_plot)
+
+DEU_Indic_plot
+
+```
+
+## New Zeeland - NZL
+
+Same workflow for NZL.
+
+```{r Plotten_NZL, message=FALSE, results='hide'}
+
+summary(CH4_emis_Ym_DE_NZL_1990_2024$Ym_org_in_perc)
+
+Ym <- ggplot(CH4_emis_Ym_DE_NZL_1990_2024, aes(x = Year,
+                                                y = Ym_org_in_perc,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(5.9, 7.2),        #  limits = c(0, 1300),  -> für CH4_org
+    breaks = seq(0, 7.5, by = 0.5) # breaks = seq(0, 1250, by = 250) -> für CH4_org
+  ) +
+  ylab(label = "Ym (%)") +
+  labs(title = "NZL - Ym") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "inside",
+    legend.position.inside = c(0.75,0.75),
+    legend.title = element_text(size = 8),
+  legend.text = element_text(size = 7),
+    legend.key.size = unit(0.1, "cm")
+  )
+
+
+#Ym
+
+
+summary(CH4_emis_Ym_DE_NZL_1990_2024$GE_org_in_MJ_per_head_per_day)
+
+GE <- ggplot(CH4_emis_Ym_DE_NZL_1990_2024, aes(x = Year,
+                                                y = GE_org_in_MJ_per_head_per_day,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(0, 250),        #  limits = c(0, 1300),  -> für CH4_org
+    breaks = seq(0, 500, by = 50) # breaks = seq(0, 1250, by = 250) -> für CH4_org
+  ) +
+  ylab(label = "GE (MJ head⁻¹ day⁻¹)") +
+  labs(title = "NZL - GE") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "none"
+  )
+
+#GE
+
+
+summary(CH4_emis_Ym_DE_NZL_1990_2024$DE_org_in_perc)
+
+DE <- ggplot(CH4_emis_Ym_DE_NZL_1990_2024, aes(x = Year,
+                                                y = DE_org_in_perc,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(69, 80),        #  limits = c(0, 1300),  -> für CH4_org
+    breaks = seq(0, 100, by = 2) # breaks = seq(0, 1250, by = 250) -> für CH4_org
+  ) +
+  ylab(label = "DE (%)") +
+  labs(title = "NZL - DE") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "none"
+  )
+
+DE
+
+
+
+summary(CH4_emis_Ym_DE_NZL_1990_2024$Population_size_1000s)
+
+Pop <- ggplot(CH4_emis_Ym_DE_NZL_1990_2024, aes(x = Year,
+                                                y = Population_size_1000s,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(0, 12000),        #  limits = c(0, 1300),  -> für CH4_org
+    breaks = seq(0, 25000, by = 2000) # breaks = seq(0, 1250, by = 250) -> für CH4_org
+  ) +
+  ylab(label = "Population (1000s)") +
+  labs(title = "NZL - Population") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "none"
+  )
+
+Pop
+
+
+NZL_Indic_plot <- Ym + DE + GE + Pop + 
+  plot_layout(ncol = 2) 
+
+ggsave(file = here("04_visual/first_try/time_series/One_Country", "Indicators_NZL_90_24.pdf"),
+       plot = NZL_Indic_plot)
+
+NZL_Indic_plot
+
+```
+
+# USA
+
+Same work flow for the USA.
+
+```{r Plotten_NZL, message=FALSE, results='hide'}
+
+summary(CH4_emis_Ym_DE_USA_1990_2022$Ym_org_in_perc)
+
+Ym <- ggplot(CH4_emis_Ym_DE_USA_1990_2022, aes(x = Year,
+                                                y = Ym_org_in_perc,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(5.9, 7),        #  limits = c(0, 1300),  -> für CH4_org
+    breaks = seq(0, 7.5, by = 0.5) # breaks = seq(0, 1250, by = 250) -> für CH4_org
+  ) +
+  ylab(label = "Ym (%)") +
+  labs(title = "USA - Ym") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "inside",
+    legend.position.inside = c(0.75,0.75),
+    legend.title = element_text(size = 8),
+  legend.text = element_text(size = 7),
+    legend.key.size = unit(0.1, "cm")
+  )
+
+
+#Ym
+
+
+summary(CH4_emis_Ym_DE_USA_1990_2022$GE_org_in_MJ_per_head_per_day)
+
+GE <- ggplot(CH4_emis_Ym_DE_USA_1990_2022, aes(x = Year,
+                                                y = GE_org_in_MJ_per_head_per_day,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(0, 300),        #  limits = c(0, 1300),  -> für CH4_org
+    breaks = seq(0, 500, by = 50) # breaks = seq(0, 1250, by = 250) -> für CH4_org
+  ) +
+  ylab(label = "GE (MJ head⁻¹ day⁻¹)") +
+  labs(title = "USA - GE") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "none"
+  )
+
+#GE
+
+
+summary(CH4_emis_Ym_DE_USA_1990_2022$DE_org_in_perc)
+
+DE <- ggplot(CH4_emis_Ym_DE_USA_1990_2022, aes(x = Year,
+                                                y = DE_org_in_perc,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(64.3, 70),        #  limits = c(0, 1300),  -> für CH4_org
+    breaks = seq(0, 100, by = 2) # breaks = seq(0, 1250, by = 250) -> für CH4_org
+  ) +
+  ylab(label = "DE (%)") +
+  labs(title = "USA - DE") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "none"
+  )
+
+DE
+
+
+
+summary(CH4_emis_Ym_DE_USA_1990_2022$Population_size_1000s)
+
+Pop <- ggplot(CH4_emis_Ym_DE_USA_1990_2022, aes(x = Year,
+                                                y = Population_size_1000s,
+                                                # fill = Animal, 
+                                                colour = Animal)) +
+  geom_point() + 
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(1989,2025),      
+    breaks = seq(1990, 2025, 10)
+  ) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(0,120000),
+    breaks = seq(0, 120000, by = 20000), 
+    labels = scales::label_number() # scales sorgt dafür, dass label-Zahlen nicht als e+x geschrieben wird sondern ganze Zahl ausgeschrieben
+  ) +
+  ylab(label = "Population (1000s)") +
+  labs(title = "USA - Population") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+      face = "bold",
+      size = 10
+    ),
+    panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+      color = "grey92",
+      linewidth = 0.1
+    ),
+    legend.position = "none"
+  )
+
+Pop
+
+
+USA_Indic_plot <- Ym + DE + GE + Pop + 
+  plot_layout(ncol = 2) 
+
+ggsave(file = here("04_visual/first_try/time_series/One_Country", "Indicators_USA_90_22.pdf"),
+       plot = USA_Indic_plot)
+
+USA_Indic_plot
+
+```
