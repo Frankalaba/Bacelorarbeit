@@ -13,7 +13,11 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 rm(list = ls())
 
+
+library("khroma")
+library("ggsci")
 library("rio")
+library("RColorBrewer")
 library("here")
 library("readxl")
 library("tidyr")
@@ -23,6 +27,7 @@ library("viridis")
 library("janitor")
 library("purrr") # für map Befehl
 library("tidyverse")
+library("MetBrewer") 
 library("ggpmisc")
 library("patchwork")
 library("ggtext")
@@ -55,7 +60,7 @@ DEU_CH4_all_sectors_wo_Cat_enterfe <- DEU_CH4_all_sectors |>
   mutate(total_CH4_wo_Cat_EnterFe_in_kt = DEU_wo_Cat_enterfe$total_CH4_wo_Cat_EnterFe_in_kt) |> 
   mutate(
     share_total_of_Cat_enterfe_in_procent = 100 - (total_CH4_wo_Cat_EnterFe_in_kt/Total_CH4_in_kt * 100),
-    share_agric_of_Cat_enterfe_in_procent = (DEU_wo_Cat_enterfe$Cat_EnterFer_pred_in_kt/ Agriculture_in_kt *100)
+    share_agric_of_Cat_enterfe_in_procent = (DEU_wo_Cat_enterfe$Cat_EnterFer_pred_in_kt/Agriculture_in_kt*100)
   )
 
 summary(DEU_CH4_all_sectors_wo_Cat_enterfe)
@@ -83,6 +88,8 @@ summary(NZL_CH4_all_sectors)
 
 NZL_wo_Cat_enterfe <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_NZL.csv"))
 summary(NZL_wo_Cat_enterfe)
+
+summary(share_agr)
 
 NZL_CH4_all_sectors_wo_Cat_enterfe <- NZL_CH4_all_sectors |> 
   mutate(total_CH4_wo_Cat_EnterFe_in_kt = NZL_wo_Cat_enterfe$total_CH4_wo_Cat_EnterFe_in_kt) |> 
@@ -279,7 +286,337 @@ ggsave(plot = EnterFe_all_CC,
 
 Take as reference time sample 2009 to 2019, because reference figure did it to, where they calculated atmospheric growth rate for $CH_4$.
 
+### Data preparing
+For stacking the values of the several countries, first we have to process the data and collect the data in one single table
 ```{r}
+
+names(CH4_emis_Ym_DE_DEU_1990_2024)
+
+All_CC_CH4_Ym_DE_change_data <- rbind(CH4_emis_Ym_DE_DEU_1990_2024 |> 
+                                        filter(Animal == "Cattle") |> 
+  transmute(Year, Red_in_perc, CH4_Ym_in_kt_diff, CH4_Ym_De_in_kt_diff, CH4_Ym_and_Ym_DE_in_kt_diff) |> 
+  mutate(
+    Country = rep("DEU", n()), .after = Year
+  ) |> 
+  filter(Year %in% c(2010:2019)) |> 
+  group_by(Country, Red_in_perc) |> 
+  summarise(
+    CH4_Ym_in_kt_diff = mean(CH4_Ym_in_kt_diff),
+    CH4_Ym_De_in_kt_diff = mean(CH4_Ym_De_in_kt_diff),
+    CH4_Ym_and_Ym_DE_in_kt_diff = mean(CH4_Ym_and_Ym_DE_in_kt_diff),
+    .groups = "drop"
+  ),
+  CH4_emis_Ym_DE_NZL_1990_2024 |> 
+    filter(Animal == "Cattle") |>
+  transmute(Year, Red_in_perc, CH4_Ym_in_kt_diff, CH4_Ym_De_in_kt_diff, CH4_Ym_and_Ym_DE_in_kt_diff) |> 
+  mutate(
+    Country = rep("NZL", n()), .after = Year
+  ) |> 
+  filter(Year %in% c(2010:2019)) |> 
+  group_by(Country, Red_in_perc) |> 
+  summarise(
+    CH4_Ym_in_kt_diff = mean(CH4_Ym_in_kt_diff),
+    CH4_Ym_De_in_kt_diff = mean(CH4_Ym_De_in_kt_diff),
+    CH4_Ym_and_Ym_DE_in_kt_diff = mean(CH4_Ym_and_Ym_DE_in_kt_diff),
+    .groups = "drop"
+  ),
+  CH4_emis_Ym_DE_USA_1990_2022 |> 
+    filter(Animal == "Cattle") |>
+  transmute(Year, Red_in_perc, CH4_Ym_in_kt_diff, CH4_Ym_De_in_kt_diff, CH4_Ym_and_Ym_DE_in_kt_diff) |> 
+  mutate(
+    Country = rep("USA", n()), .after = Year
+  ) |> 
+  filter(Year %in% c(2010:2019)) |> 
+  group_by(Country, Red_in_perc) |> 
+  summarise(
+    CH4_Ym_in_kt_diff = mean(CH4_Ym_in_kt_diff),
+    CH4_Ym_De_in_kt_diff = mean(CH4_Ym_De_in_kt_diff),
+    CH4_Ym_and_Ym_DE_in_kt_diff = mean(CH4_Ym_and_Ym_DE_in_kt_diff),
+    .groups = "drop"
+  )) |> 
+   mutate(Country = factor(Country, levels = c("NZL", "DEU", "USA")),
+          CH4_dif_Ym_DE_in_kt_CO2_eq_GWP_20 = CH4_Ym_De_in_kt_diff*79.7,
+          CH4_dif_Ym_DE_in_kt_CO2_eq_GWP_100 = CH4_Ym_De_in_kt_diff*27)
+
+export(All_CC_CH4_Ym_DE_change_data,
+       file = here("03_Anlyses/tables/Ym_and_DE_change_simple", "Saved_CH4_YM_DE_mean_2010_2019.csv"))
+
+
+names(All_CC_CH4_Ym_DE_change_data)
+```
+
+#### Plotting of barplot
+
+```{r}
+
+
+farben_country <-  brewer.pal(n = 3, "Set2")
+
+
+Farb_zuweisung <- c(
+  "DEU" = farben_country[[1]],
+  "NZL" = farben_country[[2]],
+  "USA" = farben_country[[3]]
+  )
+
+bar_plot_all_CC_Ym_DE <- ggplot(All_CC_CH4_Ym_DE_change_data, 
+                                aes(x = Red_in_perc, y = CH4_Ym_De_in_kt_diff/1000, fill = Country)) +
+  geom_col() +
+  scale_y_continuous(
+    expand = expansion(mult = 0.05),
+    limits = c(0, 5),
+    breaks = seq(0, 10, 1)
+  ) +
+  labs(title = "Ym and DE",
+       y = "CH<sub>4</sub> in Tg",
+       x = "Emissions reduction scenarios",
+       fill = "Country:") +
+  scale_fill_manual(
+    values = Farb_zuweisung,
+    limits = c("NZL", "DEU", "USA")
+  ) +
+  theme_bw() +
+  theme(
+    plot.title = element_markdown(hjust = 0.5, face = "bold", size = 13),
+      panel.grid.minor = element_line(color = "grey92", linewidth = 0.1),
+      axis.title.y = element_markdown(size = 11),
+      axis.title.x = element_markdown(size = 11),
+      axis.text.x = element_text(size = 10),
+      axis.text.y = element_text(size = 10),
+      legend.text = element_markdown(size = 11, vjust = 0.5),
+      legend.title = element_markdown(size = 12)
+  )
+
+GWP_20 <- ggplot(All_CC_CH4_Ym_DE_change_data, 
+                                aes(x = Red_in_perc, y = CH4_dif_Ym_DE_in_kt_CO2_eq_GWP_20/1000, fill = Country)) +
+  geom_col() +
+  scale_y_continuous(
+    expand = expansion(mult = 0.05),
+    limits = c(0, 370),
+    breaks = seq(0, 370, 50)
+  ) +
+  labs(title = "Ym and DE - GWP20",
+       y = "CH<sub>4</sub> in Tg CO<sub>2</sub> eq.",
+       x = "Emissions reduction scenarios",
+       fill = "Country:") +
+  scale_fill_manual(
+    values = Farb_zuweisung,
+    limits = c("NZL", "DEU", "USA")
+  ) +
+  theme_bw() +
+  theme(
+    plot.title = element_markdown(hjust = 0.5, face = "bold", size = 13),
+      panel.grid.minor = element_line(color = "grey92", linewidth = 0.1),
+      axis.title.y = element_markdown(size = 11),
+      axis.title.x = element_markdown(size = 11),
+      axis.text.x = element_text(size = 10),
+      axis.text.y = element_text(size = 10),
+      legend.text = element_markdown(size = 11, vjust = 0.5),
+      legend.title = element_markdown(size = 12)
+  )
+
+GWP_100 <- ggplot(All_CC_CH4_Ym_DE_change_data, 
+                                aes(x = Red_in_perc, y = CH4_dif_Ym_DE_in_kt_CO2_eq_GWP_100/1000, fill = Country)) +
+  geom_col() +
+  scale_y_continuous(
+    expand = expansion(mult = 0.05),
+    limits = c(0, 370),
+    breaks = seq(0, 370, 50)
+  ) +
+  labs(title = "Ym and DE - GWP100",
+       y = "CH<sub>4</sub> in Tg CO<sub>2</sub> eq.",
+       x = "Emissions reduction scenarios",
+       fill = "Country:") +
+  scale_fill_manual(
+    values = Farb_zuweisung,
+    limits = c("NZL", "DEU", "USA")
+  ) +
+  theme_bw() +
+  theme(
+    plot.title = element_markdown(hjust = 0.5, face = "bold", size = 13),
+      panel.grid.minor = element_line(color = "grey92", linewidth = 0.1),
+      axis.title.y = element_markdown(size = 11),
+      axis.title.x = element_markdown(size = 11),
+      axis.text.x = element_text(size = 10),
+      axis.text.y = element_text(size = 10),
+      legend.text = element_markdown(size = 11, vjust = 0.5),
+      legend.title = element_markdown(size = 12)
+  )
+
+
+layout <- " 
+#AA#
+BBCC
+"
+
+bar_plot_all <- bar_plot_all_CC_Ym_DE + GWP_20 + GWP_100 +
+  plot_layout(design = layout, guides = "collect") & theme( # über das lyout bestimmt wie die plots angeordnet werden
+    legend.position = "bottom",
+    legend.direction = "horizontal"
+  )  
+
+bar_plot_all
+
+ggsave(plot = bar_plot_all,
+       filename = here("../Text_Production/figures/Results/GEO", "Bar_plots_CH4_save_Ym_and_DE_change_of_cattle.pdf"))
+
+
+
+```
+
+# DE change
+
+Habs jetzt doch nicht gemacht. Falls ich es doch brauch ist die Tabelle dafür jetzt vorbereitet. Man sieht an den plots, dass prozentual DE am Anfang mehr impact hat aber bei 50 einen absoluten peak an kt CH4 hat was dadurch eingespaart wird.
+
+### Data preparing
+
+```{r}
+
+CH4_emis_DE_YM_DEU_1990_2024_al_CC_2022 <- rbind( map_dfr(.x = seq(0.1,1,0.1), 
+                                        CH4_emission_Ym_DE_function,
+                                        CC = "DEU",
+                                        YE = "2024") |> filter(Year == 2022 & Animal == "Cattle") |> 
+  transmute(Red_in_perc,
+            country = rep("DEU", n()),
+            CH4_Ym_De_in_kt_diff, 
+            CH4_Ym_and_Ym_DE_in_kt_diff,
+            CH4_Ym_and_Ym_DE_in_perc = CH4_Ym_and_Ym_DE_in_kt_diff/CH4_Ym_De_in_kt_diff*100),
+   map_dfr(.x = seq(0.1,1,0.1), 
+                                        CH4_emission_Ym_DE_function,
+                                        CC = "NZL",
+                                        YE = "2024") |> filter(Year == 2022 & Animal == "Cattle") |> 
+  transmute(Red_in_perc,
+            country = rep("NZL", n()),
+            CH4_Ym_De_in_kt_diff, 
+            CH4_Ym_and_Ym_DE_in_kt_diff,
+            CH4_Ym_and_Ym_DE_in_perc = CH4_Ym_and_Ym_DE_in_kt_diff/CH4_Ym_De_in_kt_diff*100),
+   map_dfr(.x = seq(0.1,1,0.1), 
+                                        CH4_emission_Ym_DE_function,
+                                        CC = "USA",
+                                        YE = "2022") |> filter(Year == 2022 & Animal == "Cattle") |> 
+  transmute(Red_in_perc,
+            country = rep("USA", n()),
+            CH4_Ym_De_in_kt_diff, 
+            CH4_Ym_and_Ym_DE_in_kt_diff,
+            CH4_Ym_and_Ym_DE_in_perc = CH4_Ym_and_Ym_DE_in_kt_diff/CH4_Ym_De_in_kt_diff*100)) 
+
+summary(CH4_emis_DE_YM_DEU_1990_2024_al_CC_2022)
+
+ggplot(CH4_emis_DE_YM_DEU_1990_2024_al_CC_2022, aes(x = Red_in_perc, y = CH4_Ym_and_Ym_DE_in_perc, colour = country)) + 
+  geom_point()
+
+ggplot(CH4_emis_DE_YM_DEU_1990_2024_al_CC_2022, aes(x = Red_in_perc, y = CH4_Ym_and_Ym_DE_in_kt_diff, colour = country)) + 
+  geom_point()
+
+
+```
+
+# Prediction with diffrent scenarios
+
+#### DATA
+
+```{r, results='hide'}
+
+source(file = here("04_visual/R_Skripte/Visual_prognose_2030_Skript", "Funktion_plotting.r"))
+
+Pred_2030_final_CH4_USA <- import(
+  file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030/Visual_final_Emission_table", 
+              "Final_total_CH4_Calc_data_23_30_USA.csv"))
+
+Pred_2030_final_CH4_DEU <- import(
+  file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030/Visual_final_Emission_table", 
+              "Final_total_CH4_Calc_data_25_30_DEU.csv"))
+
+Pred_2030_final_CH4_NZL <- import(
+  file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030/Visual_final_Emission_table", 
+              "Final_total_CH4_Calc_data_25_30_NZL.csv"))
+
+names(Pred_2030_final_CH4_USA)
+
+Hist_CH4_emis_data_USA <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_USA.csv"))
+
+Hist_CH4_emis_data_DEU <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_DEU.csv"))
+
+Hist_CH4_emis_data_NZL <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_NZL.csv"))
+
+names(Hist_CH4_emis_data_USA)
+
+
+```
+
+
+#### Plotting
+
+```{r}
+
+Plot_total_CH4_2030_sze_10_30_50_DEU <- map(seq(10,50,20),
+                                            ~ Visual_total_CH4_YB_30_function(df = Pred_2030_final_CH4_DEU, 
+                                                                              hs = Hist_CH4_emis_data_DEU,
+                                                                              Red = .x,
+                                                                              lm = 5.2,
+                                                                              br_lm = 10,
+                                                                              br_by = 1,
+                                                                              col_org = "total_CH4_org_calc_in_kt",
+                                                                              CC = "DEU")
+                                            )
+
+Plot_total_CH4_2030_sze_10_30_50_NZL <- map(seq(10,50,20),
+                                            ~ Visual_total_CH4_YB_30_function(df = Pred_2030_final_CH4_NZL, 
+                                                                              hs = Hist_CH4_emis_data_NZL,
+                                                                              Red = .x,
+                                                                              lm = 2,
+                                                                              br_lm = 10,
+                                                                              br_by = 0.5,
+                                                                              col_org = "total_CH4_org_calc_in_kt",
+                                                                              CC = "NZL")
+                                            )
+
+Plot_total_CH4_2030_sze_10_30_50_USA <- map(seq(10,50,20),
+                                            ~ Visual_total_CH4_YB_30_function(df = Pred_2030_final_CH4_USA, 
+                                                                              hs = Hist_CH4_emis_data_USA,
+                                                                              Red = .x,
+                                                                              lm = 35,
+                                                                              br_lm = 40,
+                                                                              br_by = 10,
+                                                                              col_org = "total_CH4_org_calc_in_kt",
+                                                                              CC = "USA")
+                                            )
+
+
+#wrap_plots(c(Plot_total_CH4_2030_sze_10_30_50_DEU, Plot_total_CH4_2030_sze_10_30_50_NZL, Plot_total_CH4_2030_sze_10_30_50_USA), ncol = 3) + 
+ # plot_layout(guides = "collect") & theme(legend.direction = "horizontal",
+  #                                        legend.position = "bottom")
+
+### alle zusammen wird zu unübersichtlich
+
+DEU_pred_plot_final <- wrap_plots(Plot_total_CH4_2030_sze_10_30_50_DEU, ncol = 2) + guide_area() + 
+  plot_layout(guides = "collect") 
+
+ggsave(plot = DEU_pred_plot_final,
+       filename = here("../Text_Production/figures/Results/GEO", "Pred_2030_total_CH4_DEU.pdf"),
+       width = 27,
+  height = 24,
+  units = "cm")
+
+NZL_pred_plot_final <- wrap_plots(Plot_total_CH4_2030_sze_10_30_50_NZL, ncol = 2) + guide_area() + 
+  plot_layout(guides = "collect") 
+
+ggsave(plot = NZL_pred_plot_final,
+       filename = here("../Text_Production/figures/Results/GEO", "Pred_2030_total_CH4_NZL.pdf"),
+       width = 27,
+  height = 24,
+  units = "cm")
+
+USA_pred_plot_final <- wrap_plots(Plot_total_CH4_2030_sze_10_30_50_USA, ncol = 2) + guide_area() + 
+  plot_layout(guides = "collect") 
+
+ggsave(plot = USA_pred_plot_final,
+       filename = here("../Text_Production/figures/Results/GEO", "Pred_2030_total_CH4_USA.pdf"),
+       width = 27,
+  height = 24,
+  units = "cm")
+
+
 
 ```
 

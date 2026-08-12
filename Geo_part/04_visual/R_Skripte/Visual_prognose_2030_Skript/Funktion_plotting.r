@@ -33,19 +33,40 @@ here()
 theme_set(
   theme_bw() +   # oder theme_minimal(), was du sonst nutzt, als Basis
     theme(
-      plot.title = element_markdown(hjust = 0.5),
-      plot.subtitle = element_markdown(),
-      axis.title.x = element_markdown(),
-      axis.title.y = element_markdown(),
-      legend.title = element_markdown(),
-      legend.text = element_markdown(),
-      strip.text = element_markdown() 
+      plot.title = element_text(
+        hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
+        face = "bold",
+        size = 12
+      ),
+      panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
+        color = "grey92",
+        linewidth = 0.1
+      ),
+      axis.title.y = element_markdown(
+        size = 11
+      ),
+      axis.title.x = element_markdown(
+        size = 11
+      ),
+      axis.text.x = element_text(
+        size = 10
+      ),
+      axis.text.y = element_text(
+        size = 10
+      ),
+      legend.text = element_markdown(
+        size = 11
+      ),
+      legend.title = element_markdown(
+        size = 12
+      ),
+      legend.key.size = unit(0.7, "cm")
     )
-)
+    )
 
 
 
-Visual_total_CH4_YB_30_function <- function(df, hs, col_org , Red, lm, br_lm, br_by){
+Visual_total_CH4_YB_30_function <- function(df, hs, col_org , Red, lm, br_lm, br_by, CC){
   
   ConfInt_test_final_pred_table <- df
   
@@ -72,32 +93,32 @@ Visual_total_CH4_YB_30_function <- function(df, hs, col_org , Red, lm, br_lm, br
   
   names(limits_for_CONFin)
   
-  ggplot(ConfInt_test_final_pred_table |>  filter(status == "fit" & Red_in_perc == Red), 
+ Plot_list <- ggplot(ConfInt_test_final_pred_table |>  filter(status == "fit" & Red_in_perc == Red), 
          aes(x = Year, shape = factor(time_sample))) +
     geom_ribbon(data = limits_for_CONFin |>  filter(Red_in_perc == Red & time_sample == 5), 
-                aes(x = Year, ymin = lwr_total_CH4_org, ymax = upr_total_CH4_org), 
-                fill = "#32648EFF", alpha = 0.1, inherit.aes = FALSE) +
+                aes(x = Year, ymin = lwr_total_CH4_org/1000, ymax = upr_total_CH4_org/1000), 
+                fill = "#32648EFF", alpha = 0.175, inherit.aes = FALSE) +
     geom_ribbon(data = limits_for_CONFin |>  filter(Red_in_perc == Red & time_sample == 10), 
-                aes(x = Year, ymin = lwr_total_CH4_org, ymax = upr_total_CH4_org), 
-                fill = "#32648EFF", alpha = 0.1, inherit.aes = FALSE) +
+                aes(x = Year, ymin = lwr_total_CH4_org/1000, ymax = upr_total_CH4_org/1000), 
+                fill = "#32648EFF", alpha = 0.175, inherit.aes = FALSE) +
     geom_ribbon(data = limits_for_CONFin |>  filter(Red_in_perc == Red & time_sample == 15), 
-                aes(x = Year, ymin = lwr_total_CH4_org, ymax = upr_total_CH4_org), 
-                fill = "#32648EFF", alpha = 0.1, inherit.aes = FALSE) +
+                aes(x = Year, ymin = lwr_total_CH4_org/1000, ymax = upr_total_CH4_org/1000), 
+                fill = "#32648EFF", alpha = 0.175, inherit.aes = FALSE) +
     geom_ribbon(data = limits_for_CONFin |>  filter(Red_in_perc == Red & time_sample == 5), 
-                aes(x = Year, ymin = lwr_total_CH4_upd, ymax = upr_total_CH4_upd), 
-                fill = "#1F968BFF", alpha = 0.1, inherit.aes = FALSE) +
+                aes(x = Year, ymin = lwr_total_CH4_upd/1000, ymax = upr_total_CH4_upd/1000), 
+                fill = "#1F968BFF", alpha = 0.175, inherit.aes = FALSE) +
     geom_ribbon(data = limits_for_CONFin |>  filter(Red_in_perc == Red & time_sample == 10), 
-                aes(x = Year, ymin = lwr_total_CH4_upd, ymax = upr_total_CH4_upd), 
-                fill = "#1F968BFF", alpha = 0.1, inherit.aes = FALSE) +
+                aes(x = Year, ymin = lwr_total_CH4_upd/1000, ymax = upr_total_CH4_upd/1000), 
+                fill = "#1F968BFF", alpha = 0.175, inherit.aes = FALSE) +
     geom_ribbon(data = limits_for_CONFin |>  filter(Red_in_perc == Red & time_sample == 15), 
-                aes(x = Year, ymin = lwr_total_CH4_upd, ymax = upr_total_CH4_upd), 
-                fill = "#1F968BFF", alpha = 0.1, inherit.aes = FALSE) +
-    geom_point(aes(y = .data[[pull_org]], colour = "Prediction without immunization"),
+                aes(x = Year, ymin = lwr_total_CH4_upd/1000, ymax = upr_total_CH4_upd/1000), 
+                fill = "#1F968BFF", alpha = 0.175, inherit.aes = FALSE) +
+    geom_point(aes(y = .data[[pull_org]]/1000, colour = "Prediction without immunization"),
                size = 2.5) +
-    geom_point(aes(y = .data[[pull_upd]], colour = "Prediction with immunization"),
+    geom_point(aes(y = .data[[pull_upd]]/1000, colour = "Prediction with immunization"),
                size = 2.5) +
     geom_point(data = CH4_texst_USA_trainings_data, 
-               aes(x = Year, y = .data[[hs_CH4]], colour = "Historical"), 
+               aes(x = Year, y = .data[[hs_CH4]]/1000, colour = "Historical"), 
                shape = 19,
                size = 2.5, inherit.aes = FALSE) +
     scale_color_manual(name = "Methane Emission",
@@ -108,13 +129,13 @@ Visual_total_CH4_YB_30_function <- function(df, hs, col_org , Red, lm, br_lm, br
                        )) + 
     new_scale_colour() + # ermöglicht nochmal legende über colour, die dann aber neue überschrift bekommen kann
     geom_point(data = ConfInt_test_final_pred_table |> filter(Red_in_perc == 50 & time_sample == 5 & Year == 2030 & status == "fit"),
-               aes(x = Year, y = ref_2020_in_kt*0.7, colour = "70% of 2020"),
-               shape = 8,
+               aes(x = Year, y = ref_2020_in_kt*0.7/1000, colour = "70% of 2020"),
+               shape = 17,
                size = 3,
                inherit.aes = FALSE) +
     geom_point(data = ConfInt_test_final_pred_table |> filter(Red_in_perc == 50 & time_sample == 5 & Year == 2030 & status == "fit"),
-               aes(x = Year, y = ref_2010_in_kt*0.6, colour = "60% of 2010"),
-               shape = 4,
+               aes(x = Year, y = ref_2010_in_kt*0.6/1000, colour = "60% of 2010"),
+               shape = 16,
                size = 3, 
                inherit.aes = FALSE) +
     scale_color_manual(
@@ -130,53 +151,22 @@ Visual_total_CH4_YB_30_function <- function(df, hs, col_org , Red, lm, br_lm, br
     ) +
     scale_y_continuous(
       expand = expansion(mult = 0.05),
-      limits = c(0, lm*1000),
-      breaks = seq(0, br_lm*1000, br_by*1000)
+      limits = c(0, lm),
+      breaks = seq(0, br_lm, br_by),
+      labels = label_number(big.mark = " ") # um 1 000 bessser lesen zu können
     ) +
     scale_shape_manual(values = c(
       "5" = 2,
       "10" = 5,
       "15" = 1)) +
     labs(
-      title = paste0("**", XYZ, " - Reductionscenario ", Red,"%**"),
+      title = paste0("Reductionscenario ", Red),
       x = "Year",
-      y = "CH<sub>4</sub> in kt",
+      y = "CH<sub>4</sub> in Tg",
       shape = "Time sample for model"
     ) 
+  
+  return(Plot_list)
 }
 
-Pred_2030_final_CH4_USA <- import(
-  file = here("03_Analyses/tables/ExtraPol_data/Prediction_2030/Visual_final_Emission_table", 
-              "Final_total_CH4_Calc_data_23_30_USA.csv"))
 
-names(Pred_2030_final_CH4_USA)
-
-Hist_CH4_emis_data_USA <- import(file = here("03_Analyses/tables/ExtraPol_data", "Factor_table_prediction_USA.csv"))
-
-
-names(Hist_CH4_emis_data_USA)
-
-Plot_total_CH4_2030_sze_10_30_50_USA <- map(seq(10,50,20),
-                                            ~ Visual_total_CH4_YB_30_function(df = Pred_2030_final_CH4_USA, 
-                                                                              hs = Hist_CH4_emis_data_USA,
-                                                                              Red = .x,
-                                                                              lm = 35,
-                                                                              br_lm = 40,
-                                                                              br_by = 10,
-                                                                              col_org = "total_CH4_org_calc_in_kt")
-                                            )
-
-Plot_Cat_EnterFe_CH4_2030_sze_10_30_50_USA <- map(seq(10,50,20),
-                                            ~ Visual_total_CH4_YB_30_function(df = Pred_2030_final_CH4_USA, 
-                                                                              hs = Hist_CH4_emis_data_USA,
-                                                                              Red = .x,
-                                                                              lm = 15,
-                                                                              br_lm = 40,
-                                                                              br_by = 2.5,
-                                                                              col_org = "EnterFe_CH4_emis_org_in_kt")
-)
-
-
-wrap_plots(c(Plot_total_CH4_2030_sze_10_30_50_USA, Plot_Cat_EnterFe_CH4_2030_sze_10_30_50_USA), ncol = 3) + 
-  plot_layout(guides = "collect") & theme(legend.direction = "horizontal",
-                                          legend.position = "bottom")

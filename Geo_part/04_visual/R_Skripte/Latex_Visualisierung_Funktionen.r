@@ -29,6 +29,8 @@ library("ggtext")
 library("scales") # maskiert col_factor readr; discard von purrr; viridis_pal von viridis 
 #-> muss wenn ich die aus den anderen Pakten haben will direkt ansprechen mit viridis::vidis_pal
 
+source(file = here("03_Analyses/Ym_und_DE_verändern_Skripte", "Function_Analyses_methane_reduction_simple.r"))
+
 
 
 ### for creating the same y-axis for each country, take total  Emission with LULUCF as benchmark
@@ -106,14 +108,14 @@ sector_colors <- c(
 All_sectors_CC_specific_function <- function(df, lm, br_lm, bei, CC, pt_size){
   # lm -> Max der y-achse; br_lm -> Max des break befehls; bei <- by (alle 3 * 1000), CC <- Country-Code
   CC_specific <- ggplot(df, aes(x = Year)) +
-    geom_point(aes(y = Energy_in_kt, colour = "Energy"), size = pt_size) + 
-    geom_point(aes(y = Industrial_processes_and_product_use_in_kt, colour = "Industrial processes & product use"), size = pt_size) + 
-    geom_point(aes(y = Agriculture_in_kt, colour = "Agriculture"), size = pt_size) +
-    geom_point(aes(y = LULUCF_in_kt, colour = "LULUCF"), size = pt_size) +
-    geom_point(aes(y = Waste_in_kt, colour = "Waste"), size = pt_size) + 
-    geom_point(aes(y = Other_in_kt, colour = "Other"), size = pt_size) +
-    geom_point(aes(y = total_CH4_wo_Cat_EnterFe_in_kt, colour = "Total without cattle EnterFe"), size = pt_size) +
-    geom_point(aes(y = Total_CH4_in_kt, colour = "Total"), size = pt_size) +
+    geom_point(aes(y = Energy_in_kt/1000, colour = "Energy"), size = pt_size) + 
+    geom_point(aes(y = Industrial_processes_and_product_use_in_kt/1000, colour = "Industrial processes & product use"), size = pt_size) + 
+    geom_point(aes(y = Agriculture_in_kt/1000, colour = "Agriculture"), size = pt_size) +
+    geom_point(aes(y = LULUCF_in_kt/1000, colour = "LULUCF"), size = pt_size) +
+    geom_point(aes(y = Waste_in_kt/1000, colour = "Waste"), size = pt_size) + 
+    geom_point(aes(y = Other_in_kt/1000, colour = "Other"), size = pt_size) +
+    geom_point(aes(y = total_CH4_wo_Cat_EnterFe_in_kt/1000, colour = "Total without cattle EnterFe"), size = pt_size) +
+    geom_point(aes(y = Total_CH4_in_kt/1000, colour = "Total"), size = pt_size) +
     scale_x_continuous(
       expand = expansion(mult = 0.05),
       limits = c(1989,2025),      
@@ -121,10 +123,11 @@ All_sectors_CC_specific_function <- function(df, lm, br_lm, bei, CC, pt_size){
     ) +
     scale_y_continuous(
       expand = expansion(mult = 0.05),
-      limits = c(0, lm*1000),        
-      breaks = seq(0, br_lm*1000, by = bei*1000) 
+      limits = c(0, lm),        
+      breaks = seq(0, br_lm, by = bei),
+      labels = label_number(big.mark = " ")
     ) +
-    ylab(label = "CH<sub>4</sub> in kt") +
+    ylab(label = "CH<sub>4</sub> in Tg") +
     labs(title = paste0(CC),
          colour = "Sectors") +
     scale_color_manual(
@@ -190,7 +193,8 @@ Share_change_plot_function <- function(df, lm, br_lm, bei, CC){
     scale_y_continuous(
       expand = expansion(mult = 0.05),
       limits = c(0,lm),
-      breaks = seq(0, br_lm, bei)
+      breaks = seq(0, br_lm, bei),
+      labels = label_number(big.mark = " ")
     ) +
     labs(title = CC,
          y = "Share in %",
@@ -204,7 +208,7 @@ Share_change_plot_function <- function(df, lm, br_lm, bei, CC){
       plot.title = element_text(
         hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
         face = "bold",
-        size = 12
+        size = 13
       ),
       panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
         color = "grey92",
@@ -269,7 +273,8 @@ Indicator_plot_function <- function(df, lm, br_lm, bei){
     scale_y_continuous(
       expand = expansion(mult = 0.05),
       limits = c(5.9, 7.2),
-      breaks = seq(0, 7.5, by = 0.5)
+      breaks = seq(0, 7.5, by = 0.5),
+      labels = label_number(big.mark = " ")
     ) +
     ylab(label = "Ym (%)") +
     labs(title = "Ym", color = "Animal:") +
@@ -295,7 +300,8 @@ Indicator_plot_function <- function(df, lm, br_lm, bei){
     scale_y_continuous(
       expand = expansion(mult = 0.05),
       limits = c(0, 400),
-      breaks = seq(0, 500, by = 100)
+      breaks = seq(0, 500, by = 100),
+      labels = label_number(big.mark = " ")
     ) +
     ylab(label = "GE (MJ head<sup>⁻¹</sup> day<sup>⁻¹</sup>)") +
     labs(title = "GE", color = "Animal:") +
@@ -305,7 +311,7 @@ Indicator_plot_function <- function(df, lm, br_lm, bei){
     ) +
     theme_bw() +
     theme(
-      plot.title = element_markdown(hjust = 0.5, face = "bold", size = 10),
+      plot.title = element_markdown(hjust = 0.5, face = "bold", size = 13),
       panel.grid.minor = element_line(color = "grey92", linewidth = 0.1)
       )
   
@@ -319,7 +325,8 @@ Indicator_plot_function <- function(df, lm, br_lm, bei){
     scale_y_continuous(
       expand = expansion(mult = 0.05),
       limits = c(64, 78),
-      breaks = seq(0, 100, by = 2)
+      breaks = seq(0, 100, by = 2),
+      labels = label_number(big.mark = " ")
     ) +
     ylab(label = "DE (%)") +
     labs(title = "DE", color = "Animal:") +
@@ -329,7 +336,7 @@ Indicator_plot_function <- function(df, lm, br_lm, bei){
     ) +
     theme_bw() +
     theme(
-      plot.title = element_markdown(hjust = 0.5, face = "bold", size = 10),
+      plot.title = element_markdown(hjust = 0.5, face = "bold", size = 13),
       panel.grid.minor = element_line(color = "grey92", linewidth = 0.1)
       )
   
@@ -343,7 +350,8 @@ Indicator_plot_function <- function(df, lm, br_lm, bei){
     scale_y_continuous(
       expand = expansion(mult = 0.05),
       limits = c(0, lm*1000),
-      breaks = seq(0, br_lm*1000, by = bei*1000)
+      breaks = seq(0, br_lm*1000, by = bei*1000),
+      labels = label_number(big.mark = " ")
     ) +
     ylab(label = "Population in 1000s") +
     labs(title = "Population", color = "Animal:") +
@@ -353,7 +361,7 @@ Indicator_plot_function <- function(df, lm, br_lm, bei){
     ) +
     theme_bw() +
     theme(
-      plot.title = element_markdown(hjust = 0.5, face = "bold", size = 10),
+      plot.title = element_markdown(hjust = 0.5, face = "bold", size = 13),
       panel.grid.minor = element_line(color = "grey92", linewidth = 0.1))
   
   Indic_all_plot <- Ym + DE + Pop + GE + plot_layout(ncol = 2, guides = "collect") &
@@ -387,7 +395,7 @@ EnterFe_emission_plot_function <- function(df, lm, br_lm, bei, CC){
     "Non-dairy cattle" = "#A8CAD6"    
   )
   
-EnterFe_emis  <- ggplot(df, aes(x = Year, y = Ch4_emission_org_in_kt, colour = Animal)) +
+EnterFe_emis  <- ggplot(df, aes(x = Year, y = Ch4_emission_org_in_kt/1000, colour = Animal)) +
     geom_point() + 
     scale_x_continuous(
       expand = expansion(mult = 0.05),
@@ -396,12 +404,13 @@ EnterFe_emis  <- ggplot(df, aes(x = Year, y = Ch4_emission_org_in_kt, colour = A
     ) +
     scale_y_continuous(
       expand = expansion(mult = 0.05),
-      limits = c(0, lm*1000),
-      breaks = seq(0, br_lm*1000, bei*1000)
+      limits = c(0, lm),
+      breaks = seq(0, br_lm, bei),
+      labels = label_number(big.mark = " ")
     ) +
     labs(
       title = CC,
-      y = "CH<sub>4</sub> in kt",
+      y = "CH<sub>4</sub> in Tg",
       x = "Year",
       colour = "Animal"
     ) +
@@ -411,7 +420,7 @@ EnterFe_emis  <- ggplot(df, aes(x = Year, y = Ch4_emission_org_in_kt, colour = A
     ) +
     theme_bw() +
     theme(
-      plot.title = element_markdown(hjust = 0.5, face = "bold", size = 10),
+      plot.title = element_markdown(hjust = 0.5, face = "bold", size = 13),
       panel.grid.minor = element_line(color = "grey92", linewidth = 0.1),
       axis.title.y = element_markdown(size = 11),
       axis.title.x = element_markdown(size = 11),

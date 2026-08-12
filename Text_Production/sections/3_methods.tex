@@ -1,6 +1,33 @@
 \section{METHODS}
 \label{sec:methods}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Add your methods' description here
-\lipsum[1]
-\input{tables/exampletable}
+
+
+\subsection{Biochemestry}
+
+
+\subsection{Geography}
+
+\subsubsection{Calculation of methane emissions from enteric fermentation processes in cattle}
+
+The total methane emission for cattle and its subcategories dairy and non-dairy was not directly extracted from the published \acrfull{crt} for the countries, but calculated from the indicators \acrfull{Ym}, \acrfull{GE} and the population number of the animal categories. Therefore, the \ch{CH4} emissions were calculated for dairy and non-dairy cattle following the \cref{eq:emission_total}. The methane emission for cattle than is the sum of dairy and non-dairy.
+
+
+\begin{equation}
+CH_{4,T} = \frac{GE\cdot (\frac{Ym}{100})\cdot 365}{55.65}\cdot \frac{N_T}{10^6}
+	\label{eq:emission_total}
+\end{equation}
+
+\noindent where:
+\begin{itemize}
+	\item $CH_{4, T}$ = yearly methane emission of a animal category [kt CH$_4$ year$^{-1}$]
+	\item $GE$ = gross energy intake [MJ Tier$^{-1}$ day$^{-1}$]
+	\item $Ym$ = methane conversion factor [\%]
+	\item $55.65$ = energy content of \ch{CH4} [MJ kg$^{-1}$]
+	\item $N_T$ = population-size of animal category
+	\item $10^6$ = conversion-factor kg to kt
+\end{itemize}
+
+
+
+

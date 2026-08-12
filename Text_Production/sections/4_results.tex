@@ -41,8 +41,6 @@ The cell-number per ml for the cultures was then determined using the following 
 \end{equation}
 
 
-
-
 \Cref{tab:cellnmr_wol_Bürk_1} through \ref{tab:cellnmr_bovi} in the appendix contain the original counted cellnumbers per filled chamber and square. To calculate the cell count per ml, the arithmetic mean was determined for each culture (tab.~\ref{tab:ø_cell_per_culture}) and substituted into the equation~\ref{eq:cellnmbr_per_ml} along with the corresponding dilution factor (see ibid.). 
 The results of the calculation were recorded in a table~\ref{tab:cellnumb}. The calculation was performed as an example using \acrshort{woli}~(\acrshort{OD} = 0.387):
 
@@ -285,13 +283,10 @@ The \acrshort{OD} of Cltr 2 in the 500~µg/ml~preparation rises from 0.03 on mea
 
 \textbf{\Acrshort{dmso}}
 
-In general all preparation with \acrshort{dmso} in it showed the tendency to be more vulnerable to turn red when taking a sample for photometric measurement. In addition, The decolorization also took longer than in the positive control or other experimental conditions without \acrshort{dmso}, sometimes over an hour.\\
+In general, all preparation with \acrshort{dmso} showed the tendency to be more vulnerable to turn red when taking a sample for photometric measurement. In addition, The decolorization also took longer than in the positive control or other experimental conditions without \acrshort{dmso}, sometimes over an hour.\\
 
 This interaction of \acrshort{dmso} with the DSM 1523 media was investigated more closely in the \acrshort{thau} measurement series. Here, one triplicate with DSM 1523 was prepared with just 1~ml~\acrshort{dmso}, but without inoculation (DMSO –, see \cref{fig:dmso_neg_kontrolle}). 
 
-After the first few days of incubation, a difference in color was observable among the cultures. Specifically, the DMSO bottles exhibited a red color, in contrast to the yellow color of the other samples in the \acrfull{azaeight} measurement series for \acrshort{thau}. This is illustrated in \cref{fig:dmso_neg_kontrolle} using selected samples from the triplicate Cltr. 3 after 6 days of incubation.
-
-The \acrshort{OD} was also measured for DMSO, but showed no difference from the baseline \acrshort{OD} values of the other samples (approximately 0.03 to 0.04).\\
 
 \begin{figure}[!h]
 	\centering
@@ -300,11 +295,15 @@ The \acrshort{OD} was also measured for DMSO, but showed no difference from the 
 	\label{fig:dmso_neg_kontrolle}
 \end{figure} 
 
+After the first few days of incubation, a difference in color was observable among the cultures. Specifically, the DMSO bottles exhibited a red color, in contrast to the yellow color of the other samples in the \acrfull{azaeight} measurement series for \acrshort{thau}. This is illustrated in \cref{fig:dmso_neg_kontrolle} using selected samples from the triplicate Cltr. 3 after 6 days of incubation.
+
+The \acrshort{OD} was also measured for DMSO, but showed no difference from the baseline \acrshort{OD} values of the other samples (approximately 0.03 to 0.04).
+
 \subsubsection{Plasmid designing}
 
 \textbf{\textit{pac}-gene}
 
-The \textit{pac}-gene in the initial plasmid (\textit{pac\_old}), that schould have been taken for the conjugation/ transformation of the \gls{archa}, showed a different \acrfull{aa} sequence to the original sequence (\textit{pac\_org}) from \textit{Streptomyces alboniger} (see (a) in \cref{fig:pac_org_and_old}). They differ in five \acrshort{aa} on the \gls{cterm}. 
+The \textit{pac}-gene in the initial \gls{plasm} (\textit{pac\_old}), that should have been taken for the \gls{trafoglo} via conjugation of the \gls{archa}, showed a different \acrfull{aa} sequence to the original sequence (\textit{pac\_org}) from \textit{Streptomyces alboniger} (see (a) in \cref{fig:pac_org_and_old}). They differ in five \acrshort{aa} on the \gls{cterm}. 
 
 \begin{figure}[h!]
 	\centering
@@ -326,13 +325,56 @@ The \textit{pac}-gene in the initial plasmid (\textit{pac\_old}), that schould h
 		\caption{}
 		\includegraphics*[width = \textwidth]{figures/Results/BC/pac_old_1}
 	\end{subfigure}
-	\caption{\acrfull{aa} sequence of two \textit{pac} genes. (a) shows the \acrshort{aa} sequence of the original sequence from \textit{Streptomyces alboniger} (\textit{pac\_org}) as well as from the \textit{pac} gene that was located in the plasmid initially planed for conjugation (\textit{pac\_old}). The differing section is highlighted in red. (b) The projected 3D structure for \textit{pac\_org} calculated by AlphaFold. (c) The projected 3D structure for \textit{pac\_old} calculated by AlphaFold.}
+	\caption{\Acrfull{aa} sequence of two \textit{pac} genes and their 3-D structures. (a) shows the \acrshort{aa} sequence of the original sequence from \textit{Streptomyces alboniger} (\textit{pac\_org}) as well as from the \textit{pac} gene that was located in the plasmid originally intended for transformation (\textit{pac\_old}). The differing section is highlighted in red. (b) The projected 3D structure for \textit{pac\_org} calculated by AlphaFold. (c) The projected 3D structure for \textit{pac\_old} calculated by AlphaFold.}
 	\label{fig:pac_org_and_old}
 \end{figure}
 
-These mutation lid in \acrshort{alphafold} to diffrent 3-D structures. In (b) of \cref{fig:pac_org_and_old} the original \textit{pac} has  an antiparallel \gls{betaFaltblatt} with a big loop. The \textit{pac\_old} structure ((c)) shows also an antiparallel \gls{betaFaltblatt} at this position, but it is longer and has a shorter loop. 
+These mutation lid in \acrshort{alphafold} to different 3-D structures. In (b) of \cref{fig:pac_org_and_old} the original \textit{pac} has  an antiparallel \gls{betaFaltblatt} with a big loop on the right side of its structure. The \textit{pac\_old} ((c)) shows also an antiparallel \gls{betaFaltblatt} at this position, but it is longer and has a shorter loop.\\
 
-\subsubsection{Transformation/ Konjugation}
+\textbf{Plasmid}
+
+In SnapGene, four plasmid maps were created for \acrshort{thau} and two for \acrshort{bovi}. The constructs followed the general scheme shown in \cref{fig:general_plasmid_map} and are listed in \cref{tab:plasmid_constructs}. For the plasmids, the original \textit{pac} sequence (\textit{pac\_opt}) was codon-optimized for the respective \gls{archa}.\\
+
+\input{tables/04_result/Plasmid_konstrukte_alle}
+
+Two plasmids were constructed, as shown in \cref{fig:plasmid_produced}: pMt\_0231\_hpt for \acrshort{thau} and pMb\_0231\_hpt for \acrshort{bovi}. Compared to the plasmid originally used for the construction, a new \gls{rstrsite} (SpeI) was inserted between the \textit{pac} and its promoter (see \cref{fig:plasmid_produced}). In addition, the plasmid \textit{pac\_old}, which contained the alternative \acrshort{aa} sequence, was converted to the codon-optimized version with the original \acrshort{aa} sequence (\textit{pac\_opt}), and the promoter was changed to hmtB.
+
+Both plasmids were verified by sequencing.
+
+\begin{figure}[!h]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{figures/Results/BC/pMt_0321_hpt}
+	\end{subfigure}
+	
+	\vspace{0.5cm}
+	
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{figures/Results/BC/pMt_0231_hpt_karte}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{figures/Results/BC/pMb_0231_hpt}
+	\end{subfigure}
+	\caption{Suicide plasmid maps for transformation by conjugation for \acrfull{thau} and \acrfull{bovi}. pMt\_0321\_hpt is the parent plasmid used to construct the other two. The maps show only the gene regions that have been modified, as well as the \gls{rstrsite} sites used or the newly created \gls{rstrsite} sites.}
+	\label{fig:plasmid_produced}
+\end{figure}
+
+
+\subsubsection{Transformation via conjugation}
+
+\textbf{\acrshort{ecolDH} cultivation test in DSM 1523}
+
+Cultivation of \acrshort{ecolDH} was tested under similar settings in DSM 1523 as for \acrlong{mbrevi}. Three drops for inoculation was enough to get a dense culture the next day.\\
+
+
+\textbf{Preparation for transformation}
+
+Hier erst in Leipzig text möglich, weil da das laborbuch liegt -> erstelle Tabelle mit Ansätzen und dann welche erfolgreich waren
+
++ Sequenzergebnisse -> bestätigung von bovis ja vorhanden -> komplettes genom is still pending
 
 
 
@@ -342,3 +384,106 @@ These mutation lid in \acrshort{alphafold} to diffrent 3-D structures. In (b) of
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Geography}
+
+All methane emission analyses focused on three countries: \acrfull{deu}, \acrfull{nzl} and \acrfull{usa}. In addition, only the anthropogenic emission will be investigated.
+
+\subsubsection{Total methane emissions of a country}
+
+\Cref{fig:sectors_emission} shows the development of the total methane emission of a year as well as of the specific sectors from 1990 to 2020s for each country. 
+
+In general, the first thing that stands out is that the time series for the U.S. ends as early as 2022, while those for the other two countries do not end until 2024. Furthermore, the scale of methane emissions shows that the U.S. generally produces significantly more \ch{CH4}; the maximum total emissions are 35,000 kt \ch{CH4}, while for \acrshort{deu} the maximum is 5 Tg and for \acrshort{nzl} it is 1.5 Tg.\\
+
+
+\begin{figure}[!h]	
+	\centering
+	\includegraphics[width = \textwidth]{figures/Results/GEO/All_CC_all_sectors.pdf}
+	\caption{Time series of the anthropogenic methane emission of \acrfull{deu}, \acrfull{nzl} and \acrfull{usa}. The different relevant emission sectors are shown with their total sum (Total). Furthermore, the total emission minus the \ch{CH4} produced in \acrfull{enterfe} processes of cattle is plotted as well. Methane is plotted as Tg \ch{CH4} of a year against the time.}
+	\label{fig:sectors_emission}
+\end{figure}
+
+For \acrfull{deu}, a clear downward trend is evident in total \ch{CH4} emissions (see \cref{fig:sectors_emission}). Emissions fell from 3 Tg \ch{CH4} in 1990 (5 Tg) to 2 Tg in 2024, representing a decrease of approximately 60\%. Two distinct phases of this trend can be identified: first, from 1990 to 2006, with a sharp decline of about 2.5~Tg \ch{CH4} (approximately 2.6 Tg \ch{CH4} in 2006), followed by a phase with a more moderate decline to 2 Tg of anthropogenically produced methane in 2024.
+
+Total emissions excluding those from \acrfull{enterfe} in cattle (total excluding cattle \acrshort{enterfe}) follow a similar trend, with the curve’s value being only 1~Tg~\ch{CH4} lower.\\
+
+Looking at the sectoral emissions of \acrshort{deu}, it becomes apparent that in 1990 there were three equally large \ch{CH4}-producing sectors: “Energy,” “Waste,” and “Agriculture,” each accounting for approximately 1.5 Tg \ch{CH4} (see \cref{fig:sectors_emission}). However, these sectors have developed differently.
+
+The energy and waste sectors have followed quite similar trends. Following a sharp decline between 1990 and 2006—with the waste sector not beginning to change until 1994—from 1.5 to 0.5~Tg, a moderate decline then sets in, until approximately 0.025 Tg of \ch{CH4} is emitted in 2024.
+
+Agriculture is also changing, though only very slightly compared to the other two sectors: from 1.6 Tg of methane in 1990 to approximately 1.25 Tg \ch{CH4} in 2024, with the largest single change occurring between 1990 and 1991, amounting to a difference of about 0.1~Tg. In 2015, total emissions excluding cattle \acrshort{enterfe} are exactly as high as those of the agricultural sector and fall below that level thereafter.
+
+In addition to these three sectors, two others are shown in \cref{fig:sectors_emission}.
+
+The “Industrial Processes \& Product Use” sector is a negligibly small source of methane emissions. Its \ch{CH4} emissions have remained consistently well below 0.1 Tg over the 35-year period.
+
+With \ch{CH4} emissions consistently ranging between 0.3 and 0.4 Tg, the \acrfull{lulucf} sector was the fourth-largest single methane emission sector in \acrlong{deu} during the 1990s,
+but it surpassed the waste sector in 2016 and has been the second-largest \ch{CH4}-emitting sector in \acrshort{deu} after agriculture since 2019.\\
+
+As far as \acrshort{deu} is concerned, the difference between total methane emissions and total emissions excluding cattle \acrshort{enterfe} remains fairly constant at around 10 to 15 Tg \ch{CH4} for \acrshort{usa} (see \cref{fig:sectors_emission}).
+In addition, a clear, steady decline can be observed from 1990 (approx. 33 Tg \ch{CH4}) to 2022 (approx. 27 Tg \ch{CH4}), although the curve does not follow the trend linearly but rather fluctuates slightly. Over this 32-year period, the U.S. has reduced its methane emissions across all sectors by about 6~Tg~\ch{CH4}, which corresponds to a reduction of 18\%.\\
+
+As in \acrlong{deu}, the three most significant methane-producing sectors in the U.S. are “Energy,” “Agriculture,” and “Waste” in 1990; however, here the energy sector is the largest contributor, accounting for nearly half of the emissions in 1990 with 15 Tg \ch{CH4}, followed by the waste and agriculture sectors with approximately 8 Tg \ch{CH4} each.
+
+The energy and waste sectors show a downward trend over the time series (energy: from 15 to 10 Tg \ch{CH4} and waste: from 8 to 5 Tg \ch{CH4}), while emissions from agriculture rise slightly over time, from 8.5 Tg to 10~Tg \ch{CH4}. Thus, in 2022, agriculture and energy—each at 10 Tg \ch{CH4}—are the largest methane emission sectors and together account for more than two-thirds of total methane emissions in the U.S. in 2022.
+
+Two other sectors contribute to U.S. methane emissions: the “Industrial Processes \& Product Use” sector, which is relatively small and therefore negligible, and the “LULUCF” sector, with a constant range of 0.2 to 0.25 Tg \ch{CH4}.\\
+
+Compared to the other two countries, \acrlong{nzl} presents a different picture (see \cref{fig:sectors_emission}).
+
+First, total \ch{CH4}emissions in 2024 are nearly the same as those in 1990, namely about 1.4~Tg \ch{CH4}; furthermore, a slight increase in emissions to 1.5~Tg~\ch{CH4} can be observed through 2006, followed by a slight decline.
+
+Second, “agriculture” is the dominant sector in terms of methane emissions and accounts for nearly 90\% of \ch{CH4} emissions from \acrshort{nzl} (see \cref{fig:sectors_emission}). All other sectors account for significantly less than 0.1~Tg~\ch{CH4} per year, with the exception of the waste sector, whose methane emissions are slightly above 0.1 Tg~\ch{CH4}.
+
+Third, the difference between total methane emissions and total emissions excluding cattle \acrshort{enterfe} increases by about 60\% (0.5 Tg \ch{CH4} in 1990 and 0.8 Tg in 2024).
+
+\subsubsection{Enteric fermentation processes of cattle}
+
+\textbf{Methane emissions}
+
+\Cref{fig:enterFe_emission_CH4} shows the trend in methane emissions from enteric fermentation in cattle, as well as their subcategories “dairy cattle” and “non-dairy cattle” for each country. The values for the subcategories are calculated according to \cref{eq:emission_total} and based on the required data from the reported \acrshort{crt} (visualized in \cref{fig:indic_deu} through \ref{fig:indic_usa}). Total emissions from cattle are therefore simply the sum of these values.\\
+
+Cattle emissions for \acrfull{deu} in \cref{fig:enterFe_emission_CH4} decline from 1990 to 2024 (from 1.25~Tg~\ch{CH4} to approximately 0.8 Tg), with a steeper decline in the first year of the time series, followed by a more gradual decline.
+
+For dairy and non-dairy cattle, this initial decline is also evident in \cref{fig:enterFe_emission_CH4}, after which a slight decline can also be observed (dairy cattle: 0.75~Tg~\ch{CH4} in 1990 to 0.5 Tg in 2024; non-dairy cattle: 0.55 in 1990 to 0.35 in 2024). Dairy cattle are an exception: their emissions drop to 0.5 Tg \ch{CH4} by 2006, then rise slightly again through 2015, and subsequently decline once more, returning to 0.5 Tg by 2014.\\
+
+Dairy cattle consistently produce slightly more \ch{CH4} per year than non-dairy cattle (0.1–0.2~Tg \ch{CH4}, see \cref{fig:enterFe_emission_CH4}. This contrasts with the herd ratio shown in \cref{fig:indic_deu}, where the dairy cattle herd generally accounts for about half of the non-dairy cattle herd over the years.
+
+Further differences in the indicators are evident for Ym, where dairy cattle had a significantly higher value of 7\% in 1990 compared to 6.25, which, however, declines sharply to 6.1\% by 2024, while the value for non-dairy cattle rises to 6.5\%, as well as for GE, where the value for the non-dairy cattle herd remains constant at 100~MJ~head\textsuperscript{-1}~day\textsuperscript{-1}, while the value for the dairy cattle herd rises from 250 to 380~MJ~head\textsuperscript{-1}~day\ \textsuperscript{-1}.\\
+
+Methane emissions from cattle in \acrshort{enterfe} for \acrlong{nzl} rise from 0.5 to 0.75~Tg~\ch{CH4}, while the values have remained relatively constant since 2014.
+
+An increase is also evident for dairy cattle, which has plateaued since 2014 (0.25~Tg~\ch{CH4} in 1990 to 0.55~Tg in 2024). Non-dairy cattle, on the other hand, show similar values of around 0.5~Tg~\ch{CH4} in both 1990 and 2024.
+
+Thus, in 1990, dairy and non-dairy cattle contributed equally to methane emissions from the cattle population; however, this share has changed over the years for dairy cows, so that by 2024 they will account for about two-thirds of the emissions. This shift in the ratio is quite similar across the subcategory populations (see \cref{fig:indic_nzl}). Furthermore, the energy efficiency (GE) values for non-dairy cattle remain constant at 150~MJ~head\textsuperscript{-1}~day\textsuperscript{-1}, while the value for dairy cattle rises from 160 to 225~MJ~head\textsuperscript{-1}~day\textsuperscript{-1}.\\
+
+In the \acrshort{usa}, methane emissions from dairy cattle rise from just under 2~Tg~\ch{CH4} to 2~Tg, with the slight increase not beginning until around 2005. The other two livestock categories, on the other hand, fluctuate overall—for both non-dairy and dairy herds—between 4.9 and 5.5~Tg for non-dairy livestock and between 6.5~Tg~\ch{CH4} and 7.1~Tg for dairy livestock (see \cref{fig:enterFe_emission_CH4}). Unlike in the other two countries, non-dairy cattle here emit significantly more than dairy cattle (2024: 5~Tg~\ch{CH4} versus 2~Tg).
+
+As with the other countries, the emission curves correspond fairly well with the livestock numbers from \cref{fig:indic_usa}, where non-dairy cattle—at 80 million head—are kept in significantly greater numbers than dairy cattle (20 million head).
+The curve for dairy cattle does not match the livestock numbers exactly, as these remain constant. However, the GE for dairy cattle rises steadily from 200 to 260 MJ/animal·day between 1990 and 2022, while the Ym value decreases from 6.5\% to 6.1\% over the same period.
+
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width = \textwidth]{figures/Results/GEO/Cat_EnterFe_time_series_all_CC}
+	\caption{Time series of methane emission derived from \acrlong{enterfe} processes in cattle and its subcategories dairy and non-dairy for the countries: \acrfull{deu}, \acrfull{nzl} and \acrfull{usa}. Methane emission are measured in emitted Tg \ch{CH4}. Emissions are alculated for dairy and non-dairy cattle with the indicators in \cref{fig:indic_deu}:\ref{fig:indic_usa} and the \cref{eq:emission_total}. The cattle emission is than the sum of its subcategories.}
+	\label{fig:enterFe_emission_CH4}	
+\end{figure}
+
+When comparing cattle emissions across countries in \cref{fig:enterFe_emission_CH4}, it is striking that the U.S. produced more than three times as much in 2022 as the other two countries combined (6.8~Tg~\ch{CH4} compared to less than 2~Tg combined). This is also reflected in the number of animals: in 2022, the US had approximately 100~million head of cattle, while \acrshort{deu} and \acrshort{nzl} each had around 10~million (see \cref{fig:indic_deu}:\ref{fig:indic_usa}).
+
+\acrlong{deu} and \acrlong{nzl} produce similar amounts of methane from cattle farming in 2024 (approx. 0.8~Tg~\ch{CH4}), in 1990, \acrshort{deu} had produced twice as much, but also kept twice as many cattle (approx. 20~million animals in 1990 compared to 10~million in 2024).\\
+
+
+\textbf{Share of \ch{CH4} emissions from \acrshort{enterfe} of cattle }
+
+
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width = \textwidth]{figures/Results/GEO/Share_of_cat_EnterFe_all_CC}
+	\caption{Platzhalter}
+	\label{fig:share_of_EnterFe}
+\end{figure}
+
+\subsubsection{Reductionpotential in enteric fermentaion processes of cattle}
+
+

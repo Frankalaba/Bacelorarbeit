@@ -39,3 +39,4 @@ texput.log
 
 # Office Lock-Dateien
 .~lock.*#
+.Rproj.user
