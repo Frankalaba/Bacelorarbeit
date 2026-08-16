@@ -31,38 +31,8 @@ here()
 ## globale einstellung für alle folgenden plots -> alle textfelder markdown und stil bw
 
 theme_set(
-  theme_bw() +   # oder theme_minimal(), was du sonst nutzt, als Basis
-    theme(
-      plot.title = element_text(
-        hjust = 0.5, # Position horizontal: 0 = links, 0.5 = zentriert, 1 = rechts
-        face = "bold",
-        size = 12
-      ),
-      panel.grid.minor = element_line( # minor sind linien im Feld, major achsenlinien
-        color = "grey92",
-        linewidth = 0.1
-      ),
-      axis.title.y = element_markdown(
-        size = 11
-      ),
-      axis.title.x = element_markdown(
-        size = 11
-      ),
-      axis.text.x = element_text(
-        size = 10
-      ),
-      axis.text.y = element_text(
-        size = 10
-      ),
-      legend.text = element_markdown(
-        size = 11
-      ),
-      legend.title = element_markdown(
-        size = 12
-      ),
-      legend.key.size = unit(0.7, "cm")
-    )
-    )
+  theme_bw())   # oder theme_minimal(), was du sonst nutzt, als Basis
+    
 
 
 
@@ -164,7 +134,17 @@ Visual_total_CH4_YB_30_function <- function(df, hs, col_org , Red, lm, br_lm, br
       x = "Year",
       y = "CH<sub>4</sub> in Tg",
       shape = "Time sample for model"
-    ) 
+    ) + theme(
+      plot.title = element_text(hjust = 0.5, face = "bold", size = 18),   # von 15 auf 18
+      axis.title.y = element_markdown(size = 16),                         # von 13 auf 16
+      axis.title.x = element_markdown(size = 16),
+      axis.text.x = element_text(size = 16),
+      axis.text.y = element_text(size = 16),
+      legend.text = element_markdown(size = 16),
+      legend.title = element_markdown(size = 17),
+      legend.key.size = unit(0.75, "cm")
+    )
+
   
   return(Plot_list)
 }

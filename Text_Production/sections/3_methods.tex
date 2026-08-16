@@ -8,6 +8,23 @@
 
 \subsection{Geography}
 
+The general methodology for the processing, analyses and visualization of the CRT data in R was to build a function and then apply these with the interested variables and data from the specific countries.
+
+In the following part, the general procedure is described here For a more detailed overview, please check the R scripts.
+
+\subsubsection{Processing CRT-Data} 
+\label{sec:processing_CRT_DATA}
+
+\textbf{Cattle enteric fermentation}
+
+For \acrlong{deu} and \acrlong{nzl} all given data for cattle and its subcattegories "dairy cattle" and "non-dairy cattle" in the downloaded from the "Table3.A" sheet of th CRT tables imported for each year, and processed so, that for each year of each country a table was created with one column with the year, one column, with the cattle categories and the following columns are for the measured or calculated values. Afterwards all year tables of one country were merged, so that one country has one table, where the values for the cattle categories from 1990 to the last published year. 
+
+For the U.S. there are no direct "Dairy cattle" and "Non-dairy cattle" categories, but more detailed one. So after the import of the same value columns for each cattle category as described before, these more detailed subcategories have to be merged in the same 2 as for \acrlong{deu} and \acrlong{nzl}. For this purpose, the official definition and classifications from the U.S. \citep[Chapter 5, p.\,6]{For this purpose, the official definition and classifications from the U.S. (CREF) were used.} were used. DE, GE and Ym were merged as a weighted mean with the populations as weight. The methane emission were summed.\\
+
+\textbf{Methane emission for each sector}
+
+For sector-specific emissions, only the “TableS3” sheet was used for the most recent CRT (for the U.S., the year 2022; for Germany and New Zealand, the year 2024). Here, all sectors and their subcategories were imported for all years, as were the total emissions. After processing the data, only the methane emission values for the sectors in general were retained, as well as the total methane emissions for each country.
+
 \subsubsection{Calculation of methane emissions from enteric fermentation processes in cattle}
 
 The total methane emission for cattle and its subcategories dairy and non-dairy was not directly extracted from the published \acrfull{crt} for the countries, but calculated from the indicators \acrfull{Ym}, \acrfull{GE} and the population number of the animal categories. Therefore, the \ch{CH4} emissions were calculated for dairy and non-dairy cattle following the \cref{eq:emission_total}. The methane emission for cattle than is the sum of dairy and non-dairy.
@@ -21,7 +38,7 @@ CH_{4,T} = \frac{GE\cdot (\frac{Ym}{100})\cdot 365}{55.65}\cdot \frac{N_T}{10^6}
 \noindent where:
 \begin{itemize}
 	\item $CH_{4, T}$ = yearly methane emission of a animal category [kt CH$_4$ year$^{-1}$]
-	\item $GE$ = gross energy intake [MJ Tier$^{-1}$ day$^{-1}$]
+	\item $GE$ = gross energy intake [MJ head$^{-1}$ day$^{-1}$]
 	\item $Ym$ = methane conversion factor [\%]
 	\item $55.65$ = energy content of \ch{CH4} [MJ kg$^{-1}$]
 	\item $N_T$ = population-size of animal category
@@ -29,5 +46,127 @@ CH_{4,T} = \frac{GE\cdot (\frac{Ym}{100})\cdot 365}{55.65}\cdot \frac{N_T}{10^6}
 \end{itemize}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsubsection{Calculation of the share of cattle methane emissions from enteric fermentation}
+
+The share of 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Calculation of saved methane}
+
+To calculate the potential methane savings resulting from the mitigation strategy under investigation (vaccination of cattle), various success scenarios are defined: 10, 20, 30, 40, and 50% shifts in the rumen microbiome of cattle from methanogens toward non-methane-producing microbes.
+
+These will have an impact on two indicators used in \citet{IPCC_2019_Chapter_EnterFE}. Ym, which represents the proportion of energy or feed consumed by cattle that is converted into methane by that microbiome, and DE, assuming that the reduced amount of feed energy converted into methane now benefits the animal during digestion, meaning that the percentage of feed digestibility for the animal increases. \\
+
+The values of the resulting Ym (Ym\textsubscript{Red}) and DE (DE\textsubscript{Red}) are calculated as in \cref{eq:Ym_red_sze_calc} and \cref{eq:DE_red_sze_calc}.
+
+\begin{equation}
+	Ym_{Red} = Ym \cdot \left(1 - \frac{Red}{100} \right)
+	\label{eq:Ym_red_sze_calc}
+\end{equation}
+
+\noindent where:
+\begin{itemize}
+	\item $Ym_{Red}$ = adjusted Ym for the investigated reduction scenario [\%]
+	\item $Ym$ = original methane conversion factor from CRT [\%]
+	\item $Red$ = investigated reduction scenario [\%]
+\end{itemize}
+
+\begin{equation}
+	DE_{Red} = DE + \left( Ym \cdot \frac{Red}{100}\right)
+	\label{eq:DE_red_sze_calc}
+\end{equation}
+
+\noindent where:
+\begin{itemize}
+	\item $DE_{Red}$ = adjusted DE for the investigated reduction scenario [\%]
+	\item $DE$ = Digestibility of feed as a fraction of gross energy intake [\%] 
+	\item $Red$ = investigated reduction scenario [\%]
+\end{itemize}
+
+The \cref{eq:emission_total} presents the relation of Ym and methane emission of cattle already. DE, on the other hand, is named in three different equations in the calculation of \citet{IPCC_2019_Chapter_EnterFE}, shown in the \cref{eq:GE_berechnung} through (\ref{eq:REG_calculation}) with little adjustments. It has his impact on produced methane through his role in calculate the GE of the animal, which has a linear relation towards methane emission (see \cref{eq:emission_total}).
+
+\begin{equation}
+GE = \frac{\left( \frac{NE_x}{REM}\right) +\left( \frac{NE_y}{REG}\right)}{\left( \frac{DE}{100}\right) }
+\label{eq:GE_berechnung}
+\end{equation}
+
+\noindent where:
+\begin{itemize}
+	\item $GE$ = gross energy intake [MJ head$^{-1}$ day$^{-1}$]
+	\item $NE_x$ = sum of the net energy required for maintenance ($NE_m$), for the activity ($NE_a$), for lactation ($NE_l$), for the work ($NE_work$) and for the pregnancy ($NE_p$) of the animal [MJ head$^{-1}$ day$^{-1}$]
+	\item $REM$ = ratio of net energy available in a diet for maintenance (\Cref{eq:REM_calculation})
+	\item $NE_y$ = sum of the net energy required for growth and for wool production [MJ head$^{-1}$ day$^{-1}$]
+	\item $REG$ = ratio of net energy available for growth in a diet (\Cref{eq:REG_calculation})
+	\item $DE$ = Digestibility of feed as a fraction of gross energy intake [\%] 
+\end{itemize}
+
+\begin{equation}
+REM = \left[1.123 - (4.092 \cdot 10^{-3} \cdot DE) + (1.126\cdot 10^{-5} \cdot DE^{2}) - \left( \frac{25.4}{DE}\right) \right]
+\label{eq:REM_calculation}
+\end{equation}
+
+\noindent where:
+\begin{itemize}
+	\item $REM$ = ratio of net energy available in a diet for maintenance
+	\item $DE$ = Digestibility of feed as a fraction of gross energy intake [\%] 
+\end{itemize}
+
+\begin{equation}
+	REM = \left[1.164 - (5.16 \cdot 10^{-3} \cdot DE) + (1.308\cdot 10^{-5} \cdot DE^{2}) - \left( \frac{37.4}{DE}\right) \right]
+	\label{eq:REG_calculation}
+\end{equation}
+
+\noindent where:
+\begin{itemize}
+	\item $REG$ = ratio of net energy available for growth in a diet
+	\item $DE$ = Digestibility of feed as a fraction of gross energy intake [\%] 
+\end{itemize}
+
+To calculate the new methane emission for cattle corresponding to the reduction scenario now, GE has to be recalculated with the adjusted DE. Afterwards \cref{eq:emission_total} can be used again to calculate the adjusted \ch{CH4} emission with the adjusted GE (GE\textsuperscript{Red}) and Ym\textsuperscript{Red}. 
+
+For calculation the GE\textsuperscript{Red} DE\textsubscript{Red} can not just simply be put in the \cref{eq:GE_berechnung}, because of the values for NE\textsuperscript{x} and NE\textsuperscript{y}. Although the values for the individual net energy intake categories (see \cref{eq:GE_berechnung}) should not change, these are not given in the published CRTs of the countries. 
+
+To solve this problem, I assume two things:
+\begin{itemize}[label={}] % erhalte so Aufzählung ohne symbol
+	\item First, the net energy required for wool production an irrelevant categorie is for the investigation of cattle.
+	\item Second, most of the animal in the population of dairy and non-dairy cattle are fully grown or close to it. Here, too, the IPCC only classifies calves "dairy" or "non-dairy" once they started eating solid food. Because of that the net energy needed for growth will overlooked and set to 0. 
+\end{itemize}
+
+Now, we can slim down the \cref{eq:GE_berechnung} and rearrange it to calculate a fixed value for NE\textsubscript{x} for a specific year (see \cref{eq:NE_x_calc}).
+
+\begin{equation}
+	NE_x = GE \cdot REM \cdot \left( \frac{DE}{100}\right)
+	\label{eq:NE_x_calc} 
+\end{equation}
+
+\noindent where:
+\begin{itemize}
+	\item $NE_x$ = sum of the net energy required for maintenance ($NE_m$), for the activity ($NE_a$), for lactation ($NE_l$), for the work ($NE_work$) and for the pregnancy ($NE_p$) of the animal [MJ head$^{-1}$ day$^{-1}$]
+	\item $GE$ = gross energy intake [MJ head$^{-1}$ day$^{-1}$] (\cref{eq:GE_berechnung})
+	\item $REM$ = ratio of net energy available in a diet for maintenance (\Cref{eq:REM_calculation})
+	\item $DE$ = Digestibility of feed as a fraction of gross energy intake [\%] 
+\end{itemize}
+
+Now, GE\textsubscript{Red} can be calculated for a given year using the fixed values for NE\textsubscript{x} and DE\textsubscript{Red}. The calculated gross energy intake is then substituted into \cref{eq:emission_total} along with the corresponding Ym\textsubscript{Red} value. This yields the methane emissions (\ch{CH4}\textsubscript{,R}) for a cattle category under a reduction scenario for a specific year. \\
+The saved methane emissions (\ch{CH4}\textsubscript{,S}) for a specific reduction scenario are calculated by subtracting the original value for methane emissions from the value adjusted for the scenario (see \cref{eq:saved_CH4})
+
+\begin{equation}
+	CH_{4,S} = CH_{4,T} - CH_{4,R}
+	\label{eq:saved_CH4}
+\end{equation}
+
+\noindent where:
+\begin{itemize}
+	\item $CH_{4, S}$ = saved \ch{CH4} through reduction scenario [kt CH$_4$ year$^{-1}$]
+	\item $CH_{4, T}$ = yearly methane emission of a animal category [kt CH$_4$ year$^{-1}$]
+	\item $CH_{4, R}$ = yearly methane emission of a animal category for a corresponding reduction scenario [kt CH$_4$ year$^{-1}$]
+\end{itemize}
+
+\subsubsection{Prediction of \ch{CH4} emission till 2030}
+\label{sec:Prediction_CH4_2030}
 

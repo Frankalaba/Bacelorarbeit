@@ -77,7 +77,7 @@ write.csv(CH4_emis_DE_YM_DEU_1990_2024,
 
 #summary(CH4_emis_DE_YM_DEU_1990_2024)
 
-glimpse(CH4_emis_DE_YM_DEU_1990_2024)
+View(CH4_emis_DE_YM_DEU_1990_2024)
 
 ```
 # NZL

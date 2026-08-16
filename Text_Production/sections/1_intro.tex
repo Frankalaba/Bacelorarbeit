@@ -1,6 +1,13 @@
 \section{INTRODUCTION}
 \label{sec:intro}
 
+\renewcommand{\thefigure}{\thesection.\arabic{figure}} %setzt Nummerierung der Figure wieder auf 0 für Section
+\setcounter{figure}{0}
+
+\renewcommand{\thetable}{\thesection.\arabic{table}} %setzt Nummerierung der Table wieder auf 0 für Section
+\setcounter{table}{0}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Add your introduction here
 
@@ -25,8 +32,14 @@ Besides these two main strains, some experiements were also done on \acrfull{wol
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width = 0.75\textwidth]{figures/Results/BC/Allgemeiner_grober_aufbau_plasmide}
-	\caption{Platzhalter},
+	\caption{Sketch of the general structure of the suicide plasmids for the transformation of \acrfull{thau} and \acrfull{bovi} via conjugation using \textcolor{red}{\acrshort{ecol}}.
+		The plasmid contains the \acrshort{ecol} cassette with \acrshort{ori} and \textit{catp} as a selection marker using chloramphenicol, as well as the conjugation gene \textit{traJ}.
+		In addition, all plasmids contain the \textit{hpt} gene to enhance counterselection and the two homology arms that flank the genomic \textit{hpt} gene of the corresponding organism. The final important region is the one containing the \textit{pac} gene and its associated promoter, which serves as a selection marker.},
 	\label{fig:general_plasmid_map}
 \end{figure}
 
 \textcolor{red}{Bin mit der Karte so noch unzufrieden, auch wenn sie skizzenhaft, glaube ich schnell zeigt was alles grob bei unseren Konstrukten drauf sein sollte. Bin mir auch nopch unsicher ob ich so eine Art Figure hier in die Einleitung mit reinpacke, bei der Einführung unserer Konjugations/ Transformations technick oder erst im result part -> vmtl hier aber sinnvoller}
+
+\subsection{Geography}
+
+DE has a-non linear relation towards GE (see \cref{eq:GE_berechnung}:\ref{eq:REG_calculation}). 
