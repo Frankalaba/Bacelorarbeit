@@ -10,14 +10,14 @@
 
 The general methodology for the processing, analyses and visualization of the CRT data in R was to build a function and then apply these with the interested variables and data from the specific countries.
 
-In the following part, the general procedure is described here For a more detailed overview, please check the R scripts.
+In the following part, the general procedure is described in the part below. For a more detailed overview, please check the R scripts.
 
 \subsubsection{Processing CRT-Data} 
 \label{sec:processing_CRT_DATA}
 
 \textbf{Cattle enteric fermentation}
 
-For \acrlong{deu} and \acrlong{nzl} all given data for cattle and its subcattegories "dairy cattle" and "non-dairy cattle" in the downloaded from the "Table3.A" sheet of th CRT tables imported for each year, and processed so, that for each year of each country a table was created with one column with the year, one column, with the cattle categories and the following columns are for the measured or calculated values. Afterwards all year tables of one country were merged, so that one country has one table, where the values for the cattle categories from 1990 to the last published year. 
+For \acrlong{deu} and \acrlong{nzl} all given data for cattle and its subcattegories "dairy cattle" and "non-dairy cattle" were imported from the "Table3.A" sheet of th CRT tables for each year, and processed so, that for each year of each country a table was created with one column with the year, one column, with the cattle categories and the following columns are for the measured or calculated values. Afterwards, all one year tables of one country were merged, so that one country has one table, where the values for the cattle categories from 1990 to the last published year are present. 
 
 For the U.S. there are no direct "Dairy cattle" and "Non-dairy cattle" categories, but more detailed one. So after the import of the same value columns for each cattle category as described before, these more detailed subcategories have to be merged in the same 2 as for \acrlong{deu} and \acrlong{nzl}. For this purpose, the official definition and classifications from the U.S. \citep[Chapter 5, p.\,6]{For this purpose, the official definition and classifications from the U.S. (CREF) were used.} were used. DE, GE and Ym were merged as a weighted mean with the populations as weight. The methane emission were summed.\\
 
@@ -49,9 +49,9 @@ CH_{4,T} = \frac{GE\cdot (\frac{Ym}{100})\cdot 365}{55.65}\cdot \frac{N_T}{10^6}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Calculation of the share of cattle methane emissions from enteric fermentation}
+\subsubsection{Share of cattle methane emissions from enteric fermentation}
 
-The share of 
+The share of enteric fermentation was claculated for its fraction on the total amount of anthropogen produced \ch{CH4} in a country and on the methane emissions resulting from the agriculture sector. For this purpose the published data in the CRT was used for each country. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -127,21 +127,26 @@ REM = \left[1.123 - (4.092 \cdot 10^{-3} \cdot DE) + (1.126\cdot 10^{-5} \cdot D
 	\item $DE$ = Digestibility of feed as a fraction of gross energy intake [\%] 
 \end{itemize}
 
-To calculate the new methane emission for cattle corresponding to the reduction scenario now, GE has to be recalculated with the adjusted DE. Afterwards \cref{eq:emission_total} can be used again to calculate the adjusted \ch{CH4} emission with the adjusted GE (GE\textsuperscript{Red}) and Ym\textsuperscript{Red}. 
+To calculate the new methane emission for cattle corresponding to the reduction scenario now, GE has to be recalculated with the adjusted DE. Afterwards \cref{eq:emission_total} can be used again to calculate the adjusted \ch{CH4} emission with the adjusted GE (GE\textsubscript{Red}) and Ym\textsubscript{Red}. 
 
-For calculation the GE\textsuperscript{Red} DE\textsubscript{Red} can not just simply be put in the \cref{eq:GE_berechnung}, because of the values for NE\textsuperscript{x} and NE\textsuperscript{y}. Although the values for the individual net energy intake categories (see \cref{eq:GE_berechnung}) should not change, these are not given in the published CRTs of the countries. 
+For calculation the GE\textsubscript{Red} DE\textsubscript{Red} can not just simply be put in the \cref{eq:GE_berechnung}, because of the values for NE\textsubscript{x} and NE\textsubscript{y}. Although the values for the individual net energy intake categories (see \cref{eq:GE_berechnung}) should not change, these are not given in the published CRTs of the countries. 
 
 To solve this problem, I assume two things:
-\begin{itemize}[label={}] % erhalte so Aufzählung ohne symbol
-	\item First, the net energy required for wool production an irrelevant categorie is for the investigation of cattle.
-	\item Second, most of the animal in the population of dairy and non-dairy cattle are fully grown or close to it. Here, too, the IPCC only classifies calves "dairy" or "non-dairy" once they started eating solid food. Because of that the net energy needed for growth will overlooked and set to 0. 
-\end{itemize}
+\begin{enumerate}
+	\item The net energy required for wool production an irrelevant categorie is for the investigation of cattle.
+	\item Most of the animal in the population of dairy and non-dairy cattle are fully grown or close to it. Here, too, the IPCC only classifies calves "dairy" or "non-dairy" once they started eating solid food. Because of that the net energy needed for growth will overlooked and set to 0. 
+\end{enumerate}
 
-Now, we can slim down the \cref{eq:GE_berechnung} and rearrange it to calculate a fixed value for NE\textsubscript{x} for a specific year (see \cref{eq:NE_x_calc}).
+Now, we can slim down the \cref{eq:GE_berechnung} and rearrange it to calculate a fixed value for NE\textsubscript{x} for a specific year, because the part with NE\textsubscript{y} turns zero (see \cref{eq:NE_x_calc}).
 
 \begin{equation}
 	NE_x = GE \cdot REM \cdot \left( \frac{DE}{100}\right)
 	\label{eq:NE_x_calc} 
+\end{equation}
+
+\begin{equation}
+	GE = \frac{\left( \frac{NE_x}{REM}\right) }{\left( \frac{DE}{100}\right)}
+	\label{eq:GE_adjusted_calc}
 \end{equation}
 
 \noindent where:
@@ -152,7 +157,7 @@ Now, we can slim down the \cref{eq:GE_berechnung} and rearrange it to calculate 
 	\item $DE$ = Digestibility of feed as a fraction of gross energy intake [\%] 
 \end{itemize}
 
-Now, GE\textsubscript{Red} can be calculated for a given year using the fixed values for NE\textsubscript{x} and DE\textsubscript{Red}. The calculated gross energy intake is then substituted into \cref{eq:emission_total} along with the corresponding Ym\textsubscript{Red} value. This yields the methane emissions (\ch{CH4}\textsubscript{,R}) for a cattle category under a reduction scenario for a specific year. \\
+Now, GE\textsubscript{Red} can be calculated for a given year using the fixed values for NE\textsubscript{x} and DE\textsubscript{Red}, when NE\textsubscript{y} is assumed to be 0 (see \cref{eq:GE_adjusted_calc}). The calculated gross energy intake is then substituted into \cref{eq:emission_total} along with the corresponding Ym\textsubscript{Red} value. This yields the methane emissions (\ch{CH4}\textsubscript{,R}) for a cattle category under a reduction scenario for a specific year. \\
 The saved methane emissions (\ch{CH4}\textsubscript{,S}) for a specific reduction scenario are calculated by subtracting the original value for methane emissions from the value adjusted for the scenario (see \cref{eq:saved_CH4})
 
 \begin{equation}
@@ -167,6 +172,21 @@ The saved methane emissions (\ch{CH4}\textsubscript{,S}) for a specific reductio
 	\item $CH_{4, R}$ = yearly methane emission of a animal category for a corresponding reduction scenario [kt CH$_4$ year$^{-1}$]
 \end{itemize}
 
-\subsubsection{Prediction of \ch{CH4} emission till 2030}
+\subsubsection{Prediction of \ch{CH4} emission until 2030}
 \label{sec:Prediction_CH4_2030}
 
+Two steps are required to calculate total methane emissions, as well as methane emissions for three reduction scenarios (10, 30, and 50) through the year 2030.\\ 
+
+First, total methane emissions without emissions from \acrshort{enterfe} processes in cattle are calculated and then extrapolated.\\
+
+Second, to calculate the methane emission from \acrfull{enterfe} in cattle, the values for DE, Ym, Population size and NE\textsubscript{x} were predicted for each subcategorie ("dairy" and "non-dairy cattle") until 2030. For that, NE\textsubscript{x} had to be first calculated (see \cref{eq:NE_x_calc}). From the predicted values for these indicators the cattle \acrshort{enterfe} \ch{CH4} emission could be calculated (via \cref{eq:GE_adjusted_calc} and (\ref{eq:emission_total})).
+
+Also the the methane emission values for three different reduction scenarios (10, 30 and 50) were calculated with these values using the \cref{eq:Ym_red_sze_calc}, (\ref{eq:DE_red_sze_calc}), (\ref{eq:GE_adjusted_calc}) and (\ref{eq:emission_total}).
+
+Afterwards, the emissions of the subcategories were summed to the \ch{CH4} emission for cattle resulting from enteric fermentation processes.\\
+
+Third, the predicted emission values for total without cattle enteric fermentation were added with the calculated emission values for cattle enteric fermentation to achieve the total methane emission of a country.\\
+
+The forecast was made using a linear regression, with the value to be predicted depending on the respective year. However, the regression was not based on the entire time period, but rather on three different time intervals (the last 5, 10, and 15 years). For each linear model, both the \acrfull{ci} and the total emissions were calculated. In addition, the R\textsuperscript{2} value was determined for each model.\\
+
+The extrapolation extends from 2025 to 2030 for \acrlong{nzl} and \acrlong{deu}, and from 2023 to 2030 for \acrshort{usa}.
