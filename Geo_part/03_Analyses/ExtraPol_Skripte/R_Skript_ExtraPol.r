@@ -10,6 +10,7 @@ rm(list = ls())
 
 library("rio")
 library("here")
+library("xtable")
 library("readxl")
 library("tidyr")
 library("dplyr")
@@ -672,4 +673,98 @@ ConfInt_CH4_emission_upd_for_pred_calculation_base_function <- function(df, Ym_u
     
     
   return(Calc_base_table_plus_avar_cattle)
+}
+
+
+
+#######################################################################################
+#######################################################################################
+################ Taelle mit den Gleichungen und R² für die modelle + gleich direkt in latex tabelle umwandeln
+#######################################################################################
+#######################################################################################
+
+
+Tabelle_Equation_R2_latex <- function(ls, CC){
+  
+  tbl <- tibble(
+    names = c("equation", "$R^2$")
+  )
+  
+  for (nms in names(ls)) {
+    
+    intercept <- ls[[nms]]$coefficients[1]
+    slope <- ls[[nms]]$coefficients[2]
+    
+    eq <- paste0(
+      "$y = ", round(slope, 3), " \\cdot x ", ### muss doppelt \\ damit er es als ein \ deutet sonst escape zeichen in R
+      ifelse(intercept >= 0, "+ ", "- "), round(abs(intercept), 3), "$"
+    )
+    
+    y_values <- ls[[nms]]$model[[1]]   # extrahiert y werte
+    
+    r2_val <- if (var(y_values) == 0) { # checke ob es unterschiede in y gibt, wenn nicht, kann R² nicht berechnet werden, bzw. unnötig
+      "n/a (const.)"
+    } else {
+      round(summary(ls[[nms]])$r.squared, 3)
+    }
+    
+    tbl <- tbl |> 
+      mutate(
+        !!nms := c(eq, 
+                   r2_val))
+  }
+  
+  tbl_reordered <- tbl |> 
+    select(-c(matches("total_CH4_pred_.*"), matches("Cat_EnterFer_pred_.*"))) |> 
+    pivot_longer(
+      cols = -c(names),
+      names_to = c(".value", "time sample"),
+      names_pattern = "(.*)_(\\d+)$"
+    ) |> 
+    pivot_longer(
+      cols = -c(names, `time sample`),
+      names_to = "fitted value",
+      values_to = "Wert"
+    ) |> 
+    pivot_wider(
+      names_from = names,
+      values_from = Wert
+    ) |> 
+    mutate(
+      `$R^2$` = as.numeric(`$R^2$`)
+    ) |> 
+    mutate(
+      `fitted value` = recode(`fitted value`,
+                              total_CH4_wo_Cat_EnterFe_in_kt = "total \\ch{CH4} without cattle EnterFe [kt]",
+                              Dairy_Pop_in_1000s = "DC population size [1000s]",
+                              Dairy_Ym_in_perc = "DC Ym [\\%]",
+                              Dairy_NEs_total = "DC NE\\textsubscript{x} [MJ head$^{-1}$ day$^{-1}$]",
+                              Dairy_DE_in_perc = "DC DE [\\%]",
+                              NonDairy_Pop_in_1000s = "NDC population size [1000s]",
+                              NonDairy_Ym_in_perc = "NDC Ym [\\%]",
+                              NonDairy_DE_in_perc = "NDC DE [\\%]",
+                              NonDairy_NEs_total = "NDC NE\\textsubscript{x} [MJ head$^{-1}$ day$^{-1}$]")
+    )
+  
+  
+  tbl_reordered_latex <- xtable(
+    tbl_reordered,
+    caption = CC,
+    digits = 3,
+    label = paste0("tab:modell_equat_r2_", CC)
+  )
+  
+  print(tbl_reordered_latex,
+        file = here("../Text_Production/tables/04_result", 
+                    paste0("Equation_and_R2_for_models_", CC, ".tex")),
+        booktabs = TRUE,
+        include.rownames = FALSE,
+        caption.placement = "top",
+        sanitize.text.function = identity, ### damit er \\cdot auch so übernimmt und nicht umdeutet
+        sanitize.colnames.function = identity ## selbe hier, damit er komplett übernimmt von $R^2$
+       # table.placement = "H",
+        #floating.environment = "landscape" # für gedrehte Tabelle, sodass die quer auf Seite liegt
+  )
+  
+  return(tbl_reordered)
 }

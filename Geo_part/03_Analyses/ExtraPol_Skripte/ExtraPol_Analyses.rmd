@@ -16,6 +16,7 @@ rm(list = ls())
 
 library("rio")
 library("here")
+library("xtable")
 library("readxl")
 library("tidyr")
 library("dplyr")
@@ -163,6 +164,54 @@ DEU_weak_model <- Filter_weak_model_lin_function(df = DEU_table_equat_r2_LinMod,
 
 DEU_weak_model
 ```
+
+#### Tabelle mit modell und equation latex reif machen
+
+```{r}
+DEU_table_equat_r2_LinMod_test <- import(file = here("03_Analyses/tables/ExtraPol_data", "Equation_R2_table_DEU.csv"))
+
+names(DEU_table_equat_r2_LinMod_test)
+
+DEU_table_equat_r2_LinMod_test_umb <- DEU_table_equat_r2_LinMod_test |> 
+  select(-c(matches("total_CH4_pred_.*"), matches("Cat_EnterFer_pred_.*"))) |> 
+  pivot_longer(
+    cols = -c(names),
+    names_to = c(".value", "time sample"),
+    names_pattern = "(.*)_(\\d+)$"
+  ) |> 
+  pivot_longer(
+    cols = -c(names, `time sample`),
+    names_to = "fitted value",
+    values_to = "Wert"
+  ) |> 
+  pivot_wider(
+    names_from = names,
+    values_from = Wert
+  ) |> 
+  mutate(
+    `R²` = as.numeric(`R²`)
+  ) |> 
+  mutate(
+    `fitted value` = recode(`fitted value`,
+                            total_CH4_wo_Cat_EnterFe_in_kt = "total \\ch{CH4} without cattle EnterFe [kt]",
+                            Dairy_Pop_in_1000s = "Dairy cattle population size [1000s]",
+                            Dairy_Ym_in_perc = "Dairy cattle Ym [\\%]",
+                            Dairy_NEs_total = "Dairy cattle NE\textsubscript{x} [MJ head$^{-1}$ day$^{-1}$]",
+                            Dairy_DE_in_perc = "Dairy cattle DE [\\%]",
+                            NonDairy_Pop_in_1000s = "Non-dairy cattle population size [1000s]",
+                            NonDairy_Ym_in_perc = "Non-dairy cattle Ym [\\%]",
+                            NonDairy_DE_in_perc = "Non-dairy cattle DE [\\%]",
+                            NonDairy_NEs_total = "Non-dairy cattle NE\textsubscript{x} [MJ head$^{-1}$ day$^{-1}$]")
+  )
+
+unique(DEU_table_equat_r2_LinMod_test_umb$`fitted value`)
+
+testitest <- Tabelle_Equation_R2_latex(ls = DEU_list_ModLin_all_fact, CC = "DEU")
+
+testitest
+
+```
+
 
 ### NZL creating a list with linear model for each factor
 
