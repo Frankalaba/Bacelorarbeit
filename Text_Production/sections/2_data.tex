@@ -17,8 +17,9 @@
 \label{sec:data_and_material_geo}
 
 \subsubsection{Study area}
+\label{sec:study_area}
 
-The geodata analyses of methane reduction potential in rumineszenz will focuson the impact of the immunization of cattle. Two emission sectors of agriculture discussed in the \citet{IPCC_2019_Chapter_EnterFE} could be effected of this. On the one hand methane resulting resulting from enteric fermentation and on the other hand from manure management. However, in this bachelor thesis the manure management sector will not be investigated, primarily due to as-yet-unclear links to a possible microbiome shift, as well as time constraints.\\
+The geodata analyses of methane reduction potential in rumineszenz will focus on the impact of the mitigation strategy immunization of cattle. Two emission sectors of agriculture discussed in the \citet{IPCC_2019_Chapter_EnterFE} could be effected of this. On the one hand methane resulting resulting from enteric fermentation and on the other hand from manure management. However, in this bachelor thesis the manure management sector will not be investigated, primarily due to as-yet-unclear links to a possible microbiome shift, as well as time constraints.\\
 
 All calculations are based on the methodology described in \citet{IPCC_2019_Chapter_EnterFE} for calculating \ch{CH4} emission from \acrlong{enterfe} in cattle.\\
 
@@ -28,24 +29,22 @@ First, the project partners for the biochemical research project to develop an i
 
 Second, all three countries belong of the \gls{annex_one} states. This means that, due to their larger economies and higher levels of consumption, they emit a significant amount of GHGs, including \ch{CH4}, and therefore bear a greater responsibility with regard to climate change and its mitigation.
 
-Third, although all three are categorized as \gls{annex_one} states, there are some notable differenze between this states, as e.g. in their size in terms of area, population, and economy (the US. and Germany as leading nations of the world) or in their predominant way to raise animals, particularly cattle (e.g. in \acrfull{nzl} pasteur grazing is dominant in Germany loose housing (\citealp[p.\,155]{NZL_GHG_REPORT_CRT}; \citealp[Table 510]{Ger_Report_GHG})).\\
+Third, although all three are categorized as \gls{annex_one} states, there are some notable differenze between this states, as e.g. in their size in terms of area, population, and economy (the US. and Germany as leading economic nations of the world) or in their predominant way to raise animals, particularly cattle (e.g. in \acrfull{nzl} pasteur grazing is dominant in Germany loose housing (\citealp[p.\,155]{NZL_GHG_REPORT_CRT}; \citealp[Table 510]{Ger_Report_GHG})).\\
 
-The time period considered in this bachelor’s thesis is determined, on the one hand, by the data series from the published CRT (see \cref{sec:data_sources}) and, on the other hand, by the evaluation of the mitigation strategy.
+The time period considered in this bachelor’s thesis is determined, on the one hand, by the data series from the published CRT (1990-2024 for \acrshort{deu} and \acrshort{nzl} plus 1990-2022 for the \acrshort{usa}) and, on the other hand, by the reference data for the evaluation of the mitigation strategy.
 
-For the latter, the decade 2010–2019 is relevant, which is also relevant in \citet{saunoisGlobalMethaneBudget2025},  well as the year 2030 as the target year for the emission targets of the \acrshort{gmp}.
+For the latter, the decade 2010–2019 is relevant, which is used in \citet{saunoisGlobalMethaneBudget2025},  well as the year 2030 as the year for the emission targets of the \acrshort{gmp}.
 
 \subsubsection{CRT Data}
 \label{sec:data_sources}
 
-\Acrfull{crt} is the data source for the calculations performed. The CRTs were downloaded from the UNFCCC \citep{CommonReportingTables}.
+\Acrfull{crt} is the data source for the calculations performed. The CRTs were downloaded from the \citet{CommonReportingTables}.
 
-For \acrlong{deu} and \acrlong{nzl}, the published data range from 1990 to 2024, and for the United States, from 1990 to 2022. Where is one CRT for one year is published.  \\
+For \acrlong{deu} and \acrlong{nzl}, the published data range from 1990 to 2024, and for the United States, from 1990 to 2022. Where is one CRT published per year and the values represent thereby the entire year.  \\
 
 For the analysis of methane emissions from \acrlong{enterfe} processes involving cattle, the “Table3” and “Table3.A” sheets of the .xlsx files were used. These show only the values for the year it was published for.
 
 The “TableS3” sheet serves as the basis for analyzing methane emissions from the various sectors in each country as well as total emissions. This sheet lists not only the values for the current year but also all past years, so the CRT for 2024 and 2022 for the U.S. also includes all values for the remaining years. \\
-
-In general, the published figures are always valid for or calculated based on the entire year.
 
 \acrlong{deu} and \acrlong{nzl} have defined two subcategories for cattle according to \citet{IPCC_2019_Chapter_EnterFE}: “dairy cattle” and “non-dairy cattle.” The United States, on the other hand, chose to define its own subcategories for cattle, so that “dairy cattle” and “non-dairy cattle” were further subdivided. Section \cref{sec:processing_CRT_DATA} explains how the data was processed to ensure that all three countries are comparable with one another.\\
 
@@ -58,6 +57,17 @@ The used variables from the CRT table are given in following units for each anim
 	\item DE in \%
 \end{itemize} 
 
-\subsection{Program}
+\subsubsection{Reference data}
+\label{sec:reference_data}
+
+In this bachelor thesis two different scaled data for methane emission are taken into account as a reference to evaluate the possible impact of a mitigation strategy against methane emissions derived from cattle enteric fermentation processes. 
+
+On the global scale \textcite[fig. 7]{saunoisGlobalMethaneBudget2025} calculated the average yearly growth rate of methane in Tg for the decade 2009-2010. Here they also used the tier 1 and tier 2 calculation guidelines of the \textcite{IPCC_2006_complete_Guidline}.  
+
+The \acrfull{gmp} calls for a methane emission reduction of each country until 2030. The aim is hereby to emitted 30\% less over all sectors than in 2020 and 40\% less than in 2010. \acrlong{deu} and the \acrshort{usa} signed this pledge in the year 2021 \parencite{appelhansUnterschatztesTreibhausgasMethan2025}. Because of that this serves as a reference on a country scale.\\
+
+In this thesis the focus is on the strategy of immunization of cattle and not possible others, as e.g. food additives. These are used only selectively to compare what makes immunization unique and how it measures up against them. 
+
+\subsection{Programming}
 
 All analyses and processing of the data as well as the visualization took place in R (version 4.6.1). The main package used for processing and analyses was "tidyverse" and "purrr". The visualization was performed via "ggplot". For more information on that, check the R scripts. 

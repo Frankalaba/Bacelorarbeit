@@ -13,7 +13,17 @@
 \usepackage{amsmath, enumitem, amssymb, array, setspace, float, subcaption, caption, booktabs, pdflscape, dcolumn, titlesec, tocloft, comment, xcolor, longtable, blindtext, rotating, lipsum, wrapfig, tabularx, multirow, makecell, subcaption}
 \usepackage[flushleft]{threeparttable}
 \usepackage[table]{xcolor} %einfärben von tabellenreihen
-\usepackage[round, authoryear]{natbib}
+%\usepackage[round, authoryear]{natbib}
+\usepackage[
+backend=biber,
+style=apa,
+maxbibnames=6,
+minbibnames=3,
+natbib=true          % <- erlaubt weiterhin \citep{}, \citet{} wie gewohnt
+]{biblatex}
+\addbibresource{References.bib}
+
+
 \usepackage{chemformula} % Hauptpaket für chemische Formeln
 
 %%%%%%%%%%%%%%%%%%%% für Tabellen/Figurebeschriftung 
@@ -35,15 +45,15 @@
 
 \setlength{\parindent}{0pt}
 
-\usepackage[acronym, style = long, toc]{glossaries}
-
 \usepackage[hidelinks]{hyperref}
+
+\usepackage[acronym, style = long, toc]{glossaries}
 
 \hypersetup{
      colorlinks   = true, %If links to papers should be colored
      citecolor    = blue, %color of citation text
      urlcolor = black, %if you use an URL, this is how it is colored
-     linkcolor = blue
+     linkcolor = black
 }
 \usepackage{cleveref}
 \graphicspath{{figures/}}
@@ -64,5 +74,3 @@
 %TABLE OF CONTENTS FIXING
 \renewcommand*\contentsname{CONTENTS} %Change name
 \setcounter{tocdepth}{3} %How many subsections are visible, 1 is only section headings, 3 include subsubsections
-
-\bibliographystyle{apalike} %closest to LUSEM Harvard referencing guide

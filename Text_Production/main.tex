@@ -82,13 +82,14 @@
 
 %Glossarie
 \input{Glossarie}
+\newpage\null\thispagestyle{empty}\newpage
 
 %REFRENCES
 \titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{0.5em}{}
 \renewcommand{\refname}{REFERENCES}
 
 \addcontentsline{toc}{section}{REFERENCES} %Adds the reference to the Table of Contents
-\bibliography{References}
+\printbibliography
 
 \newpage
 
