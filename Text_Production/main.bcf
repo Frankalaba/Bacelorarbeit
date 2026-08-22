@@ -3110,22 +3110,29 @@
     <bcf:citekey order="35" intorder="1">IPCC_2019_Chapter_EnterFE</bcf:citekey>
     <bcf:citekey order="36" intorder="1">lo-laboroptikgmbhZaehlkammer2026</bcf:citekey>
     <bcf:citekey order="37" intorder="1">lo-laboroptikgmbhZaehlkammer2026</bcf:citekey>
-    <bcf:citekey order="38" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="39" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="40" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="41" intorder="1">Phasecontrast_uni_leipzig_2009</bcf:citekey>
-    <bcf:citekey order="42" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="43" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="38" intorder="1">capovillaTransformationPlasmidDNA2025</bcf:citekey>
+    <bcf:citekey order="38" intorder="2">finkShuttlevectorSystemAllows2021</bcf:citekey>
+    <bcf:citekey order="39" intorder="1">schwalenBioinformaticExpansionDiscovery2018a</bcf:citekey>
+    <bcf:citekey order="40" intorder="1">finkShuttlevectorSystemAllows2021</bcf:citekey>
+    <bcf:citekey order="41" intorder="1">finkShuttlevectorSystemAllows2021</bcf:citekey>
+    <bcf:citekey order="42" intorder="1">koppCriticalVariationsConjugational2004</bcf:citekey>
+    <bcf:citekey order="43" intorder="1">koppCriticalVariationsConjugational2004</bcf:citekey>
     <bcf:citekey order="44" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
     <bcf:citekey order="45" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="46" intorder="1">leeAnnexGlossary2023</bcf:citekey>
-    <bcf:citekey order="47" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
-    <bcf:citekey order="48" intorder="1">Chapter Eight - Radiative forcing on climate change: assessing the effect of greenhouse gases on energy balance of Earth</bcf:citekey>
-    <bcf:citekey order="49" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
-    <bcf:citekey order="50" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
-    <bcf:citekey order="51" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
-    <bcf:citekey order="52" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
-    <bcf:citekey order="53" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
+    <bcf:citekey order="46" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="47" intorder="1">Phasecontrast_uni_leipzig_2009</bcf:citekey>
+    <bcf:citekey order="48" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="49" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="50" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="51" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="52" intorder="1">leeAnnexGlossary2023</bcf:citekey>
+    <bcf:citekey order="53" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
+    <bcf:citekey order="54" intorder="1">Chapter Eight - Radiative forcing on climate change: assessing the effect of greenhouse gases on energy balance of Earth</bcf:citekey>
+    <bcf:citekey order="55" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
+    <bcf:citekey order="56" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
+    <bcf:citekey order="57" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
+    <bcf:citekey order="58" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
+    <bcf:citekey order="59" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="apa">

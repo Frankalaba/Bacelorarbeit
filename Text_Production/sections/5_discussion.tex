@@ -2,4 +2,37 @@
 \section{DISCUSSION}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Discuss your thesis here
-\lipsum[1-5]
+\subsection{Biochemistry}
+
+%\subsubsection{Transformation via conjugation}
+Promising initial results have been achieved for implementing the first time a genetic tool for \acrshort{bovi} and \acrshort{milli}, even though a final assessment is still pending due to the pending whole-genome sequencing(see \cref{sec:transformation_via_conjugation}). \\
+
+So in 3 of 28 preparations lines growth could be detected after selection via 20~µg/ml \acrfull{puro} (\cref{tab:conjugation_preparation}). Within these three preparation lines, six cultures exhibited uniform growth of the corresponding \acrlong{mbrevi} species (verifed via \gls(S-sequenz)), three each for \acrshort{bovi} and \acrshort{milli}, although the three cultures for\acrshort{bovi} were all from a single preparation line. \\
+
+For these cultures, at least some evidence was provided that they had successfully taken up the plasmid, even though whole-genome sequencing is still pending. This is because the gel image of the \gls{pcr} of the \acrshort{gDna} for a region on the two plasmids used (pMb\_0231\_hpt and pMm\_0231\_hpt, see \cref{fig:plasmid_produced}) shows a band at 750~bp in all six cultures (\cref{fig:gelimage_conj_plasmid_check_epiderm}). Although the expected size for the amplified plasmid region is 838~bp, the fact that there is an exact on-target region for the primers used in two different organisms (\acrshort{bovi} and \acrshort{milli})—which is also close to the expected size—is possible but not very likely.
+
+Assuming there is no off-target in the gDNA, the signal in the gel image could be attributed to two other possibilities in addition to successful amplification. On the one hand, \acrshort{ecol} could still be present in the culture, capable of replicating the plasmid. However, the bacterial \gls{S-sequenz} did not detect a signal for \acrshort{ecol}.
+
+On the other hand, the plasmid could still be present in the culture medium and be extracted along with the gDNA during isolation. What argues against this, however, is that the band at 750~bp exhibits a visually very similar intensity for the three \acrshort{bovi} cultures (see lanes 2, 5, and 6 under “Plasmid” in \cref{fig:gelimage_conj_plasmid_check_epiderm}), although these lanes represent different dilutions or subculturing stages relative to one another; thus, for lane 5 (as the second transfer), only 1\% of the recovery culture from lane 6 should remain in the culture.
+
+The low intensity in all three \acrshort{milli} lanes (see 1, 3, and 4 in \cref{fig:gelimage_conj_plasmid_check_epiderm}) compared to the \acrshort{bovi} lanes appears to be due to an off-target reaction, since all three show a weak band at just under 500~bp.\\
+
+Derived of the compare for these cultures, some more or less influencing factors for the conjugation can be assumed, although here a rather small sample was investigated and to verify this further investigation is definitely needed.
+
+First, growth status of \acrlong{mbrevi} seems to be relevant. So all cultures with growth are in the 16 preparation lines with freshly grown cultures (first visible sign of growth on the day the conjugation was performed). This aligns with the literature, where cultures from late exponential or early stationary phase were used for successful transformation \parencite{capovillaTransformationPlasmidDNA2025, finkShuttlevectorSystemAllows2021}. In which actual growth phase the used initial cultures were is not dectable here, because of missing \acrshort{OD} values for the \acrshort{mbrevi} cultures. This should be changed in future investigation.
+
+Second, all three growing preparation lines had as donator strain for the interdomain conjugation \acrshort{ecol26}. Future transformation of \acrshort{bovi} and \acrshort{milli} should focus on that. The methylation pattern of \acrshort{ecol26} therefor does not impact the \acrshort{bovi} and \acrshort{milli} \parencite[SI]{schwalenBioinformaticExpansionDiscovery2018a}. 
+
+Third, the recovery time is not so critical for the success (growing preparation line no. 6.6A had a recovery time of 4.5~h while 5.6B of 19.5~h, see \cref{tab:conjugation_preparation}) of the transformation as described for \textit{Methanothermobacter thermautotrophicus} $\delta$H in \citet{finkShuttlevectorSystemAllows2021}.
+
+Fourth, for the \acrshort{OD} of the \acrshort{ecol26} no direct trend is detectable from this preparation set, though the range of the \acrshort{OD} was 1.24 to 1.79  that seems to work.\\
+
+A problem is, that also leads to the missing whole genome sequncing, \gls{pcr} of the bacterial 16S-\acrshort{rRNA} produces clearly a signal at 1000~bp (see \cref{fig:gelimage_conj_plasmid_check_epiderm}), which was sequenced as derived from \acrshort{sepidermidis}. Because of that, the next step would be to purify these cultures through plating on selective media and picking a single colonie for the following analyses.\\
+
+If whole-genome sequencing confirms that the plasmid has been successfully integrated, the next step would be to test the counter-selection implanted in the plasmid design using \acrlong{azaeight}.
+
+To improve the conjugation protocol, it would likely be useful to first test whether a specific growth phase of \acrshort{mbrevi} has an effect by measuring its \acrshort{OD} beforehand, because a clear trend towards fresh grown cultures is visible for this conjugation experiment.
+
+To determine whether the \acrshort{OD} of \acrshort{ecol26} influences success—or whether the ratio of \acrshort{ecol} cells to \gls{archa} cells does, as described, for example, as a critical factor in \textcite{koppCriticalVariationsConjugational2004} for the conjugation of \textit {Sorangium cellulosum}, further test series must be conducted.
+
+
