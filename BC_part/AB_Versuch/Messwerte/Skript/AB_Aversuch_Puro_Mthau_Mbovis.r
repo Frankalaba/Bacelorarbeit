@@ -17,7 +17,7 @@ library("ggtext") # um beim plotten Text kursiv, z.B. im titel schreiben zu kön
 here()
 
 #########################
-#### Mbovis
+#### Mbovis ----
 #########################
 
 Mbovis_Puro_data <- import(file = here("AB_Versuch/Messwerte", "Messwerte_Mbovis_Puromycin.csv"))
@@ -389,7 +389,7 @@ ggsave(
 
 #########################
 #########################
-#### Mthau
+#### Mthau ----
 #########################
 #########################
 

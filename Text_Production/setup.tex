@@ -25,6 +25,7 @@ natbib=true          % <- erlaubt weiterhin \citep{}, \citet{} wie gewohnt
 
 
 \usepackage{chemformula} % Hauptpaket für chemische Formeln
+\usepackage{chemfig} % für chemische Strukturformeln
 
 %%%%%%%%%%%%%%%%%%%% für Tabellen/Figurebeschriftung 
 \captionsetup{
@@ -33,15 +34,6 @@ natbib=true          % <- erlaubt weiterhin \citep{}, \citet{} wie gewohnt
 	font = small,           % gesamte Caption etwas kleiner (optional, oft für Abschlussarbeiten üblich)
 	justification = justified   % Blocksatz für die Caption 
 }
-
-
-
-\newenvironment{mytable}[1]
-{\begin{table}[h!]
-		\centering
-		\begin{tabularx}{\textwidth}{#1}}
-		{\end{tabularx}
-\end{table}}
 
 \setlength{\parindent}{0pt}
 
