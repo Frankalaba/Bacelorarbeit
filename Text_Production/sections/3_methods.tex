@@ -43,6 +43,7 @@ For the U.S. there are no direct "Dairy cattle" and "Non-dairy cattle" categorie
 For sector-specific emissions, only the “TableS3” sheet was used for the most recent CRT (for the U.S., the year 2022; for Germany and New Zealand, the year 2024). Here, all sectors and their subcategories were imported for all years, as were the total emissions. After processing the data, only the methane emission values for the sectors in general were retained, as well as the total methane emissions for each country.
 
 \subsubsection{Calculation of methane emissions from enteric fermentation processes in cattle}
+\label{sec:methane_emis_calc_method}
 
 The total methane emission for cattle and its subcategories dairy and non-dairy was not directly extracted from the published \acrfull{crt} for the countries, but calculated from the indicators \acrfull{Ym}, \acrfull{GE} and the population number of the animal categories. Therefore, the \ch{CH4} emissions were calculated for dairy and non-dairy cattle following the \cref{eq:emission_total}. The methane emission for cattle than is the sum of dairy and non-dairy.
 
@@ -148,13 +149,13 @@ To calculate the new methane emission for cattle corresponding to the reduction 
 
 For calculation the GE\textsubscript{Red} DE\textsubscript{Red} can not just simply be put in the \cref{eq:GE_berechnung}, because of the values for NE\textsubscript{x} and NE\textsubscript{y}. Although the values for the individual net energy intake categories (see \cref{eq:GE_berechnung}) should not change, these are not given in the published CRTs of the countries. 
 
-To solve this problem, I assume two things:
+To solve this problem, two things are assumed:
 \begin{enumerate}
 	\item The net energy required for wool production an irrelevant categorie is for the investigation of cattle.
 	\item Most of the animal in the population of dairy and non-dairy cattle are fully grown or close to it. Here, too, the IPCC only classifies calves "dairy" or "non-dairy" once they started eating solid food. Because of that the net energy needed for growth will overlooked and set to 0. 
 \end{enumerate}
 
-Now, we can slim down the \cref{eq:GE_berechnung} and rearrange it to calculate a fixed value for NE\textsubscript{x} for a specific year, because the part with NE\textsubscript{y} turns zero (see \cref{eq:NE_x_calc}).
+So, the \cref{eq:GE_berechnung} can be slimmed down and rearranged to calculate a fix value for NE\textsubscript{x} for the corresponding year, because the part with NE\textsubscript{y} turns zero (see \cref{eq:NE_x_calc}).
 
 \begin{equation}
 	NE_x = GE \cdot REM \cdot \left( \frac{DE}{100}\right)
@@ -174,7 +175,7 @@ Now, we can slim down the \cref{eq:GE_berechnung} and rearrange it to calculate 
 	\item $DE$ = Digestibility of feed as a fraction of gross energy intake [\%] 
 \end{itemize}
 
-Now, GE\textsubscript{Red} can be calculated for a given year using the fixed values for NE\textsubscript{x} and DE\textsubscript{Red}, when NE\textsubscript{y} is assumed to be 0 (see \cref{eq:GE_adjusted_calc}). The calculated gross energy intake is then substituted into \cref{eq:emission_total} along with the corresponding Ym\textsubscript{Red} value. This yields the methane emissions (\ch{CH4}\textsubscript{,R}) for a cattle category under a reduction scenario for a specific year. \\
+Now, GE\textsubscript{Red} can be calculated for a given year using the fixed values for NE\textsubscript{x} and DE\textsubscript{Red}, all due to the assumption that NE\textsubscript{y} is 0 (see \cref{eq:GE_adjusted_calc}). The calculated gross energy intake is then substituted into \cref{eq:emission_total} along with the corresponding Ym\textsubscript{Red} value. This yields the methane emissions (\ch{CH4}\textsubscript{,R}) for a cattle category under a reduction scenario for a specific year. \\
 The saved methane emissions (\ch{CH4}\textsubscript{,S}) for a specific reduction scenario are calculated by subtracting the original value for methane emissions from the value adjusted for the scenario (see \cref{eq:saved_CH4})
 
 \begin{equation}

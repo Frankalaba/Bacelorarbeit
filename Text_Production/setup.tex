@@ -31,7 +31,7 @@ natbib=true          % <- erlaubt weiterhin \citep{}, \citet{} wie gewohnt
 \captionsetup{
 	labelfont = bf,        % "Figure 1:" fett
 	labelsep = colon,       % Doppelpunkt nach der Nummer (Standard, aber explizit)
-	font = small,           % gesamte Caption etwas kleiner (optional, oft für Abschlussarbeiten üblich)
+	font = footnotesize,           % gesamte Caption etwas kleiner (optional, oft für Abschlussarbeiten üblich)
 	justification = justified   % Blocksatz für die Caption 
 }
 
@@ -59,8 +59,8 @@ natbib=true          % <- erlaubt weiterhin \citep{}, \citet{} wie gewohnt
 
 % larger titles
 \titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{0.5em}{} % Larger font for section titles
-\titleformat{\subsection}{\normalfont\large\itshape}{\thesubsection}{0.5em}{} % Larger font for subsection titles
-\titleformat{\subsubsection}{\normalfont\normalsize\itshape}{\thesubsubsection}{0.5em}{} % Larger font for subsubsection titles
+\titleformat{\subsection}{\normalfont\large\itshape\bfseries}{\thesubsection}{0.5em}{} % Larger font for subsection titles
+\titleformat{\subsubsection}{\normalfont\normalsize\itshape\bfseries}{\thesubsubsection}{0.5em}{} % Larger font for subsubsection titles
 
 
 %TABLE OF CONTENTS FIXING
