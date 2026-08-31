@@ -3216,23 +3216,37 @@
     <bcf:citekey order="106" intorder="1">appelhansUnterschatztesTreibhausgasMethan2025</bcf:citekey>
     <bcf:citekey order="107" intorder="1">ipccChapter10Emission2006</bcf:citekey>
     <bcf:citekey order="108" intorder="1">ipccChapter10Emission2006</bcf:citekey>
-    <bcf:citekey order="109" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="110" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="111" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="112" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="113" intorder="1">pawlizakIntroductionPhaseContrast2009</bcf:citekey>
-    <bcf:citekey order="114" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="115" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="116" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="117" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="118" intorder="1">leeAnnexGlossary2023</bcf:citekey>
-    <bcf:citekey order="119" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
-    <bcf:citekey order="120" intorder="1">irfanChapterEightRadiative2024</bcf:citekey>
-    <bcf:citekey order="121" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
-    <bcf:citekey order="122" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
-    <bcf:citekey order="123" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
-    <bcf:citekey order="124" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
-    <bcf:citekey order="125" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
+    <bcf:citekey order="109" intorder="1">appelhansUnterschatztesTreibhausgasMethan2025</bcf:citekey>
+    <bcf:citekey order="109" intorder="2">saunoisGlobalMethaneBudget2025</bcf:citekey>
+    <bcf:citekey order="109" intorder="3">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
+    <bcf:citekey order="110" intorder="1">unfcccParisAgreement2015</bcf:citekey>
+    <bcf:citekey order="111" intorder="1">unfcccParisAgreement2015</bcf:citekey>
+    <bcf:citekey order="112" intorder="1">baca-gonzalezAreVaccinesSolution2020</bcf:citekey>
+    <bcf:citekey order="113" intorder="1">atcherEffectDMSOAqueous2013</bcf:citekey>
+    <bcf:citekey order="114" intorder="1">appelhansUnterschatztesTreibhausgasMethan2025</bcf:citekey>
+    <bcf:citekey order="114" intorder="2">ipccClimateChange20222022</bcf:citekey>
+    <bcf:citekey order="115" intorder="1">unfcccParisAgreement2015</bcf:citekey>
+    <bcf:citekey order="116" intorder="1">schadelPermafrostWildfireCarbon2026</bcf:citekey>
+    <bcf:citekey order="117" intorder="1">edelenboschReducingSectoralHardtoabate2024</bcf:citekey>
+    <bcf:citekey order="118" intorder="1">faoLivestockBalance2009</bcf:citekey>
+    <bcf:citekey order="118" intorder="2">appelhansUnterschatztesTreibhausgasMethan2025</bcf:citekey>
+    <bcf:citekey order="119" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="120" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="121" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="122" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="123" intorder="1">pawlizakIntroductionPhaseContrast2009</bcf:citekey>
+    <bcf:citekey order="124" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="125" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="126" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="127" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
+    <bcf:citekey order="128" intorder="1">leeAnnexGlossary2023</bcf:citekey>
+    <bcf:citekey order="129" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
+    <bcf:citekey order="130" intorder="1">irfanChapterEightRadiative2024</bcf:citekey>
+    <bcf:citekey order="131" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
+    <bcf:citekey order="132" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
+    <bcf:citekey order="133" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
+    <bcf:citekey order="134" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
+    <bcf:citekey order="135" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="apa">

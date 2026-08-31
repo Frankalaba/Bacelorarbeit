@@ -108,38 +108,29 @@
 % \titleformat{\section}{\normalfont\normalsize\bfseries}{APPENDIX \thesection: }{0em}{}
 % \input{appendix/appendix_tables}
 % \input{appendix/appendix_figures}
-
 \newpage\null\thispagestyle{empty}\newpage
 \appendix
 \renewcommand{\thesection}{\Alph{section}} 
-\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{0.5em}{}  % Same size as other sections
-\titleformat{\subsection}{\normalfont\large\itshape}{\thesubsection}{0.5em}{} % Same size as other subsections
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{0.5em}{}
+\titleformat{\subsection}{\normalfont\large\itshape}{\thesubsection}{0.5em}{}
+\section*{APPENDIX}
+\addcontentsline{toc}{section}{APPENDIX}
+\setcounter{page}{1}
+\pagenumbering{roman}
 
-\section*{APPENDIX} % Section title without numbering
-\addcontentsline{toc}{section}{APPENDIX} % Adds APPENDIX to ToC
-
-\setcounter{page}{1} % Restart page numbering
-\pagenumbering{Roman} % Use Roman numerals for Appendix
-% \setcounter{page}{4} % in case of continuing the counting
-
-\section{Figures} % Creates a numbered section (B. Figures)
+\section{Figures}
 \input{appendix/appendix_figures}
+\FloatBarrier
+
 \newpage
-\section{Tables} % Creates a numbered section (A. Tables)
+\section{Tables}
 \input{appendix/appendix_tables}
-%\newpage
+\FloatBarrier
 
-
-
-% End of appendix: Reset numbering and formatting
-%\clearpage
 \newpage\null\thispagestyle{empty}\newpage
-\pagenumbering{arabic}  % Back to normal numbering
-\setcounter{page}{65} % Reset section numbering
-
-% Declaration as a separate unnumbered section
-\section*{DECLARATION} 
-\addcontentsline{toc}{section}{DECLARATION} % Adds it to the ToC
+\pagenumbering{gobble}          % <- keine Seitenzahlen mehr, statt arabisch mit setcounter
+\section*{DECLARATION}
+\addcontentsline{toc}{section}{DECLARATION}
 \input{sections/9_Declaration}
 
 \end{spacing}
