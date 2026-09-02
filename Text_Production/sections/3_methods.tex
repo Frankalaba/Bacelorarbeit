@@ -1,3 +1,10 @@
+%\renewcommand{\thefigure}{\thesection.\arabic{figure}} %setzt Nummerierung der Figure wieder auf 0 für Section
+%\setcounter{figure}{0}
+
+%\renewcommand{\thetable}{\thesection.\arabic{table}} %setzt Nummerierung der Table wieder auf 0 für Section
+%\setcounter{table}{0}
+
+
 \section{METHODS}
 \label{sec:methods}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -5,28 +12,35 @@
 
 \subsection{Biochemestry}
 
+\subsubsection{Liquid media preparation}
+\label{sec:liquid_media_preparation}
+For the preparation of the DSM~1523 and DSM~119 media, several solutions had to be prepared. First, solution A was prepared according to the specifications given in \cref{tab:sol_A} in a Schott bottle and stored in the refrigerator. Solution B was initially prepared without the vitamin solution, according to \cref{tab:sol_B}. It was then sparged with \ch{N2} or \ch{N2}/\ch{CO2} gas at the gassing station for approximately 10 min. The solution was subsequently transferred into a serum bottle, during which it was continuously sparged. The serum bottle was filled to no more than 30\% of its volume. The serum bottle was then sealed with a butyl stopper while simultaneously withdrawing the gas supply. To facilitate insertion of the stoppers into the serum bottle, they were moistened with distilled water. Aluminum crimp seals were subsequently applied using a crimping tool. The headspace was then evacuated to -1 bar four to six times and backfilled with \ch{N2} or \ch{N2}/\ch{CO2} gas to approximately 1 bar. After autoclaving, the seven-vitamins solution, prepared according to \cref{tab:seven_vit_sol}, was added via a sterile filter, cannula and syringe, as specified in \cref{tab:sol_B}. The serum bottle was subsequently wrapped in aluminum foil to protect the vitamins from photodegradation. For the DSM~119 medium, Wolin's vitamin solution, prepared according to DSMZ specifications \parencite{koblitzWolinsVitaminSolution2026}, was added instead of the seven-vitamins solution. In addition, a DTT solution (30 g/L; 194.55 mM) and a coenzyme M (\acrshort{coM}) solution (25 g/L) were prepared. Both were transferred via sterile filter, needle, and syringe into a serum bottle that had already been autoclaved and contained an anaerobic gas atmosphere. The solutions were subsequently stored at -20\,°C.
 
-Die Rotverfärbung wird durch das resazurin im Medium verursacht
+The medium was prepared in several steps. The individual components were combined - according to \cref{tab:DSM_1523} for DSM~1523 and according to \cref{tab:DSM_119} for DSM~119 - with the exception of \ch{NaHCO3}, in an appropriately sized Erlenmeyer flask and heated to boiling. The solution should appear red owing to the addition of the redox indicator resazurin. During heating, the opening of the Erlenmeyer flask was covered with aluminum foil. After heating, the Erlenmeyer flask was placed directly into an ice bath. During cooling, the solution was sparged at the gassing station with either \ch{N2} or \ch{N2}/\ch{CO2} gas. Once the solution had cooled sufficiently, \ch{NaHCO3} was added. The desired volume was then transferred into serum bottles using a dispensette, during which the serum bottle was continuously sparged with \ch{N2} or \ch{N2}/\ch{CO2} gas. The serum bottle was never filled to more than 30\% of its volume. The serum bottles were then sealed with butyl stoppers, with the gas supply withdrawn simultaneously. The serum bottle was additionally sealed with an aluminum crimp seal using a crimping tool. The gas headspace in the serum bottles was subsequently exchanged for an \ch{H2}/\ch{CO2} gas mixture. This was achieved by evacuating the bottles to -1 bar four to six times and backfilling with the gas to approximately 1 bar. At this stage, the bottles may still show a pink to reddish discoloration. The serum bottles were then autoclaved (\textcolor{red}{temperature, time, and pressure to be added}). After autoclaving, the resazurin should decolorize and the solution should appear yellowish. Due to the sludge fluid, the DSM~119 medium is generally somewhat more turbid and darker, and may still exhibit a slight reddish tinge after autoclaving. This premedia in the serum bottle were stored at room-temperature.
 
-Base composi:
 \input{tables/02_Data/DSM_1523_Mischtabelle_base.tex}
 
-Composi sol A:
-\input{tables/02_Data/Sol_A_DSM_1523}
+\input{tables/02_Data/Fatty_acid_mixture_DSM_119.tex}
 
-Composi sol B:
-\input{tables/02_Data/Sol_B_DSM_1523}
+Before the medium can be inoculated, three components must be added sterile: solution B (100x), \acrshort{dtt} (100x) as a reducing agent, and \acrshort{coM} (50x) as a growth-promoting substance. Solution B and \acrshort{dtt} are each added at 1\% of the medium volume (0.2 mL per 20 mL), and \acrshort{coM} at 2\% (0.4 mL per 20 mL). Following the addition of \acrshort{dtt}, the solution should no longer show any red discoloration. Now the inoculation can be done with 10\% of a pre-grown culture (2~ml per 20~ml). The cultures were then incubated on a shaker at 37\,°C, 120–140 rpm.\\
+ 
+\textbf{Spread plating}
+\noindent 
 
-Composi Trace:
-\input{tables/02_Data/Trace_element_solution_SL10.tex}
+\subsubsection{Solid media preparation}
 
-Composi Seven vitamins:
-\input{tables/02_Data/Seven_elements_sol.tex}
+\textbf{Spread \gls{plateing}}
+
+\noindent The media preparation generally followed the instructions for DSM~1523 (\cref{sec:liquid_media_preparation}). However, here 50~mL were distributed with the dispensette into a serum bottle containing 0.75~g agar (1.5\%). Another deviation is that here the headspace was not exchanged for \ch{H2}/\ch{CO2}, but instead evacuated and refilled four to six times with \ch{N2} or \ch{N2}/\ch{CO2}. After autoclaving, the bottles were also stored at room temperature. Before pouring the plates, they were heated in a water bath and transferred into the \gls{glove}, where 0.5~mL \acrshort{dtt} and solution B, as well as 1~mL \acrshort{coM}, were added. After the plates had solidified in the \gls{glove}, 100~µl of a pre-grown culture was added onto the plate and spread with a spatula. The plates were then placed into a jar, which was sealed before being taken out of the \gls{glove}. After changing the atmosphere in the jar to \ch{H2}/\ch{CO2}, the plates in the jar were incubated at 37\,°C. If the pressure dropped below 0.7~bar, the gas was refilled.\\
+
+\textbf{Pour \gls{plateing}}
+\noindent In general the preparation follows the instruction for the spread plating until the work inside the \gls{glove}, but here DSM~119 was used and instead of 0.75~g the serum bottle contains 0-5~g agar (1\%). After transferring the heated DSM~119 (1\% agar) in the \gls{glove} 0.1~ml \gls{dtt}, 0.5~ml solution B and 1~ml \acrshort{coM} was added. After 200~µl of a pre-grown culture were put in the empty petri dish, the still liquid DSM~119 were poured onto it. Following that, the petri dishes were moved in an eight shaped form to distribute the organism. As before described, the solidified plates were put into a gas tight jar abd transferred outside of the \gls{glove}, then the gas was changed to \ch{H2}/\ch{CO2} and incubated at 37\,°C. If the pressure dropped below 0.7~bar the gas was refilled.\\
+
+\textbf{Roll plating}
 
 \subsection{Geography}
 
 The general methodology for the processing, analyses and visualization of the CRT data in R was to build a function and then apply these with the interested variables and data from the specific countries.
-
 In the following part, the general procedure is described in the part below. For a more detailed overview, please check the R scripts.
 
 \subsubsection{Processing CRT-Data} 
@@ -34,13 +48,13 @@ In the following part, the general procedure is described in the part below. For
 
 \textbf{Cattle enteric fermentation}
 
-For \acrlong{deu} and \acrlong{nzl} all given data for cattle and its subcattegories "dairy cattle" and "non-dairy cattle" were imported from the "Table3.A" sheet of th CRT tables for each year, and processed so, that for each year of each country a table was created with one column with the year, one column with the cattle type and the following columns are for the measured or calculated values. Afterwards, all one year tables of one country were merged, so that one country has one table, where the values for the cattle categories from 1990 to the last published year are present. 
+\noindent For \acrlong{deu} and \acrlong{nzl} all given data for cattle and its subcattegories "dairy cattle" and "non-dairy cattle" were imported from the "Table3.A" sheet of th CRT tables for each year, and processed so, that for each year of each country a table was created with one column with the year, one column with the cattle type and the following columns are for the measured or calculated values. Afterwards, all one year tables of one country were merged, so that one country has one table, where the values for the cattle categories from 1990 to the last published year are present. 
 
 For the U.S. there are no direct "Dairy cattle" and "Non-dairy cattle" categories, but more detailed one. So after the import of the same value columns for each cattle category as described before, these more detailed subcategories have to be merged in the same 2 as for \acrlong{deu} and \acrlong{nzl}. For this purpose, the official definition and classifications from the U.S. \citep[Chapter 5, p.\,6]{epaInventoryUSGreenhouse2024} were used. DE, GE and Ym were merged as a weighted mean with the populations as weight. The methane emission were summed.\\
 
 \textbf{Methane emission for each sector}
 
-For sector-specific emissions, only the “TableS3” sheet was used for the most recent CRT (for the U.S., the year 2022; for Germany and New Zealand, the year 2024). Here, all sectors and their subcategories were imported for all years, as were the total emissions. After processing the data, only the methane emission values for the sectors in general were retained, as well as the total methane emissions for each country.
+\noindent For sector-specific emissions, only the “TableS3” sheet was used for the most recent CRT (for the U.S., the year 2022; for Germany and New Zealand, the year 2024). Here, all sectors and their subcategories were imported for all years, as were the total emissions. After processing the data, only the methane emission values for the sectors in general were retained, as well as the total methane emissions for each country.
 
 \subsubsection{Calculation of methane emissions from enteric fermentation processes in cattle}
 \label{sec:methane_emis_calc_method}
@@ -69,7 +83,7 @@ CH_{4,T} = \frac{GE\cdot (\frac{Ym}{100})\cdot 365}{55.65}\cdot \frac{N_T}{10^6}
 
 \subsubsection{Share of cattle methane emissions from enteric fermentation}
 
-The share of enteric fermentation was claculated for its fraction on the total amount of anthropogen produced \ch{CH4} in a country and on the methane emissions resulting from the agriculture sector. For this purpose the published data in the CRT was used for each country. 
+ The share of enteric fermentation was claculated for its fraction on the total amount of anthropogen produced \ch{CH4} in a country and on the methane emissions resulting from the agriculture sector. For this purpose the published data in the CRT was used for each country. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -107,7 +121,7 @@ The values of the resulting Ym (Ym\textsubscript{Red}) and DE (DE\textsubscript{
 	\item $Red$ = investigated reduction scenario [\%]
 \end{itemize}
 
-The \cref{eq:emission_total} presents the relation of Ym and methane emission of cattle already. DE, on the other hand, is named in three different equations in the calculation of \citet{IPCC_2019_Chapter_EnterFE}, shown in the \cref{eq:GE_berechnung} through (\ref{eq:REG_calculation}) with little adjustments. It has his impact on produced methane through his role in calculate the GE of the animal, which has a linear relation towards methane emission (see \cref{eq:emission_total}).
+\noindent The \cref{eq:emission_total} presents the relation of Ym and methane emission of cattle already. DE, on the other hand, is named in three different equations in the calculation of \citet{IPCC_2019_Chapter_EnterFE}, shown in the \cref{eq:GE_berechnung} through (\ref{eq:REG_calculation}) with little adjustments. It has his impact on produced methane through his role in calculate the GE of the animal, which has a linear relation towards methane emission (see \cref{eq:emission_total}).
 
 \begin{equation}
 GE = \frac{\left( \frac{NE_x}{REM}\right) +\left( \frac{NE_y}{REG}\right)}{\left( \frac{DE}{100}\right) }
@@ -146,7 +160,7 @@ REM = \left[1.123 - (4.092 \cdot 10^{-3} \cdot DE) + (1.126\cdot 10^{-5} \cdot D
 	\item $DE$ = Digestibility of feed as a fraction of gross energy intake [\%] 
 \end{itemize}
 
-To calculate the new methane emission for cattle corresponding to the reduction scenario now, GE has to be recalculated with the adjusted DE. Afterwards \cref{eq:emission_total} can be used again to calculate the adjusted \ch{CH4} emission with the adjusted GE (GE\textsubscript{Red}) and Ym\textsubscript{Red}. 
+\noindent To calculate the new methane emission for cattle corresponding to the reduction scenario now, GE has to be recalculated with the adjusted DE. Afterwards \cref{eq:emission_total} can be used again to calculate the adjusted \ch{CH4} emission with the adjusted GE (GE\textsubscript{Red}) and Ym\textsubscript{Red}. 
 
 For calculation the GE\textsubscript{Red} DE\textsubscript{Red} can not just simply be put in the \cref{eq:GE_berechnung}, because of the values for NE\textsubscript{x} and NE\textsubscript{y}. Although the values for the individual net energy intake categories (see \cref{eq:GE_berechnung}) should not change, these are not given in the published CRTs of the countries. 
 
@@ -156,7 +170,7 @@ To solve this problem, two things are assumed:
 	\item Most of the animal in the population of dairy and non-dairy cattle are fully grown or close to it. Here, too, the IPCC only classifies calves "dairy" or "non-dairy" once they started eating solid food. Because of that the net energy needed for growth will overlooked and set to 0. 
 \end{enumerate}
 
-So, the \cref{eq:GE_berechnung} can be slimmed down and rearranged to calculate a fix value for NE\textsubscript{x} for the corresponding year, because the part with NE\textsubscript{y} turns zero (see \cref{eq:NE_x_calc}).
+\noindent So, the \cref{eq:GE_berechnung} can be slimmed down and rearranged to calculate a fix value for NE\textsubscript{x} for the corresponding year, because the part with NE\textsubscript{y} turns zero (see \cref{eq:NE_x_calc}).
 
 \begin{equation}
 	NE_x = GE \cdot REM \cdot \left( \frac{DE}{100}\right)
@@ -176,7 +190,7 @@ So, the \cref{eq:GE_berechnung} can be slimmed down and rearranged to calculate 
 	\item $DE$ = Digestibility of feed as a fraction of gross energy intake [\%] 
 \end{itemize}
 
-Now, GE\textsubscript{Red} can be calculated for a given year using the fixed values for NE\textsubscript{x} and DE\textsubscript{Red}, all due to the assumption that NE\textsubscript{y} is 0 (see \cref{eq:GE_adjusted_calc}). The calculated gross energy intake is then substituted into \cref{eq:emission_total} along with the corresponding Ym\textsubscript{Red} value. This yields the methane emissions (\ch{CH4}\textsubscript{,R}) for a cattle category under a reduction scenario for a specific year. \\
+\noindent Now, GE\textsubscript{Red} can be calculated for a given year using the fixed values for NE\textsubscript{x} and DE\textsubscript{Red}, all due to the assumption that NE\textsubscript{y} is 0 (see \cref{eq:GE_adjusted_calc}). The calculated gross energy intake is then substituted into \cref{eq:emission_total} along with the corresponding Ym\textsubscript{Red} value. This yields the methane emissions (\ch{CH4}\textsubscript{,R}) for a cattle category under a reduction scenario for a specific year. \\
 The saved methane emissions (\ch{CH4}\textsubscript{,S}) for a specific reduction scenario are calculated by subtracting the original value for methane emissions from the value adjusted for the scenario (see \cref{eq:saved_CH4})
 
 \begin{equation}

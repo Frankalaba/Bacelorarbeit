@@ -13,6 +13,7 @@
 \usepackage{amsmath, enumitem, amssymb, array, setspace, float, subcaption, caption, booktabs, pdflscape, dcolumn, titlesec, tocloft, comment, xcolor, longtable, blindtext, rotating, lipsum, wrapfig, tabularx, multirow, makecell, subcaption}
 \usepackage{placeins}   % für float barrier
 \usepackage[flushleft]{threeparttable}
+
 \usepackage[table]{xcolor} %einfärben von tabellenreihen
 %\usepackage[round, authoryear]{natbib}
 \usepackage[
@@ -36,19 +37,33 @@ natbib=true          % <- erlaubt weiterhin \citep{}, \citet{} wie gewohnt
 	justification = justified   % Blocksatz für die Caption 
 }
 
-\setlength{\parindent}{0pt}
+
+
+\usepackage{indentfirst} % sorgt für einrückung
+%\setlength{\parindent}{0pt} % sorgt für keine Einrückung
 
 \usepackage[hidelinks]{hyperref}
 
 \usepackage[acronym, style = long, toc]{glossaries}
 
 \hypersetup{
-     colorlinks   = true, %If links to papers should be colored
-     citecolor    = blue, %color of citation text
-     urlcolor = black, %if you use an URL, this is how it is colored
-     linkcolor = black
+	colorlinks   = true,
+	citecolor    = blue,
+	urlcolor     = black,
+	linkcolor    = blue         
 }
+
+\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}   % Glossar-Links bleiben schwarz
+
 \usepackage{cleveref}
+%%%%%%%%%%%%%%%%%%% Wie tabellen mit \cref im Text später angezeigt werden
+\crefname{table}{Table}{Tables}
+\crefname{figure}{Figure}{Figures}
+\crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\Crefname{figure}{Figure}{Figures}
+\Crefname{section}{Section}{Sections}
+
 \graphicspath{{figures/}}
 
 %CHANGE SECTION STYLE
