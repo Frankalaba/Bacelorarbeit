@@ -3152,13 +3152,13 @@
     <bcf:citekey order="59" intorder="1">IPCC_2006_complete_Guidline</bcf:citekey>
     <bcf:citekey order="60" intorder="1">appelhansUnterschatztesTreibhausgasMethan2025</bcf:citekey>
     <bcf:citekey order="61" intorder="1">koblitzWolinsVitaminSolution2026</bcf:citekey>
-    <bcf:citekey order="62" intorder="1">epaInventoryUSGreenhouse2024</bcf:citekey>
-    <bcf:citekey order="63" intorder="1">IPCC_2019_Chapter_EnterFE</bcf:citekey>
-    <bcf:citekey order="64" intorder="1">IPCC_2019_Chapter_EnterFE</bcf:citekey>
+    <bcf:citekey order="62" intorder="1">lo-laboroptikgmbhZaehlkammer2026</bcf:citekey>
+    <bcf:citekey order="63" intorder="1">lo-laboroptikgmbhZaehlkammer2026</bcf:citekey>
+    <bcf:citekey order="64" intorder="1">epaInventoryUSGreenhouse2024</bcf:citekey>
     <bcf:citekey order="65" intorder="1">IPCC_2019_Chapter_EnterFE</bcf:citekey>
     <bcf:citekey order="66" intorder="1">IPCC_2019_Chapter_EnterFE</bcf:citekey>
-    <bcf:citekey order="67" intorder="1">lo-laboroptikgmbhZaehlkammer2026</bcf:citekey>
-    <bcf:citekey order="68" intorder="1">lo-laboroptikgmbhZaehlkammer2026</bcf:citekey>
+    <bcf:citekey order="67" intorder="1">IPCC_2019_Chapter_EnterFE</bcf:citekey>
+    <bcf:citekey order="68" intorder="1">IPCC_2019_Chapter_EnterFE</bcf:citekey>
     <bcf:citekey order="69" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
     <bcf:citekey order="70" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
     <bcf:citekey order="71" intorder="1">capovillaTransformationPlasmidDNA2025</bcf:citekey>
@@ -3234,20 +3234,19 @@
     <bcf:citekey order="121" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
     <bcf:citekey order="122" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
     <bcf:citekey order="123" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="124" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="125" intorder="1">pawlizakIntroductionPhaseContrast2009</bcf:citekey>
+    <bcf:citekey order="124" intorder="1">pawlizakIntroductionPhaseContrast2009</bcf:citekey>
+    <bcf:citekey order="125" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
     <bcf:citekey order="126" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
     <bcf:citekey order="127" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
     <bcf:citekey order="128" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="129" intorder="1">fritscheMikrobiologie2024</bcf:citekey>
-    <bcf:citekey order="130" intorder="1">leeAnnexGlossary2023</bcf:citekey>
-    <bcf:citekey order="131" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
-    <bcf:citekey order="132" intorder="1">irfanChapterEightRadiative2024</bcf:citekey>
-    <bcf:citekey order="133" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
+    <bcf:citekey order="129" intorder="1">leeAnnexGlossary2023</bcf:citekey>
+    <bcf:citekey order="130" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
+    <bcf:citekey order="131" intorder="1">irfanChapterEightRadiative2024</bcf:citekey>
+    <bcf:citekey order="132" intorder="1">planetaryboundariessciencepbsciencePlanetaryHealthCheck2025</bcf:citekey>
+    <bcf:citekey order="133" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
     <bcf:citekey order="134" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
     <bcf:citekey order="135" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
     <bcf:citekey order="136" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
-    <bcf:citekey order="137" intorder="1">IPPCC_AR6_Chapter7_GWP</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="apa">
