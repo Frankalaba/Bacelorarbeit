@@ -105,7 +105,7 @@ In addition, 50~ml DSM~1523 (1.5\% agar) was prepared with 10~mM~\ch{MgSO4}, 5~m
 \begin{figure}[h]
 	\centering
 	\includegraphics[height = 0.9\textwidth]{figures/Methods/Conjugation_methods_V_3.png}
-	\caption{Methodological approach to transform a \textit{Methanobrevibacter} (Methanob.) species via interdomain conjugation using two \acrfull{dap} auxotrophic \textit{E. coli} strains, WM6026 and WM6029. Suicide plasmids corresponding to the targeted \textit{Methanob.} species were used, containing chloramphenicol (CAP) as a selection marker for \textit{E. coli} and puromycin as a selection marker for the transformed \textit{Methanob.} Two recovery periods were tested: Recovery A (approx. 5~h) and Recovery B (approx. 20~h).}
+	\caption[Methodological approach to transform a \acrlong{mbrevi} species via interdomain conjugation using two \acrfull{dap} auxotrophic \textit{E. coli} strains, WM6026 and WM6029.]{Methodological approach to transform a \acrfull{mbrevi} species via interdomain conjugation using two \acrfull{dap} auxotrophic \textit{E. coli} strains, WM6026 and WM6029. Suicide plasmids corresponding to the targeted \acrshort{mbrevi} species were used, containing chloramphenicol (CAP) as a selection marker for \textit{E. coli} and puromycin as a selection marker for the transformed \acrshort{mbrevi} Two recovery periods were tested: Recovery A (approx. 5~h) and Recovery B (approx. 20~h).}
 	\label{fig:conjugation_method_approach}
 \end{figure}
 \end{landscape}
@@ -118,6 +118,9 @@ All cultures were subsequently subcultured two more times into fresh selective D
 
 A gel (1.5\%) image was taken of this 838~bp PCR product and of two independently performed 16S rDNA amplifications using different, older primer preparations, which had previously been verified using a negative control. GelRed, Gel Loading Dye Purple (6X), and 1~kb GeneRuler were used as the ladder for the 1.5\% agarose gel.
 
+\subsubsection{Ethanol as alternative substrate}
+
+5 concentration of \acrshort{etoh} (10, 20, 50, 100 and 200~mM) were tested in media, where the headspace was sterile changed to \ch{N2}/\ch{CO2} before inoculation with \acrshort{bovi}, \acrshort{thau} or \acrshort{woli}. For \acrshort{bovi} and \acrshort{woli} DSM~1523 was used, for \acrshort{thau} DSM~119. Incubation was done at 37\,°C and 120--140~rpm.  
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -184,7 +187,7 @@ CH_{4,T} = \frac{GE\cdot (\frac{Ym}{100})\cdot 365}{55.65}\cdot \frac{N_T}{10^6}
 
 To calculate the potential methane savings resulting from the mitigation strategy under investigation (immunization of cattle), various success scenarios are defined: 10, 20, 30, 40, and 50\% shifts in the rumen microbiome of cattle from methanogens toward non-methane-producing microbes.
 These will have an impact on two indicators used in \citet{IPCC_2019_Chapter_EnterFE}. \acrshort{Ym}, which represents the proportion of energy or feed consumed by cattle that is converted into methane by that microbiome, and \acrshort{DE}, assuming that the reduced amount of feed energy converted into methane now benefits the animal during digestion, meaning that the percentage of feed digestibility for the animal increases.
-The values of the resulting Ym (Ym\textsubscript{Red}) and DE (DE\textsubscript{Red}) are calculated as in \cref{eq:Ym_red_sze_calc} and \cref{eq:DE_red_sze_calc}. \newpage
+The values of the resulting Ym (Ym\textsubscript{Red}) and DE (DE\textsubscript{Red}) are calculated as in \cref{eq:Ym_red_sze_calc} and \cref{eq:DE_red_sze_calc}. 
 
 \begin{equation}
 	Ym_{Red} = Ym \cdot \left(1 - \frac{Red}{100} \right)
@@ -220,7 +223,7 @@ GE = \frac{\left( \frac{NE_x}{REM}\right) +\left( \frac{NE_y}{REG}\right)}{\left
 \noindent where:
 \begin{itemize}
 	\item $GE$ = gross energy intake [MJ head$^{-1}$ day$^{-1}$]
-	\item $NE_x$ = sum of the net energy required for maintenance ($NE_m$), for the activity ($NE_a$), for lactation ($NE_l$), for the work ($NE_work$) and for the pregnancy ($NE_p$) of the animal [MJ head$^{-1}$ day$^{-1}$]
+	\item $NE_x$ = sum of the net energy required for maintenance, activity, lactation, work and pregnancy of the animal [MJ head$^{-1}$ day$^{-1}$]
 	\item $REM$ = ratio of net energy available in a diet for maintenance (\Cref{eq:REM_calculation})
 	\item $NE_y$ = sum of the net energy required for growth and for wool production [MJ head$^{-1}$ day$^{-1}$]
 	\item $REG$ = ratio of net energy available for growth in a diet (\Cref{eq:REG_calculation})
@@ -239,7 +242,7 @@ REM = \left[1.123 - (4.092 \cdot 10^{-3} \cdot DE) + (1.126\cdot 10^{-5} \cdot D
 \end{itemize}
 
 \begin{equation}
-	REM = \left[1.164 - (5.16 \cdot 10^{-3} \cdot DE) + (1.308\cdot 10^{-5} \cdot DE^{2}) - \left( \frac{37.4}{DE}\right) \right]
+	REG = \left[1.164 - (5.16 \cdot 10^{-3} \cdot DE) + (1.308\cdot 10^{-5} \cdot DE^{2}) - \left( \frac{37.4}{DE}\right) \right]
 	\label{eq:REG_calculation}
 \end{equation}
 
@@ -257,7 +260,7 @@ To solve this problem, two things are assumed:
 	\item Most of the animal in the population of dairy and non-dairy cattle are fully grown or close to it. Because of that the net energy needed for growth will overlooked and set to 0. 
 \end{enumerate}
 
-\noindent So, \cref{eq:GE_berechnung} can be slimmed down and rearranged to calculate a fix value for NE\textsubscript{x} for the corresponding year, because the part with NE\textsubscript{y} turns zero (see \cref{eq:NE_x_calc}). For this purpose, GE\textsubscript{Red} is calculated for a given year using DE\textsubscript{Red} and the fixed values for NE\textsubscript{x}, all due to the assumption that NE\textsubscript{y} is 0 (\cref{eq:GE_adjusted_calc}). The calculated gross energy intake is then substituted into \cref{eq:emission_total} along with the corresponding Ym\textsubscript{Red} value. This yields the methane emissions (\ch{CH4}\textsubscript{,R}) for a cattle category under a reduction scenario for a specific year.\newpage
+\noindent So, \cref{eq:GE_berechnung} can be slimmed down and rearranged to calculate a fix value for NE\textsubscript{x} for the corresponding year, because the part with NE\textsubscript{y} turns zero (see \cref{eq:NE_x_calc}). For this purpose, GE\textsubscript{Red} is calculated for a given year using DE\textsubscript{Red} and the fixed values for NE\textsubscript{x}, all due to the assumption that NE\textsubscript{y} is 0 (\cref{eq:GE_adjusted_calc}). The calculated gross energy intake is then substituted into \cref{eq:emission_total} along with the corresponding Ym\textsubscript{Red} value. This yields the methane emissions (\ch{CH4}\textsubscript{,R}) for a cattle category under a reduction scenario for a specific year.
 
 \begin{equation}
 	NE_x = GE \cdot REM \cdot \left( \frac{DE}{100}\right)
