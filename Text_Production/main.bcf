@@ -3123,8 +3123,10 @@
     <bcf:citekey order="32" intorder="1">baca-gonzalezAreVaccinesSolution2020</bcf:citekey>
     <bcf:citekey order="33" intorder="1">millerDescriptionMethanobrevibacterGottschalkii2002</bcf:citekey>
     <bcf:citekey order="33" intorder="2">leeMethanobrevibacterBoviskoreaniSp2013</bcf:citekey>
-    <bcf:citekey order="34" intorder="1">kleinMarkerlessMutagenesisEnables2025</bcf:citekey>
-    <bcf:citekey order="35" intorder="1">kleinMarkerlessMutagenesisEnables2025</bcf:citekey>
+    <bcf:citekey order="34" intorder="1">finkShuttlevectorSystemAllows2021</bcf:citekey>
+    <bcf:citekey order="34" intorder="2">kleinMarkerlessMutagenesisEnables2025</bcf:citekey>
+    <bcf:citekey order="35" intorder="1">finkShuttlevectorSystemAllows2021</bcf:citekey>
+    <bcf:citekey order="35" intorder="2">kleinMarkerlessMutagenesisEnables2025</bcf:citekey>
     <bcf:citekey order="36" intorder="1">kleinMarkerlessMutagenesisEnables2025</bcf:citekey>
     <bcf:citekey order="37" intorder="1">kleinMarkerlessMutagenesisEnables2025</bcf:citekey>
     <bcf:citekey order="38" intorder="1">IPCC_2006_complete_Guidline</bcf:citekey>
@@ -3186,21 +3188,21 @@
     <bcf:citekey order="89" intorder="1">sanzSimpleSelectiveOxidation2002</bcf:citekey>
     <bcf:citekey order="90" intorder="1">olsonTransformationClostridiumThermocellum2012</bcf:citekey>
     <bcf:citekey order="91" intorder="1">olsonTransformationClostridiumThermocellum2012</bcf:citekey>
-    <bcf:citekey order="92" intorder="1">merckkgaaCellDensityMeasurement2026</bcf:citekey>
-    <bcf:citekey order="93" intorder="1">merckkgaaCellDensityMeasurement2026</bcf:citekey>
-    <bcf:citekey order="94" intorder="1">lo-laboroptikgmbhZaehlkammer2026</bcf:citekey>
-    <bcf:citekey order="95" intorder="1">lambrechtFlowCytometricQuantification2017</bcf:citekey>
+    <bcf:citekey order="92" intorder="1">liMethanobrevibacterBoviskoreaniJH1T2023</bcf:citekey>
+    <bcf:citekey order="92" intorder="2">leeMethanobrevibacterBoviskoreaniSp2013</bcf:citekey>
+    <bcf:citekey order="92" intorder="3">millerDescriptionMethanobrevibacterGottschalkii2002</bcf:citekey>
+    <bcf:citekey order="93" intorder="1">liMethanobrevibacterBoviskoreaniJH1T2023</bcf:citekey>
+    <bcf:citekey order="93" intorder="2">hoedtDifferencesDownunderAlcoholfueled2016</bcf:citekey>
+    <bcf:citekey order="94" intorder="1">hoedtDifferencesDownunderAlcoholfueled2016</bcf:citekey>
+    <bcf:citekey order="94" intorder="2">liMethanobrevibacterBoviskoreaniJH1T2023</bcf:citekey>
+    <bcf:citekey order="95" intorder="1">liMethanobrevibacterBoviskoreaniJH1T2023</bcf:citekey>
     <bcf:citekey order="96" intorder="1">liMethanobrevibacterBoviskoreaniJH1T2023</bcf:citekey>
-    <bcf:citekey order="96" intorder="2">leeMethanobrevibacterBoviskoreaniSp2013</bcf:citekey>
-    <bcf:citekey order="96" intorder="3">millerDescriptionMethanobrevibacterGottschalkii2002</bcf:citekey>
     <bcf:citekey order="97" intorder="1">liMethanobrevibacterBoviskoreaniJH1T2023</bcf:citekey>
     <bcf:citekey order="97" intorder="2">hoedtDifferencesDownunderAlcoholfueled2016</bcf:citekey>
-    <bcf:citekey order="98" intorder="1">hoedtDifferencesDownunderAlcoholfueled2016</bcf:citekey>
-    <bcf:citekey order="98" intorder="2">liMethanobrevibacterBoviskoreaniJH1T2023</bcf:citekey>
-    <bcf:citekey order="99" intorder="1">liMethanobrevibacterBoviskoreaniJH1T2023</bcf:citekey>
-    <bcf:citekey order="100" intorder="1">liMethanobrevibacterBoviskoreaniJH1T2023</bcf:citekey>
-    <bcf:citekey order="101" intorder="1">liMethanobrevibacterBoviskoreaniJH1T2023</bcf:citekey>
-    <bcf:citekey order="101" intorder="2">hoedtDifferencesDownunderAlcoholfueled2016</bcf:citekey>
+    <bcf:citekey order="98" intorder="1">merckkgaaCellDensityMeasurement2026</bcf:citekey>
+    <bcf:citekey order="99" intorder="1">merckkgaaCellDensityMeasurement2026</bcf:citekey>
+    <bcf:citekey order="100" intorder="1">lo-laboroptikgmbhZaehlkammer2026</bcf:citekey>
+    <bcf:citekey order="101" intorder="1">lambrechtFlowCytometricQuantification2017</bcf:citekey>
     <bcf:citekey order="102" intorder="1">apolinarioPlateColonizationMethanococcus1996</bcf:citekey>
     <bcf:citekey order="103" intorder="1">apolinarioPlateColonizationMethanococcus1996</bcf:citekey>
     <bcf:citekey order="104" intorder="1">saunoisGlobalMethaneBudget2025</bcf:citekey>
