@@ -11,6 +11,18 @@
 	type=biochem
 }
 
+\newglossaryentry{counterselection}{
+	name={counterselection},
+	description={A selection strategy in molecular genetics used to select against cells carrying a specific genetic marker, typically by exposing cells to a compound that becomes toxic only in its presence. This allows for the selective survival of cells in which the marker has been lost or replaced, enabling markerless genetic manipulation, as opposed to conventional \gls{selection}},
+	type=biochem
+}
+
+\newglossaryentry{selection}{
+	name={selection},
+	description={A selection strategy in molecular biology used to select only organisms that have been successfully transformed. Usually, an antibiotic resistance gene is used as a selection marker, enabling the successfully transformed organism to survive in the presence of an otherwise toxic antibiotic},
+	type=biochem
+}
+
 \newglossaryentry{conjug}{
 	name=conjugation,
 	description={Conjugation is the process of horizontal gen-transfer between a donor-cell and an acceptor-cell. The connection or "mating" between the cells is made by a pilus (also called "sex-pilus"), which allows the transport of the DNA. The conjugation can also happen between different species or domains. Needed for the conjugation is a plasmid that contains the gene for conjugation (the \textit{tra}-region) and connection with a pilus \parencite[p.\,207]{fritscheMikrobiologie2024}}, 
@@ -106,16 +118,22 @@ type=biochem}
 
 \newglossaryentry{primer}{
 	name=primer,
-	description={Short nucleotide sequence that serves as a starting point for the polymerase to replicate the complementary DNA strand. For this purpose, the primer hybridizes to a specific sequence on the \acrfull{ssDNA} template \citep{fritscheMikrobiologie2024}},
+	description={Short nucleotide sequence that serves as a starting point for the polymerase to replicate the complementary DNA strand. For this purpose, the primer hybridizes to a specific sequence on the \acrlong{ssDNA} template \citep{fritscheMikrobiologie2024}},
 	type=biochem
 }
 
 \newglossaryentry{invitro}{name=in-vitro,description= {Experiments are not performed in/ at the living organism, but in an artificial setting}, 
 type=biochem}
 
+\newglossaryentry{invivo}{name=in-vivo,description= {Experiments are performed in/ at the living organism}, 
+	type=biochem}
+	
+\newglossaryentry{insilico}{name=in-silico,description= {Investigations or experiments are performed on a computer/ via computer simulation software}, 
+	type=biochem}
+
 \newglossaryentry{pcr}{
 	name=PCR,
-	description={The polymerase chain reaction is a \gls{invitro} method to amplify a specific sequence of DNA. For this purpose, specific fitting \gls{primer} has to be designed, that flank this DNA-sequence on both complementary DNA-strings.}, 
+	description={The polymerase chain reaction is a \gls{invitro} method to amplify a specific sequence of DNA. For this purpose, specific fitting \gls{primer} has to be designed, that flank this DNA-sequence on both complementary DNA-strings}, 
 	type=biochem}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -133,7 +151,7 @@ type=geo}
 \newglossaryentry{gwpGls}{name=GWP,description={Global warming potential is a concept used to represent the relative impact of various \acrshort{ghg}s on a uniform scale over a specific time period. It takes into account their effectiveness in causing radiative forcing as well as their atmospheric lifetime. \ch{CO2} serves as a reference, so that the effect of 1 g of greenhouse gas is converted to x g of \ch{CO2} \acrshort{eq}. The relevant time period is indicated as the number of years following the GWP designation (e. g., GWP20 refers to a 20-year time horizon)}, 
 type=geo}
 
-\newglossaryentry{compound}{name=compound events,description={When two wether extremes occur at the same time a shortly after each other, so so that they reinforce each other, as example a heatwave and droughts \citep{leeAnnexGlossary2023}}, 
+\newglossaryentry{compound}{name=compound events,description={When two wether extremes occur at the same time or shortly after each other, so that they reinforce each other, as example a heatwave and droughts \citep{leeAnnexGlossary2023}}, 
 type=geo }
 
 \newglossaryentry{tippingPoint}{name=tipping point, description={"Refers to a critical point at which small changes can suddenly trigger large, often irreversible  shifts in Earth’s environment. Once a tipping point is crossed, self-reinforcing (positive feedback) processes drive the system further away from its previous state, increasing the magnitude and extent of change. For example, melting ice exposes less reflective ocean water, which absorbs more sunlight and accelerates melting, creating a self-reinforcing cycle" \citep{planetaryboundariessciencepbsciencePlanetaryHealthCheck2025}}, 
@@ -150,7 +168,13 @@ type=geo}
 
 \newglossaryentry{gross}{
 	name=gross,
-	description={In the context of climate change, the gross effect refers to the direct, physical influence of a greenhouse gas (such as methane) on the Earth's energy balance, considered in isolation. The net effect, by contrast, accounts for masking effects. For example,e caused by co-emitted cooling agents, such as aerosols released during methane extraction, which can partially offset the gross warming contribution},
+	description={In the context of climate change, the gross effect refers to the direct, physical influence of a greenhouse gas (such as methane) on the Earth's energy balance, considered in isolation. The alternative for the gross effect would be the \gls{net} effect},
+	type=geo
+}
+
+\newglossaryentry{net}{
+	name=net,
+	description={ Contrary to the \gls{gross} effect accounts the net effect of \acrshort{ghg} also for masking effects. For example, caused by co-emitted cooling agents, such as aerosols released during methane extraction, which can partially offset the gross warming contribution},
 	type=geo
 }
 
