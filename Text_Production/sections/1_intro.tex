@@ -49,11 +49,8 @@ The problem here, however, is that the individual anaerobic, methanogenic \gls{a
 
 To address this knowledge gap, two strains in particular - \acrlong{thau} and \acrlong{bovi} - will be further investigated here, which were originally isolated from the rumen of cattle \parencite{millerDescriptionMethanobrevibacterGottschalkii2002, leeMethanobrevibacterBoviskoreaniSp2013}. For this purpose, the investigation will have two sites.
 First, investigate growth behavior of the cell under various conditions.
-Second, trying to implement for the first time a genetic tools for \acrlong{mbrevi}. Following the approach of \textcite{finkShuttlevectorSystemAllows2021, kleinMarkerlessMutagenesisEnables2025} for interdomain conjugation and markerless mutagenesis of \textit{Methanothermobacter}, the \gls{trafoglo} of \acrlong{mbrevi} was performed via \gls{conjug} with \acrlong{ecol}.
+Second, trying to implement for the first time a genetic tools for \acrlong{mbrevi}. Following the approach of \textcite{finkShuttlevectorSystemAllows2021, kleinMarkerlessMutagenesisEnables2025} for interdomain conjugation and \gls{markerless} mutagenesis of \textit{Methanothermobacter}, the \gls{trafoglo} of \acrlong{mbrevi} was performed via \gls{conjug} with \acrlong{ecol}.
 Thereby a \gls{suicide} was used, with four main functional sites to allow the \gls{selection} of transformed \acrlong{mbrevi} and also the \gls{counterselection} to enable genome editing (\cref{fig:general_plasmid_map}).
-
-The first functional site is the "\acrshort{ecol} cassette + conjugation-gene". This is important for preparing the donor organism (\acrshort{ecol}) for the conjugation to transform the \acrlong{mbrevi} species. Therefore the plasmid contains for the \gls{trafoglo} of \acrshort{ecol} an \gls{ori} and a selection marker (\textit{catP}) against chloramphenicol. In addition, the \textit{traJ}-gene is needed for the conjugation.
-The remaining sites on the plasmid are for the \acrlong{mbrevi} species. So the \textit{pac}-gene with its promoter is the selection marker for transformed \acrlong{mbrevi} against \acrfull{puro}. The "Homology arms" site contains the segments of the \acrfull{gDna} from the transforming \acrlong{mbrevi}. The homology regions thereby flank the gene to be deleted. Through single homologous recombination events, the plasmid is first integrated and then removed again via counterselection, whereby the gene flanked by the homology arms is also excised \parencite{kleinMarkerlessMutagenesisEnables2025}. The last of the four sites is \acrfull{hpt} gene, which enhances sensitivity against base-analogue \acrfull{azaeight} for the counterselection.
 
 
 \begin{figure}[!h]
@@ -64,8 +61,13 @@ The remaining sites on the plasmid are for the \acrlong{mbrevi} species. So the 
 	In addition, all plasmids contain the \textit{hpt} gene to enhance sensitivity against the base-analogue \acrlong{azaeight}, which is used for counterselection, and the two homology arms that flank the genomic \textit{hpt} gene of the corresponding organism. The final important region is the one containing the \textit{pac} gene and its associated promoter, which serves as a selection marker.},
 	\label{fig:general_plasmid_map}
 \end{figure}
+\newpage
 
-In the following experiments, regions on the homology arms are selected that flank the \textit{\acrshort{hpt}} of the respective organism, resulting in a mutant lacking genomic \textit{\acrshort{hpt}}. This makes it possible to target any other gene in the genome by selecting the appropriate homology regions and removing them via markerless counterselection \parencite{kleinMarkerlessMutagenesisEnables2025}.
+The first functional site is the "\acrshort{ecol} cassette + conjugation-gene". This is important for preparing the donor organism (\acrshort{ecol}) for the conjugation to transform the \acrlong{mbrevi} species. Therefore the plasmid contains for the \gls{trafoglo} of \acrshort{ecol} an \gls{ori} and a selection marker (\textit{catP}) against chloramphenicol. In addition, the \textit{traJ}-gene is needed for the conjugation.
+The remaining sites on the plasmid are for the \acrlong{mbrevi} species. So the \textit{pac}-gene with its promoter is the selection marker for transformed \acrlong{mbrevi} against \acrfull{puro}. The "Homology arms" site contains the segments of the \acrfull{gDna} from the transforming \acrlong{mbrevi}. The homology regions thereby flank the gene to be deleted. Through single homologous recombination events, the plasmid is first integrated and then removed again via \gls{counterselection}, whereby the gene flanked by the homology arms is also excised \parencite{kleinMarkerlessMutagenesisEnables2025}. The last of the four sites is \acrfull{hpt} gene, which enhances sensitivity against base-analogue \acrfull{azaeight} for the \gls{counterselection}.
+
+
+In the following experiments, regions on the homology arms are selected that flank the \textit{\acrshort{hpt}} of the respective organism, resulting in a mutant lacking genomic \textit{\acrshort{hpt}}. This makes it possible to target any other gene in the genome by selecting the appropriate homology regions and removing them via \gls{markerless} \gls{counterselection} \parencite{kleinMarkerlessMutagenesisEnables2025}.
 
 
 \subsection{Evaluation based on calculated \ch{CH4} emission}

@@ -82,3 +82,8 @@ natbib=true          % <- erlaubt weiterhin \citep{}, \citet{} wie gewohnt
 %TABLE OF CONTENTS FIXING
 \renewcommand*\contentsname{CONTENTS} %Change name
 \setcounter{tocdepth}{3} %How many subsections are visible, 1 is only section headings, 3 include subsubsections
+
+%SETTINGS FOR PREVENTING SINGLE LINES ON THE NEXT PAGE
+%check is still necessary, dose not work perfectly
+\widowpenalty=10000
+\clubpenalty=10000
